@@ -3,10 +3,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Hello from '@pages/Hello/Hello';
 import NotFound from '@pages/NotFound/NotFound';
 import { initSocketConnection } from '@services/socket/socket';
+import { useDispatch } from 'react-redux';
 
 export default function App() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    initSocketConnection();
+    initSocketConnection(dispatch);
   }, []);
 
   return (

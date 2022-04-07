@@ -16,17 +16,15 @@ const initExercices = (dispatch) => {
 
 const Hello = () => {
   const dispatch = useDispatch();
-  const exercices = useSelector((state) => state.exercices);
+  console.log(useSelector((state) => state.exercices.data));
   useEffect(() => {
     initExercices(dispatch);
   }, []);
+
   return (
     <Box>
       <Navigation />
       <HelloComponent />
-      {exercices.data.map((exo, key) => {
-        return <Box key={key}>{exo.nomExo}</Box>;
-      })}
     </Box>
   );
 };

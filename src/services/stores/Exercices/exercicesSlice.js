@@ -15,6 +15,7 @@ export const exercicesSlice = createSlice({
   },
 });
 
+export const selectData = (state) => state.exercices.data;
 // Action creators are generated for each case reducer function
 export const { setExercices, addExercice } = exercicesSlice.actions;
 
