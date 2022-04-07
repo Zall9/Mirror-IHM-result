@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
+import { Box, selectClasses } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { selectData } from '@stores/Exercices/exercicesSlice';
 
 const HelloComponent = () => {
   // const [data, setData] = useState([]);
-  const exercices = useSelector((state) => state.exercices.data);
+  const exercices = useSelector(selectData);
 
   return (
     <Box

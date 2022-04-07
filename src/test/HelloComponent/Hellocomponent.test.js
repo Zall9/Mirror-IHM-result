@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import store from '@stores/store';
+import { Provider } from 'react-redux';
 
 import HelloComponent from '@components/HelloComponent/HelloComponent';
 
@@ -20,8 +22,13 @@ afterEach(() => {
 
 it('test du component HelloComponent.js', async () => {
   await act(async () => {
-    render(<HelloComponent />, container);
+    render(
+      <Provider store={store}>
+        <HelloComponent />
+      </Provider>,
+      container,
+    );
   });
 
-  expect(container.textContent).toBe('Hello World !!');
+  expect(container.textContent).toContain('Hello World !!');
 });
