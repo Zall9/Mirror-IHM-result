@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, selectClasses } from '@mui/material';
+import { Box, selectClasses, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { selectData } from '@stores/Exercices/exercicesSlice';
 
@@ -15,10 +15,16 @@ const HelloComponent = () => {
         padding: '50px',
       }}
     >
-      Hello World !!
-      {exercices.map((exo, key) => {
-        return <Box key={key}>{exo.nomExo}</Box>;
-      })}
+      <Grid>
+        {exercices.map((exo, key) => {
+          return (
+            <Grid item key={key}>
+              Nom de l&apos;exo {exo.nomExo}
+              tentatives : {exo.tentatives.length}
+            </Grid>
+          );
+        })}
+      </Grid>
     </Box>
   );
 };

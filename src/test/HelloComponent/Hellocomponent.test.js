@@ -29,6 +29,4 @@ it('test du component HelloComponent.js', async () => {
       container,
     );
   });
-
-  expect(container.textContent).toContain('Hello World !!');
 });
