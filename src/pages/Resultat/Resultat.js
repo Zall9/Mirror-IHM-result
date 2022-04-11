@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import Navigation from '@components/NavigationBar/NavigationBar';
 import { Box } from '@mui/material';
 import axios from 'axios';
-import HelloComponent from '@components/HelloComponent/HelloComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import { setExercices } from '@stores/Exercices/exercicesSlice';
+import TableEtudiantExerciceComponent from '@components/TableEtudiantExerciceComponent/TableEtudiantExerciceComponent';
 
 const initExercices = (dispatch) => {
   axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
@@ -14,7 +14,7 @@ const initExercices = (dispatch) => {
   console.log('INIT PAGE');
 };
 
-const Hello = () => {
+const Resultat = () => {
   const dispatch = useDispatch();
   console.log(useSelector((state) => state.exercices.data));
   useEffect(() => {
@@ -24,9 +24,9 @@ const Hello = () => {
   return (
     <Box>
       <Navigation />
-      <HelloComponent />
+      <TableEtudiantExerciceComponent />
     </Box>
   );
 };
 
-export default Hello;
+export default Resultat;
