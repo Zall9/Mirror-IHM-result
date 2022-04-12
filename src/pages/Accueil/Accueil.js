@@ -14,7 +14,7 @@ const initExercices = (dispatch) => {
   console.log('INIT PAGE');
 };
 
-const Hello = () => {
+const Accueil = () => {
   const dispatch = useDispatch();
   console.log(useSelector((state) => state.exercices.data));
   useEffect(() => {
@@ -37,4 +37,4 @@ const Hello = () => {
   );
 };
 
-export default Hello;
+export default Accueil;

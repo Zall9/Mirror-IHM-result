@@ -3,7 +3,7 @@ import Navigation from '@components/NavigationBar/NavigationBar';
 import { Box } from '@mui/material';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { setExercices } from '@stores/Exercices/exercicesSlice';
+import { setExercices, getExercices } from '@stores/Exercices/exercicesSlice';
 import TableEtudiantExerciceComponent from '@components/TableEtudiantExerciceComponent/TableEtudiantExerciceComponent';
 
 const initExercices = (dispatch) => {
@@ -16,7 +16,7 @@ const initExercices = (dispatch) => {
 
 const Resultat = () => {
   const dispatch = useDispatch();
-  console.log(useSelector((state) => state.exercices.data));
+  console.log(useSelector(getExercices));
   useEffect(() => {
     initExercices(dispatch);
   }, []);

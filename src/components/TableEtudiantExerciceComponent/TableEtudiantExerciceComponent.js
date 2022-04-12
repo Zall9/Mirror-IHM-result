@@ -14,7 +14,7 @@ import {
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 
-function TableEtudiantExerciceComponent() {
+const TableEtudiantExerciceComponent = () => {
   const exercices = useSelector(getExercices);
 
   let etudiantTrie = exercices.reduce((acc, exercice) => {
@@ -53,6 +53,6 @@ function TableEtudiantExerciceComponent() {
       {console.log(etudiantTrie)}
     </TableContainer>
   );
-}
+};
 
 export default TableEtudiantExerciceComponent;
