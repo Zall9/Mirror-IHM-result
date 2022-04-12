@@ -3,8 +3,9 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import store from '@stores/store';
 import { Provider } from 'react-redux';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import HelloComponent from '@components/HelloComponent/HelloComponent';
+import NavigationBar from '@components/NavigationBar/NavigationBar';
 
 let container = null;
 beforeEach(() => {
@@ -20,13 +21,18 @@ afterEach(() => {
   container = null;
 });
 
-it('test du component HelloComponent.js', async () => {
+it('test du component NavigationBar.js', async () => {
   await act(async () => {
     render(
       <Provider store={store}>
-        <HelloComponent />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<NavigationBar />} />
+          </Routes>
+        </BrowserRouter>
       </Provider>,
       container,
     );
   });
+  expect(container.textContent).toContain('Accueil');
 });
