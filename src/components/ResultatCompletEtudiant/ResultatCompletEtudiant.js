@@ -1,24 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
-import PropTypes from 'prop-types';
 import Row from './Row';
-import { makeStyles } from '@mui/styles';
 
 import {
-  Box,
-  Collapse,
-  IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
   Paper,
-  KeyboardArrowDownIcon,
-  KeyboardArrowUpIcon,
 } from '@mui/material';
 
 const ResultatCompletEtudiant = (param /*, seance*/) => {
@@ -65,10 +57,10 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
   for (const exercice of exercices) {
     if (exercice.estFini == true) {
       temps =
-        exercice.tentatives[exercice.tentatives.length - 1].dateSoumission.valueOf() -
-        exercice.debut.valueOf();
+        stringDateToTimestamp(exercice.tentatives[exercice.tentatives.length - 1].dateSoumission) -
+        stringDateToTimestamp(exercice.debut);
     } else {
-      temps = Date.now().valueOf() - exercice.debut.valueOf();
+      temps = Date.now().valueOf() - stringDateToTimestamp(exercice.debut);
     }
     console.log(exercice);
     const tentative = [];
@@ -77,16 +69,21 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
         tentative.push({
           dateSoumission: exercice.tentatives[i].dateSoumission,
           logErreurs: exercice.tentatives[i].logErreurs,
-          tempsSoumission:
-            exercice.tentatives[i].dateSoumission.valueOf() - exercice.debut.valueOf(),
+          tempsSoumission: tempsSoumissionToString(
+            stringDateToTimestamp(exercice.tentatives[i].dateSoumission) -
+              stringDateToTimestamp(exercice.debut),
+          ),
+          soumissionNumber: i,
         });
       } else {
         tentative.push({
           dateSoumission: exercice.tentatives[i].dateSoumission,
           logErreurs: exercice.tentatives[i].logErreurs,
-          tempsSoumission:
-            exercice.tentatives[i].dateSoumission.valueOf() -
-            exercice.tentatives[i - 1].dateSoumission.valueOf(),
+          tempsSoumission: tempsSoumissionToString(
+            stringDateToTimestamp(exercice.tentatives[i].dateSoumission) -
+              stringDateToTimestamp(exercice.tentatives[i - 1].dateSoumission),
+          ),
+          soumissionNumber: i,
         });
       }
     }
@@ -112,20 +109,29 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
             <TableCell />
             <TableCell>Exercice</TableCell>
             <TableCell align="right">Nom Exo</TableCell>
-            <TableCell align="right">nb tentatives</TableCell>
-            <TableCell align="right">temps passé</TableCell>
-            <TableCell align="right">difficulté</TableCell>
-            <TableCell align="right">thèmes</TableCell>
+            <TableCell align="right">Nb Tentatives</TableCell>
+            <TableCell align="right">Temps passé (en ms)</TableCell>
+            <TableCell align="right">Difficulté</TableCell>
+            <TableCell align="right">Thèmes</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.name} row={row} />
+            <Row key={row.exo} row={row} />
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
 };
+
+function tempsSoumissionToString(temps) {
+  console.log(temps);
+  return temps;
+}
+
+function stringDateToTimestamp(stringDate) {
+  return Date.parse(stringDate).valueOf();
+}
 
 export default ResultatCompletEtudiant;

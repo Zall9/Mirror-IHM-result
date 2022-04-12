@@ -25,6 +25,7 @@ const ResultatEtudiant = () => {
   return (
     <Box>
       <Navigation />
+      <h2 align="center"> Carte de l&apos;étudiant : {useParams().etu}</h2>
       <ResultatCompletEtudiant idEtu={useParams().etu} />
     </Box>
   );

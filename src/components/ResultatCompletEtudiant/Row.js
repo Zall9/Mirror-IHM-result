@@ -13,7 +13,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
@@ -57,21 +56,19 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell align="right">Temps Soumission</TableCell>
-                    <TableCell>Soumission N°</TableCell>
-                    <TableCell align="right">Resultat Soumission</TableCell>
+                    <TableCell>Heure soumission</TableCell>
+                    <TableCell>Temps Soumission (en ms)</TableCell>
+                    <TableCell>Resultat Soumission</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.dateSoumission}>
+                    <TableRow key={historyRow.soumissionNumber}>
                       <TableCell component="th" scope="row">
-                        {' '}
-                        {historyRow.date}{' '}
+                        {historyRow.dateSoumission}
                       </TableCell>
-                      <TableCell align="right">{historyRow.tempsSoumission}</TableCell>
-                      <TableCell align="right">{historyRow.logErreurs}</TableCell>
+                      <TableCell>{historyRow.tempsSoumission}</TableCell>
+                      <TableCell>{historyRow.logErreurs}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -97,6 +94,7 @@ Row.propTypes = {
         dateSoumission: PropTypes.string.isRequired,
         tempsSoumission: PropTypes.number.isRequired,
         logErreurs: PropTypes.string.isRequired,
+        soumissionNumber: PropTypes.number.isRequired,
       }),
     ).isRequired,
   }).isRequired,
