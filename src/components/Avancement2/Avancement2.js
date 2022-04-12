@@ -35,12 +35,12 @@ const Avancement2 = () => {
   for (const etudiant of etudiants) {
     console.log(etudiant);
     console.log(exercices);
-    const exoEnCours = exercices.filter((exo) => exo.idEtu == etudiant);
+    const exoEnCours = exercices.filter((exo) => exo.idEtu == etudiant && exo.estFini == false);
     console.log(exoEnCours);
 
     avancement.push({
       id: etudiant,
-      nbExoValid: exoEnCours.filter((exo) => exo.estFini == true).length,
+      nbExoValid: exercices.filter((exo) => exo.idEtu == etudiant && exo.estFini == true).length,
       tpsExo: Date.now().valueOf() - stringDateToTimestamp(exoEnCours[0].debut) ?? 0,
       nbTentatives: exoEnCours[0].tentatives.length,
       nomExo: exoEnCours[0].nomExo,
@@ -56,8 +56,8 @@ const Avancement2 = () => {
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={30}
-        rowsPerPageOptions={[30]}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
         checkboxSelection
       />
     </div>
