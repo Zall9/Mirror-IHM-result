@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import Navigation from '@components/NavigationBar/NavigationBar';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import axios from 'axios';
-import HelloComponent from '@components/HelloComponent/HelloComponent';
+// import HelloComponent from '@components/HelloComponent/HelloComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import { setExercices } from '@stores/Exercices/exercicesSlice';
 
@@ -14,7 +14,7 @@ const initExercices = (dispatch) => {
   console.log('INIT PAGE');
 };
 
-const Hello = () => {
+const Accueil = () => {
   const dispatch = useDispatch();
   console.log(useSelector((state) => state.exercices.data));
   useEffect(() => {
@@ -24,9 +24,17 @@ const Hello = () => {
   return (
     <Box>
       <Navigation />
-      <HelloComponent />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '50px',
+        }}
+      >
+        <Typography variant="h2">Bienvenue sur LaWeb</Typography>
+      </Box>
     </Box>
   );
 };
 
-export default Hello;
+export default Accueil;
