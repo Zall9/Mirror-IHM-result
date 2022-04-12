@@ -6,7 +6,6 @@ import { getExercices } from '@stores/Exercices/exercicesSlice';
 
 const PourcentEtuParDifficulte = () => {
   const exercices = useSelector(getExercices);
-  // const total = 'total';
   /* Création d'un dictionnaire avec le nombre d'exercices par difficulté et compte le nombre d'étudiants par exercices non temrinés */
   let difficulteDico = exercices.reduce(
     (acc, exercice) => {
