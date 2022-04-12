@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { makeStyles } from '@mui/styles';
+
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -14,21 +16,15 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-/*
-import {
-  Box,
-  Collapse,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-  KeyboardArrowDownIcon,
-  KeyboardArrowUpIcon,
-} from '@material-ui';
-*/
+
+const useRowStyles = makeStyles({
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
+});
+
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
@@ -69,13 +65,13 @@ function Row(props) {
                 </TableHead>
                 <TableBody>
                   {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                    <TableRow key={historyRow.dateSoumission}>
                       <TableCell component="th" scope="row">
                         {' '}
                         {historyRow.date}{' '}
                       </TableCell>
                       <TableCell align="right">{historyRow.tempsSoumission}</TableCell>
-                      <TableCell align="right">{historyRow.resultSoumission}</TableCell>
+                      <TableCell align="right">{historyRow.logErreurs}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -98,9 +94,9 @@ Row.propTypes = {
     themes: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
-        date: PropTypes.string.isRequired,
-        tempsSoumission: PropTypes.string.isRequired,
-        resultSoumission: PropTypes.string.isRequired,
+        dateSoumission: PropTypes.string.isRequired,
+        tempsSoumission: PropTypes.number.isRequired,
+        logErreurs: PropTypes.string.isRequired,
       }),
     ).isRequired,
   }).isRequired,
