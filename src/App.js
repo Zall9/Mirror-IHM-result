@@ -4,6 +4,7 @@ import Accueil from '@pages/Accueil/Accueil';
 import Resultat from '@pages/Resultat/Resultat';
 import NotFound from '@pages/NotFound/NotFound';
 import ResultatEtudiant from '@pages/ResultatEtudiant/ResultatEtudiant';
+import Avancement from '@pages/Avancement/Avancement';
 import { initSocketConnection } from '@services/socket/socket';
 import { useDispatch } from 'react-redux';
 
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="/" element={<Accueil />} />
           <Route path="/resultatEtudiant/:etu" element={<ResultatEtudiant />} />
           <Route path="/resultat" element={<Resultat />} />
+          <Route path="/avancement" element={<Avancement />} />
           {/* <Route path="/hello" element={<Hello />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
