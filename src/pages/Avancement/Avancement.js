@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import Navigation from '@components/NavigationBar/NavigationBar';
 import { Box } from '@mui/material';
 import axios from 'axios';
-import AvancementEtudiant from '@components/AvancementEtudiant/AvancementEtudiant';
 import { useSelector, useDispatch } from 'react-redux';
 import { setExercices } from '@stores/Exercices/exercicesSlice';
 import { useParams } from 'react-router-dom';
