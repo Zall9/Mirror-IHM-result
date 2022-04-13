@@ -37,7 +37,9 @@ const DiagrammeCirculaire = (props) => {
    */
   useEffect(() => {
     const ctx = document.getElementById(`my-canvas-${idProps}`); // on recupere le canvas ou inserer le chartJS
-    let oldChart = Chart.getChart(document.getElementById(`my-canvas-${idProps}`)); // On récupere l'ancien chart
+
+    let oldChart = Chart.getChart(ctx); // On récupere l'ancien chart
+
     /*si le chart existait deja dans le DOM on update les données */
     if (oldChart) {
       oldChart.type = config.type;
@@ -46,7 +48,7 @@ const DiagrammeCirculaire = (props) => {
       oldChart.update('resize'); //option pour l'animation de l'update
     } else {
       myChart = new Chart(ctx, config);
-      myChart.onClick = clickCallback;
+      ctx.addEventListener('click', clickCallback);
     }
   }, [config]);
 

@@ -50,7 +50,7 @@ const PourcentEtuParDifficulte = () => {
   let titreAEnvoyer = "Pourcentage d'étudiants par difficulté";
   let typeDiagrammeAEnvoyer = 'pie';
   let clickCallbackAEnvoyer = function () {
-    console.log('prout');
+    console.log('call an ambulance !');
   };
   let idAEnvoyer = 'pourcentEtuParDifficulte';
   let booleanIsInteractiveAEnvoyer = true;
