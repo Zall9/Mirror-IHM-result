@@ -4,7 +4,6 @@ import PropTypes, { element } from 'prop-types';
 
 const DiagrammeCirculaire = (props) => {
   let myChart;
-  console.log('Props :', props);
   const dataProps = props.datas;
   const couleurs = props.couleurs;
   const labelsProps = props.labels;
@@ -14,6 +13,7 @@ const DiagrammeCirculaire = (props) => {
   const idProps = props.id;
   const booleanIsInteractive = props.booleanIsInteractive;
   const taille = props.taille;
+  // On crée les données du graphique
   const datas = {
     labels: labelsProps,
     datasets: [
@@ -25,38 +25,38 @@ const DiagrammeCirculaire = (props) => {
       },
     ],
   };
-  console.log('Datas :', datas);
-  console.log('Couleurs :', couleurs);
-  console.log('Labels :', labelsProps);
-  console.log('Titre :', titre);
-  console.log('TypeDiagramme :', typeDiagramme);
-  console.log('ClickCallback :', clickCallback);
-  console.log('Id :', idProps);
-  console.log('BooleanIsInteractive :', booleanIsInteractive);
-  console.log('Taille :', taille);
+
+  // On crée les options du graphique
   const config = {
     type: typeDiagramme,
     data: datas,
     options: { responsive: true, showTooltips: booleanIsInteractive },
   };
-
-  const canvas = <canvas id={`my-canvas-${idProps}`} width={taille} height={taille}></canvas>;
-  const ctx = document.getElementById(`my-canvas-${idProps}`);
+  /* hook qui est appelé lorsque le composant est monté pour creer et mettre a jour le chartJS
+   * Le hook est appelé une seule fois au chargement du composant puis se ré-execute à chaque changement de props (ici le props est config)
+   */
+  useEffect(() => {
+    const ctx = document.getElementById(`my-canvas-${idProps}`); // on recupere le canvas ou inserer le chartJS
+    let oldChart = Chart.getChart(document.getElementById(`my-canvas-${idProps}`)); // On récupere l'ancien chart
+    /*si le chart existait deja dans le DOM on update les données */
+    if (oldChart) {
+      oldChart.type = config.type;
+      oldChart.data = config.data;
+      oldChart.options = config.options;
+      oldChart.update('resize'); //option pour l'animation de l'update
+    } else {
+      myChart = new Chart(ctx, config);
+      myChart.onClick = clickCallback;
+    }
+  }, [config]);
 
   return (
-    <div id={'diagramme-circulaire' + idProps} className={'diagramme' + idProps}>
-      {useEffect(() => {
-        console.log('zboob', !myChart);
-        if (!myChart) {
-          console.log('Je vais creer le chart');
-          myChart = new Chart(ctx, config);
-          myChart.onClick = clickCallback;
-        } else {
-          console.log('je vais update le chart');
-          myChart.update();
-        }
-      }, [config])}
-      {canvas}
+    <div
+      id={'diagramme-circulaire' + idProps}
+      className={'diagramme' + idProps}
+      style={{ position: 'relative', width: taille + 'vw', height: taille + 'vh' }}
+    >
+      <canvas id={`my-canvas-${idProps}`} width="100vw" height="100vh"></canvas>
     </div>
   );
 };

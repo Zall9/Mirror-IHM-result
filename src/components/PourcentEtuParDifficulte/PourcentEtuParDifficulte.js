@@ -6,7 +6,7 @@ import { getExercices } from '@stores/Exercices/exercicesSlice';
 
 const PourcentEtuParDifficulte = () => {
   const exercices = useSelector(getExercices);
-  /* Création d'un dictionnaire avec le nombre d'exercices par difficulté et compte le nombre d'étudiants par exercices non temrinés */
+  /* Création d'un dictionnaire avec le nombre d'exercices par difficulté et compte le nombre d'étudiants par exercices non terminés */
   let difficulteDico = exercices.reduce(
     (acc, exercice) => {
       if (exercice.estFini == false) {
@@ -21,18 +21,19 @@ const PourcentEtuParDifficulte = () => {
     },
     { total: 0 },
   );
+
   /*Création d'un tableau de couleurs pour déssiner le pie chart*/
   const COLORS = [
-    'rgb(252, 232, 232)',
-    'rgb(247, 186, 186)',
-    'rgb(242, 140, 140)',
-    'rgb(237, 94, 94)',
-    'rgb(232, 48, 48)',
-    'rgb(206, 23, 23)',
-    'rgb(178, 18, 18)',
-    'rgb(115, 13, 13)',
-    'rgb(69, 8, 8)',
-    'rgb(23, 3, 3)',
+    'rgb(252, 232, 232)', // difficulté 1
+    'rgb(247, 186, 186)', // difficulté 2
+    'rgb(242, 140, 140)', // difficulté 3
+    'rgb(237, 94, 94)', // difficulté 4
+    'rgb(232, 48, 48)', // difficulté 5
+    'rgb(206, 23, 23)', // difficulté 6
+    'rgb(178, 18, 18)', // difficulté 7
+    'rgb(115, 13, 13)', // difficulté 8
+    'rgb(69, 8, 8)', // difficulté 9
+    'rgb(23, 3, 3)', // difficulté 10
   ];
   let couleurAEnvoyer = [];
   let labelsAEnvoyer = [];
@@ -46,7 +47,6 @@ const PourcentEtuParDifficulte = () => {
       labelsAEnvoyer.push('Difficulté : ' + difficulte);
     }
   }
-  //Object.keys(difficulteDico).forEach(function (key) {}
   let titreAEnvoyer = "Pourcentage d'étudiants par difficulté";
   let typeDiagrammeAEnvoyer = 'pie';
   let clickCallbackAEnvoyer = function () {
@@ -54,9 +54,10 @@ const PourcentEtuParDifficulte = () => {
   };
   let idAEnvoyer = 'pourcentEtuParDifficulte';
   let booleanIsInteractiveAEnvoyer = true;
-  let tailleAEnvoyer = 400;
+  let tailleAEnvoyer = 25; //pourcentage de la taille par raport a la largeur de l'element pere
   return (
     <DiagrammeCirculaire
+      //definition des props
       datas={dataAEnvoyer}
       taille={tailleAEnvoyer}
       typeDiagramme={typeDiagrammeAEnvoyer}
@@ -68,7 +69,6 @@ const PourcentEtuParDifficulte = () => {
       labels={labelsAEnvoyer}
     />
   );
-  //return <div>{JSON.stringify(difficulteDico)}</div>; /** TODO: Affichage graphique et stylisé */
 };
 
 export default PourcentEtuParDifficulte;
