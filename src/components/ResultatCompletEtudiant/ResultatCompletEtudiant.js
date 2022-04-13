@@ -1,24 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
-import PropTypes from 'prop-types';
-import Row from './Row';
-import { makeStyles } from '@mui/styles';
+import Row from './RowResultatComplet/RowResultatComplet';
 
 import {
-  Box,
-  Collapse,
-  IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
   Paper,
-  KeyboardArrowDownIcon,
-  KeyboardArrowUpIcon,
 } from '@mui/material';
 
 const ResultatCompletEtudiant = (param /*, seance*/) => {
