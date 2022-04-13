@@ -31,6 +31,7 @@
     "@mui/x-data-grid": "^5.8.0",
     "@reduxjs/toolkit": "^1.8.0",
     "axios": "^0.26.0",
+    "chart.js": "^3.7.1",
     "highlight.js": "^11.4.0",
     "node-sass": "^7.0.1",
     "react": "^17.0.2",

@@ -19,12 +19,16 @@ export const exercicesSlice = createSlice({
           (exo) =>
             exo.idExo === respTentative.payload.idExo && exo.idEtu === respTentative.payload.idEtu,
         );
+
         // delete infos en double
         if (exercice) {
           delete respTentative.payload.idEtu;
           delete respTentative.payload.idExo;
           delete respTentative.payload.idSession;
           exercice.tentatives.push(respTentative.payload);
+          if (respTentative.payload.validationExercice) {
+            exercice.estFini = true;
+          }
         } else {
           throw Error('Exercice not found');
         }
