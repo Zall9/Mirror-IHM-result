@@ -13,7 +13,7 @@ import { Button } from '@mui/material';
 
 import useStyle from './style';
 
-const pages = ['Accueil ', 'Resultat'];
+const pages = ['Accueil ', 'Resultat', 'Avancement'];
 
 const Navigation = () => {
   const style = useStyle();
