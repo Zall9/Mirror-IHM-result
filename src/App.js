@@ -20,7 +20,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Accueil />} />
-          <Route path="/resultatEtudiant/:etu" element={<ResultatEtudiant />} />
+          <Route path="/resultat/:etu" element={<ResultatEtudiant />} />
           <Route path="/resultat" element={<Resultat />} />
           <Route path="/avancement" element={<Avancement />} />
           {/* <Route path="/hello" element={<Hello />} /> */}
