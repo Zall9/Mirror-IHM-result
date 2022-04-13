@@ -33,19 +33,35 @@ const Avancement2 = () => {
   // et des informations sur l'exercice courant : nb de tentative / le temps passé / nom exo / thèmes / difficultés
 
   for (const etudiant of etudiants) {
-    console.log(etudiant);
-    console.log(exercices);
+    console.log('etudiant', etudiant);
+    let tempsExo, nomExercice, themesExercice, difficulteExercice, nombreTentatives;
     const exoEnCours = exercices.filter((exo) => exo.idEtu == etudiant && exo.estFini == false);
+    if (exoEnCours.length == 0) {
+      // cas ou un étudiant n'a pas d'exercice en cours
+      tempsExo = 0;
+      nombreTentatives = -1;
+      nomExercice = 'aucun';
+      themesExercice = 'aucun';
+      difficulteExercice = -1;
+    } else {
+      // cas ou un étudiant a un exercice en cours
+      tempsExo = Date.now().valueOf() - stringDateToTimestamp(exoEnCours[0].debut);
+      nomExercice = exoEnCours[0].nomExo;
+      nombreTentatives = exoEnCours[0].tentatives.length;
+      themesExercice = exoEnCours[0].themes.join();
+      difficulteExercice = exoEnCours[0].difficulte ?? 0;
+    }
+    console.log('exoEncours');
     console.log(exoEnCours);
 
     avancement.push({
       id: etudiant,
       nbExoValid: exercices.filter((exo) => exo.idEtu == etudiant && exo.estFini == true).length,
-      tpsExo: Date.now().valueOf() - stringDateToTimestamp(exoEnCours[0].debut) ?? 0,
-      nbTentatives: exoEnCours[0].tentatives.length,
-      nomExo: exoEnCours[0].nomExo,
-      themes: exoEnCours[0].themes.join(),
-      difficulte: exoEnCours[0].difficulte ?? 0,
+      tpsExo: tempsExo,
+      nbTentatives: nombreTentatives,
+      nomExo: nomExercice,
+      themes: themesExercice,
+      difficulte: difficulteExercice,
     });
   }
   const rows = avancement;

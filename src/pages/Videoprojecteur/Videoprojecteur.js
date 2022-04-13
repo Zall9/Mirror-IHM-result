@@ -5,7 +5,8 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setExercices } from '@stores/Exercices/exercicesSlice';
 import { useParams } from 'react-router-dom';
-import Avancement2 from '@components/Avancement2/Avancement2';
+import VideoprojecteurGeneral from '@components/Videoprojecteur/VideoprojecteurGeneral';
+import VideoprojecteurDetail from '@components/Videoprojecteur/VideoprojecteurDetail';
 
 const initExercices = (dispatch) => {
   axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
@@ -15,9 +16,10 @@ const initExercices = (dispatch) => {
   console.log('INIT PAGE');
 };
 
-const Avancement = () => {
+const Videoprojecteur = () => {
   const dispatch = useDispatch();
   console.log(useSelector((state) => state.exercices.data));
+
   useEffect(() => {
     initExercices(dispatch);
   }, []);
@@ -25,10 +27,11 @@ const Avancement = () => {
   return (
     <Box>
       <Navigation />
-      <h2 align="center"> état actuel des étudiants</h2>
-      <Avancement2 />
+      <h2 align="center"> état actuel de la séance</h2>
+      <VideoprojecteurGeneral />
+      <VideoprojecteurDetail />
     </Box>
   );
 };
 
-export default Avancement;
+export default Videoprojecteur;
