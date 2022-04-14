@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  Box,
   Paper,
   TableRow,
   TableHead,
@@ -8,7 +8,7 @@ import {
   TableCell,
   TableBody,
   Table,
-  TablePagination,
+  Button,
 } from '@mui/material';
 
 // import redux/store
@@ -17,6 +17,7 @@ import { getExercices } from '@stores/Exercices/exercicesSlice';
 
 const TableEtudiantExerciceComponent = () => {
   const exercices = useSelector(getExercices);
+  let navigate = useNavigate();
 
   let etudiantTrie = exercices.reduce((acc, exercice) => {
     if (acc[exercice.idEtu]) {
@@ -26,6 +27,11 @@ const TableEtudiantExerciceComponent = () => {
     }
     return acc;
   }, {});
+
+  const redirection = (event) => {
+    let uri = '/resultat/' + event.currentTarget.innerText.toLowerCase();
+    navigate(uri);
+  };
 
   return (
     <Paper style={{ width: '100%' }}>
@@ -45,7 +51,7 @@ const TableEtudiantExerciceComponent = () => {
             {Object.entries(etudiantTrie).map(([idEtu, exercices]) => (
               <TableRow key={idEtu} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
-                  {idEtu}
+                  <Button onClick={redirection}>{idEtu}</Button>
                 </TableCell>
                 {exercices.map((exercice, key) => (
                   <TableCell key={key} style={{ minWidth: 10 }}>
