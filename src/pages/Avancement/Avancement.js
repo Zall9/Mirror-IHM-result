@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setExercices } from '@stores/Exercices/exercicesSlice';
-import { useParams } from 'react-router-dom';
 import Avancement2 from '@components/Avancement2/Avancement2';
 
 const initExercices = (dispatch) => {
