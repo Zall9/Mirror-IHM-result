@@ -38,6 +38,7 @@ beforeEach(() => {
   // met en place un élément DOM comme cible de rendu
   container = document.createElement('div');
   document.body.appendChild(container);
+  jest.resetAllMocks();
 });
 
 afterEach(() => {
@@ -66,6 +67,7 @@ it('test du component TableEtudiantExerciceComponent.js sans données', async ()
   // test
   expect(container.textContent).toContain('Étudiant');
   expect(container.textContent).toContain('Exercices');
+  expect(container.textContent).not.toContain(donnees[0].nomExo);
 });
 
 it('test du component TableEtudiantExerciceComponent.js avec données', async () => {

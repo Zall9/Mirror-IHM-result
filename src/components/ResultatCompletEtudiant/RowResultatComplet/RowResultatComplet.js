@@ -58,7 +58,7 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
+                  {row.history?.map((historyRow) => (
                     <TableRow key={historyRow.soumissionNumber}>
                       <TableCell component="th" scope="row">
                         {historyRow.dateSoumission}
