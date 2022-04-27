@@ -2,8 +2,9 @@ import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { mockReactRedux } from 'mock-react-redux';
-import ResultatCompletEtudiant from '@components/ResultatCompletEtudiant/ResultatCompletEtudiant';
-import { getExercices } from '../../services/stores/Exercices/exercicesSlice';
+
+import VideoprojecteurDetail from '@components/Videoprojecteur/VideoprojecteurDetail/VideoprojecteurDetail';
+import { getExercices } from '@stores/Exercices/exercicesSlice';
 
 const donnees = [
   {
@@ -31,18 +32,6 @@ const donnees = [
   },
 ];
 
-jest.mock('../../components/ResultatCompletEtudiant/RowResultatComplet/RowResultatComplet', () => {
-  // eslint-disable-next-line react/prop-types
-  return function DummyRow({ row }) {
-    return (
-      <tr>
-        {/* eslint-disable-next-line react/prop-types */}
-        <th data-testid={'mocked-row'}>{row.nomExo}</th>
-      </tr>
-    );
-  };
-});
-
 let container = null;
 beforeEach(() => {
   // met en place un élément DOM comme cible de rendu
@@ -56,18 +45,13 @@ afterEach(() => {
   unmountComponentAtNode(container);
   container.remove();
   container = null;
-  jest.resetAllMocks();
 });
 
-it('test du component RowResultatComplet.js avec données', async () => {
+it('test du component VideoprojecteurDetail.js', async () => {
   mockReactRedux().give(getExercices, donnees);
-  // render du component
-  await act(async () => {
-    render(<ResultatCompletEtudiant idEtu={donnees[0].idEtu} />, container);
-  });
 
-  // On récupère le composant mocké
-  const row = document.querySelector('[data-testid=mocked-row]');
-  // On vérifie qu'on lui passe les bon paramètres
-  expect(row.textContent).toContain(donnees[0].nomExo);
+  await act(async () => {
+    render(<VideoprojecteurDetail />, container);
+  });
+  expect(container.textContent).toContain(donnees[0].nomExo);
 });
