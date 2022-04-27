@@ -4,7 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 
-const Avancement2 = () => {
+const AvancementComponent = () => {
   const columns = [
     { field: 'id', headerName: 'id Etudiant', width: 150 },
     { field: 'nbExoValid', headerName: 'nb exo valide', type: 'number', width: 130 },
@@ -108,4 +108,4 @@ function filtreResultat(exercice, idEtu) {
   return false;
 }
 
-export default Avancement2;
+export default AvancementComponent;
