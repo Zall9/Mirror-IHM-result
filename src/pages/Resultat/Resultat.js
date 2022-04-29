@@ -9,15 +9,12 @@ import PourcentEtuParDifficulte from '@components/PourcentEtuParDifficulte/Pourc
 
 const initExercices = (dispatch) => {
   axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
-    console.log('GETTING EXERCICES');
     dispatch(setExercices(res.data.exercices));
   });
-  console.log('INIT PAGE');
 };
 
 const Resultat = () => {
   const dispatch = useDispatch();
-  console.log(useSelector(getExercices));
   useEffect(() => {
     initExercices(dispatch);
   }, []);

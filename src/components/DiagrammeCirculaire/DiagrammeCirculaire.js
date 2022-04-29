@@ -69,7 +69,7 @@ DiagrammeCirculaire.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
   titre: PropTypes.string.isRequired,
   typeDiagramme: PropTypes.string.isRequired,
-  clickCallback: PropTypes.func.isRequired,
+  clickCallback: PropTypes.func,
   id: PropTypes.string.isRequired,
   booleanIsInteractive: PropTypes.bool.isRequired,
   taille: PropTypes.number.isRequired,
