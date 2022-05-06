@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import DiagrammeCirculaire from '../DiagrammeCirculaire/DiagrammeCirculaire'; //TODO ALIAS SUR LE COMPONENT
 // import redux/store
 import { useSelector } from 'react-redux';
@@ -55,6 +55,7 @@ const PourcentEtuParDifficulte = () => {
   let idAEnvoyer = 'pourcentEtuParDifficulte';
   let booleanIsInteractiveAEnvoyer = true;
   let tailleAEnvoyer = 25; //pourcentage de la taille par raport a la largeur de l'element pere
+
   return (
     <DiagrammeCirculaire
       //definition des props
