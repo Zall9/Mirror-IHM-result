@@ -33,7 +33,11 @@ const DiagrammeCirculaire = (props) => {
     data: datas,
     options: {
       responsive: true,
-      showTooltips: booleanIsInteractive,
+      plugins: {
+        tooltip: {
+          enabled: booleanIsInteractive,
+        },
+      },
       elements: { center: optionsElementCentral },
     },
   };
@@ -76,7 +80,7 @@ DiagrammeCirculaire.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
   titre: PropTypes.string.isRequired,
   typeDiagramme: PropTypes.string.isRequired,
-  clickCallback: PropTypes.func.isRequired,
+  clickCallback: PropTypes.func,
   id: PropTypes.string.isRequired,
   booleanIsInteractive: PropTypes.bool.isRequired,
   taille: PropTypes.number.isRequired,
@@ -118,7 +122,6 @@ const initPluginElementCentral = () => {
         var elementHeight = controller.innerRadius * 2;
 
         // Choisi la taille du texte pour quelle ne déborde pas sur le graphique
-        console.log(newFontSize, elementHeight, maxFontSize);
         var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
         var wrapText = false;
 
