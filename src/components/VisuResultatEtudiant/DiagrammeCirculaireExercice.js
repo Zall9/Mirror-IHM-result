@@ -1,27 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import DiagrammeCirculaire from '../DiagrammeCirculaire/DiagrammeCirculaire'; //TODO ALIAS SUR LE COMPONENT
-
-import { useSelector } from 'react-redux';
-
-function majTemps(debut, tempsMoyen) {
-  let date = new Date();
-  let temps = date.getTime() - debut;
-  let ratioTemps = Math.floor(temps / tempsMoyen);
-  let ratioResteTemps = Math.floor((tempsMoyen - temps) / tempsMoyen);
-
-  let data = [ratioTemps, ratioResteTemps];
-  return data;
-}
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { getExercices } from '@stores/Exercices/exercicesSlice';
 
 const DiagrammeCirculaireExercice = (props) => {
-  //TODO: utiliser useSelector pour récupérer les données du store pour un exo ?
+  const [time, setTime] = useState(Date.now());
   const exercice = props.exercice;
+
   const debut = exercice.debut;
-  const tempsMoyen = exercice.tempsMoyen;
+  const tempsMoyen = parseInt(exercice.tempsMoyen);
   const estFini = exercice.estFini;
+  var interval;
+
+  useEffect(() => {
+    if (estFini) {
+      clearInterval(interval);
+    } else {
+      interval = setInterval(() => setTime(Date.now()), 1000);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, []);
 
   let textValidation = estFini ? '✔' : '✖';
-  let colorValidation = estFini ? '#00ff00' : '#FFA500';
+  let colorValidation = estFini ? '#00ff00' : '#FF0000';
 
   let optionsElementCentralAEnvoyer = {
     text: textValidation,
@@ -33,16 +37,31 @@ const DiagrammeCirculaireExercice = (props) => {
   };
   const typeDiagrammeAEnvoyer = 'doughnut';
 
-  //TODO: Comment faire ?
-  const dataAEnvoyer = [];
-  setInterval(majTemps, 1000, debut, tempsMoyen);
+  // Calculs du temps
 
-  const tailleAEnvoyer = 80;
+  let milisActuel;
+  if (estFini) {
+    // Si l'exercice est terminé, on utilise le temps de sa dernière tentative
+    const tentative = exercice.tentatives[exercice.tentatives.length - 1];
+    console.log(tentative.dateSoumission);
+    milisActuel = Date.parse(tentative.dateSoumission);
+  } else {
+    const dateActuel = new Date();
+    milisActuel = dateActuel.getTime();
+  }
+
+  const milisDebut = Date.parse(debut);
+  const tempsEcouleMinute = (milisActuel - milisDebut) / (1000 * 60);
+  console.log(milisDebut, milisActuel, (milisActuel - milisDebut) / (1000 * 60), tempsMoyen);
+  const tempsRestant = tempsMoyen - tempsEcouleMinute < 0 ? 0 : tempsMoyen - tempsEcouleMinute;
+  var dataAEnvoyer = [tempsEcouleMinute, tempsRestant];
+
+  const tailleAEnvoyer = 25;
   const titreAEnvoyer = 'Temps écoulé';
-  const couleurAEnvoyer = ['#00ff00'];
   const clickCallbackAEnvoyer = null;
   const idAEnvoyer = 'diagrammeCirculaireExercice';
   const booleanIsInteractiveAEnvoyer = false;
+  const couleursAEnvoyer = ['#00ff00', '#ff0000'];
   const labelsAEnvoyer = ['Temps écoulé', 'Temps restant'];
 
   return (
@@ -52,7 +71,7 @@ const DiagrammeCirculaireExercice = (props) => {
       taille={tailleAEnvoyer}
       typeDiagramme={typeDiagrammeAEnvoyer}
       titre={titreAEnvoyer}
-      couleurs={couleurAEnvoyer}
+      couleurs={couleursAEnvoyer}
       clickCallback={clickCallbackAEnvoyer}
       booleanIsInteractive={booleanIsInteractiveAEnvoyer}
       id={idAEnvoyer}
@@ -63,7 +82,7 @@ const DiagrammeCirculaireExercice = (props) => {
 };
 
 DiagrammeCirculaireExercice.propTypes = {
-  exercice: PropTypes.object.isRequired,
+  exercice: PropTypes.object,
 };
 
 export default DiagrammeCirculaireExercice;
