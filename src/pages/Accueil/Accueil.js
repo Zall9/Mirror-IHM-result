@@ -8,15 +8,12 @@ import { setExercices } from '@stores/Exercices/exercicesSlice';
 
 const initExercices = (dispatch) => {
   axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
-    console.log('GETTING EXERCICES');
     dispatch(setExercices(res.data.exercices));
   });
-  console.log('INIT PAGE');
 };
 
 const Accueil = () => {
   const dispatch = useDispatch();
-  console.log(useSelector((state) => state.exercices.data));
   useEffect(() => {
     initExercices(dispatch);
   }, []);

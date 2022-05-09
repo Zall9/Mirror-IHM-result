@@ -33,6 +33,7 @@
     "axios": "^0.26.0",
     "chart.js": "^3.7.1",
     "highlight.js": "^11.4.0",
+    "mock-react-redux": "^0.4.0",
     "node-sass": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

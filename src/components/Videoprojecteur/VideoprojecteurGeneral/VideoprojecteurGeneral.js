@@ -18,16 +18,14 @@ const VideoprojecteurGeneral = () => {
       etudiants.push({ nomEtu: exo.idEtu, nbValid: 0 });
     }
   } // tabEtu contient une liste de tous les étudiants avec un nbExercice validé, pour l'instant à 0
-  console.log('tableau étudiant avant de compter exercices');
-  console.log(tabEtu);
+
   for (const etu of tabEtu) {
     etu.nbValid = exercices.filter(
       (exercice) => exercice.idEtu == etu.nomEtu && exercice.estFini == True,
     ).length;
   }
   // tabEtu contient une liste de tous les étudiants avec un nbExercice validé, pour l'instant à 0
-  console.log('tableau étudiant');
-  console.log(tabEtu);
+
   // récuperer celui qui a fait le plus d'exercices
   const maxExo = 0;
   for (const etu of tabEtu) {
@@ -35,19 +33,16 @@ const VideoprojecteurGeneral = () => {
       maxExo = etu.nbValid;
     }
   }
-  console.log('nb max');
-  console.log(maxExo);
+
   // creer un tableau à l'indice 0, le nb de personnes ayant fait 0 exercices ...
   const result = [];
   for (let i = 0; i < maxExo + 1; i++) {
     result.push(tabEtu.filter((etudiant) => etudiant.nbValid == i).length);
   }
-  console.log('tableau final');
-  console.log(result);*/
+*/
   ///////////////////////////////////////////////////////////////////////////////////////////////////
   // Crée un dicionnaire  avec pour chaque etudiant le nombre d'exercice qu'ils ont faits
 
-  console.log('EXERCICES', exercices);
   let etuParExerciceDico = exercices.reduce((acc, exercice) => {
     if (exercice.estFini) {
       if (acc[exercice.idEtu]) {
@@ -59,8 +54,6 @@ const VideoprojecteurGeneral = () => {
     return acc;
   }, {});
 
-  console.log('etuParExerciceDico', etuParExerciceDico);
-
   // Crée un dictionaire ou pour nombre d'exercice réaliser on compte le nombre d'étudiant
   let nbEtudiantParNombreExercicesFini = {};
 
@@ -71,8 +64,6 @@ const VideoprojecteurGeneral = () => {
       nbEtudiantParNombreExercicesFini[etuParExerciceDico[idEtu]] = 1;
     }
   }
-
-  console.log('nbEtudiantParNombreExercicesFini', nbEtudiantParNombreExercicesFini);
 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', margin: '2vw' }}>
