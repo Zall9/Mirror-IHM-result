@@ -43,7 +43,6 @@ const DiagrammeCirculaireExercice = (props) => {
   if (estFini) {
     // Si l'exercice est terminé, on utilise le temps de sa dernière tentative
     const tentative = exercice.tentatives[exercice.tentatives.length - 1];
-    console.log(tentative.dateSoumission);
     milisActuel = Date.parse(tentative.dateSoumission);
   } else {
     const dateActuel = new Date();
@@ -52,14 +51,14 @@ const DiagrammeCirculaireExercice = (props) => {
 
   const milisDebut = Date.parse(debut);
   const tempsEcouleMinute = (milisActuel - milisDebut) / (1000 * 60);
-  console.log(milisDebut, milisActuel, (milisActuel - milisDebut) / (1000 * 60), tempsMoyen);
   const tempsRestant = tempsMoyen - tempsEcouleMinute < 0 ? 0 : tempsMoyen - tempsEcouleMinute;
   var dataAEnvoyer = [tempsEcouleMinute, tempsRestant];
 
-  const tailleAEnvoyer = 25;
-  const titreAEnvoyer = 'Temps écoulé';
+  const tailleAEnvoyer = 10;
+  const titreAEnvoyer = exercice.nomExo;
   const clickCallbackAEnvoyer = null;
-  const idAEnvoyer = 'diagrammeCirculaireExercice';
+  const idAEnvoyer =
+    'diagrammeCirculaireExercice' + exercice.idExo + exercice.idEtu + exercice.idSession;
   const booleanIsInteractiveAEnvoyer = false;
   const couleursAEnvoyer = ['#00ff00', '#ff0000'];
   const labelsAEnvoyer = ['Temps écoulé', 'Temps restant'];
