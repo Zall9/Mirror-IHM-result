@@ -12,12 +12,9 @@ const VideoprojecteurDetail = () => {
     { field: 'themes', headerName: 'themes', sortable: false, width: 250 },
     { field: 'difficulte', headerName: 'difficultes', type: 'number', width: 130 },
   ];
-  console.log(columns);
 
   // récupérer tous les résultats
   const exercices = useSelector(getExercices);
-  console.log('exercices : ');
-  console.log(exercices);
   // collecter uniquement les exercices via leur nom
   let tabExo = [];
   for (const exo of exercices) {
@@ -26,8 +23,6 @@ const VideoprojecteurDetail = () => {
     }
   }
 
-  console.log("tableau de noms d'exercices : ");
-  console.log(tabExo);
   // faire un tableau contenant les informations à afficher
   let globalExo = [];
   // faire un tableau nomExo / avec le nb de fois ou il a été validés
@@ -35,7 +30,6 @@ const VideoprojecteurDetail = () => {
   let i = 0;
   for (const exo of tabExo) {
     const exoTmp = exercices.filter((exercice) => exercice.nomExo == exo)[0];
-    console.log(exoTmp);
     i++;
     globalExo.push({
       id: i,
@@ -49,8 +43,6 @@ const VideoprojecteurDetail = () => {
     });
   }
   const rows = globalExo;
-  console.log('Tableau final : ');
-  console.log(rows);
 
   return (
     <div style={{ height: 400, width: '100%' }}>

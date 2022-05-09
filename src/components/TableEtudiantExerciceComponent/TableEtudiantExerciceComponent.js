@@ -62,7 +62,6 @@ const TableEtudiantExerciceComponent = () => {
             ))}
           </TableBody>
         </Table>
-        {console.log(etudiantTrie)}
       </TableContainer>
     </Paper>
   );
