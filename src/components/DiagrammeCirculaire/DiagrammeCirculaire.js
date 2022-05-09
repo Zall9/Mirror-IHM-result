@@ -1,6 +1,6 @@
 import Chart from 'chart.js/auto';
 import React, { useEffect } from 'react';
-import PropTypes, { element } from 'prop-types';
+import PropTypes from 'prop-types';
 
 const DiagrammeCirculaire = (props) => {
   let myChart;
@@ -13,6 +13,7 @@ const DiagrammeCirculaire = (props) => {
   const idProps = props.id;
   const booleanIsInteractive = props.booleanIsInteractive;
   const taille = props.taille;
+  console.log(props);
   // On crée les données du graphique
   const datas = {
     labels: labelsProps,

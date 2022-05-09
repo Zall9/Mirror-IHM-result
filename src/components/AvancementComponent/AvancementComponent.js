@@ -17,7 +17,6 @@ const AvancementComponent = () => {
 
   // récupérer tous les résultats
   const exercices = useSelector(getExercices);
-  console.log('exercices', exercices);
   // collecter tous les étudiants
   let etudiants = [];
   for (const exo of exercices) {
@@ -61,7 +60,6 @@ const AvancementComponent = () => {
     });
   }
   const rows = avancement;
-  console.log(rows);
 
   return (
     <div style={{ height: 400, width: '100%' }}>
