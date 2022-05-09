@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
-
+import ButtonExport from '@components/BoutonExport/BoutonExport';
 const Avancement2 = () => {
   const columns = [
     { field: 'id', headerName: 'id Etudiant', width: 150 },
@@ -76,6 +76,7 @@ const Avancement2 = () => {
         rowsPerPageOptions={[5]}
         checkboxSelection
       />
+      <ButtonExport />
     </div>
   );
 };

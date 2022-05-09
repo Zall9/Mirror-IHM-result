@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import Row from './RowResultatComplet/RowResultatComplet';
-
 import {
   Table,
   TableBody,
