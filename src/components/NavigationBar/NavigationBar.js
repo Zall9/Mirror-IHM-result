@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
+import NotificationRetard from '@components/NotificationRetard/NotificationRetard';
 
 import useStyle from './style';
 
@@ -102,6 +103,7 @@ const Navigation = () => {
               </Button>
             ))}
           </Box>
+          <NotificationRetard />
         </Toolbar>
       </Container>
     </AppBar>
