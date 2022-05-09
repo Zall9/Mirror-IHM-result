@@ -37,6 +37,11 @@ const DiagrammeCirculaire = (props) => {
         tooltip: {
           enabled: booleanIsInteractive,
         },
+        title: {
+          display: true,
+          text: titre,
+          position: 'bottom',
+        },
       },
       elements: { center: optionsElementCentral },
     },
