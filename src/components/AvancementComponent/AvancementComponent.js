@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-
+import BoutonExport from '../BoutonExport/BoutonExport';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 
@@ -70,6 +70,7 @@ const AvancementComponent = () => {
         rowsPerPageOptions={[5]}
         checkboxSelection
       />
+      <BoutonExport />
     </div>
   );
 };

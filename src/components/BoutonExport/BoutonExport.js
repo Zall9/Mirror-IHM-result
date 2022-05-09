@@ -6,7 +6,8 @@ import axios from 'axios';
  * Callback: Télécharge les données dans un fichier json
  */
 function downloadObjectAsJson() {
-  axios.get('http://localhost:3002/exercices').then(
+  console.log(process.env.REACT_APP_SRVRESULT_URL + '/exercices');
+  axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then(
     (res) => {
       const data = res.data.exercices;
       const dataStr = JSON.stringify(data);
