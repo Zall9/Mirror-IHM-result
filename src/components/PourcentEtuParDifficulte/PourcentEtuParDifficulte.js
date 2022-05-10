@@ -52,6 +52,7 @@ const PourcentEtuParDifficulte = () => {
   let idAEnvoyer = 'pourcentEtuParDifficulte';
   let booleanIsInteractiveAEnvoyer = true;
   let tailleAEnvoyer = 25; //pourcentage de la taille par raport a la largeur de l'element pere
+
   return (
     <DiagrammeCirculaire
       //definition des props
