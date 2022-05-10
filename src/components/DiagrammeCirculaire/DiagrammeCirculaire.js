@@ -1,6 +1,6 @@
 import Chart from 'chart.js/auto';
 import React, { useEffect } from 'react';
-import PropTypes, { element } from 'prop-types';
+import PropTypes from 'prop-types';
 
 const DiagrammeCirculaire = (props) => {
   let myChart;
