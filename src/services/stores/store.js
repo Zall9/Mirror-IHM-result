@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import dataReducer from '@stores/Exercices/dataSlice';
+import exercicesReducer from '@stores/Exercices/exercicesSlice';
 
 export default configureStore({
   reducer: {
-    data: dataReducer,
+    exercices: exercicesReducer,
   },
 });
