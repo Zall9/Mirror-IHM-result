@@ -24,13 +24,17 @@ function countRetard(exercices) {
   return count;
 }
 
+/**
+ * créer un tableau avec les id des etudiants en retard
+ * @param {Array(exercice)} exercices
+ * @returns {Array(idEtu)}
+ */
 function idRetardataire(exercices) {
   let id = exercices.map((acc, exercice) => {
     if (acc.tempsMoyen != 0 && Date.now() - Date.parse(acc.debut) > acc.tempsMoyen * 2) {
       return acc.idEtu;
     }
   });
-  console.log(id);
   return id;
 }
 
@@ -54,8 +58,6 @@ const NotificationRetard = () => {
     let uri = '/resultat/' + event.currentTarget.innerText.toLowerCase();
     navigate(uri);
   };
-
-  console.log(openInfo);
 
   return (
     <Box>
