@@ -11,10 +11,11 @@ import { getExercices } from '@stores/Exercices/exercicesSlice';
  * @param {Array(exercice)} exercices
  * @returns {number}
  */
-function countRetard(exercices) {
+function countRetard(exercices, time) {
   let count = exercices
     .map((acc, exercice) => {
-      if (acc.tempsMoyen != 0 && Date.now() - Date.parse(acc.debut) > acc.tempsMoyen * 2) {
+      // tempsMoyen en minute le * 60000 pour passage en millisecond
+      if (acc.tempsMoyen != 0 && time - Date.parse(acc.debut) > acc.tempsMoyen * 2 * 60000) {
         return 1;
       } else {
         return 0;
@@ -29,9 +30,9 @@ function countRetard(exercices) {
  * @param {Array(exercice)} exercices
  * @returns {Array(idEtu)}
  */
-function idRetardataire(exercices) {
+function idRetardataire(exercices, time) {
   let id = exercices.map((acc, exercice) => {
-    if (acc.tempsMoyen != 0 && Date.now() - Date.parse(acc.debut) > acc.tempsMoyen * 2) {
+    if (acc.tempsMoyen != 0 && time - Date.parse(acc.debut) > acc.tempsMoyen * 2 * 60000) {
       return acc.idEtu;
     }
   });
@@ -43,7 +44,17 @@ function idRetardataire(exercices) {
  * @returns {JSX.Element}
  */
 const NotificationRetard = () => {
+  const [time, setTime] = React.useState(Date.now());
+
   let navigate = useNavigate();
+  let interval;
+
+  React.useEffect(() => {
+    interval = setInterval(() => setTime(Date.now()), 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  });
 
   const exercices = useSelector(getExercices);
   const [openInfo, setOpenInfo] = React.useState(null);
@@ -62,14 +73,14 @@ const NotificationRetard = () => {
   return (
     <Box>
       <IconButton onClick={ouvrirInfo}>
-        <Badge badgeContent={countRetard(exercices)} color="secondary">
+        <Badge badgeContent={countRetard(exercices, time)} color="secondary">
           <MailIcon />
         </Badge>
       </IconButton>
       <Menu anchorEl={openInfo} open={Boolean(openInfo)} onClose={fermerInfo}>
-        {idRetardataire(exercices).map((id) => {
+        {idRetardataire(exercices, time).map((id, key) => {
           return (
-            <MenuItem key={id}>
+            <MenuItem key={key}>
               <Button onClick={redirection}>{id}</Button>
             </MenuItem>
           );
