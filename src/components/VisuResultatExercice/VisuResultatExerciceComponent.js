@@ -13,14 +13,16 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 // renvoyer un composant par exercice
-const construitListeExercices = (ListeExos) =>
+const construitListeExercices = (ListeExos, exercices) =>
   ListeExos.map((objetIdListeExo, index) => {
-    console.log('EXOS :', objetIdListeExo.idExo);
-    console.log('listeEXOS :', objetIdListeExo.listeEtus);
     // component="div" pour supprimer le warning (https://github.com/mui/material-ui/issues/19827)
     return (
       <Item key={index} component="div">
-        <Exercice idExo={objetIdListeExo.idExo} listeEtudiants={objetIdListeExo.listeEtus} />
+        <Exercice
+          idExo={objetIdListeExo.idExo}
+          listeEtudiants={objetIdListeExo.listeEtus}
+          nbEtu={recupereNbEtudiant(exercices)}
+        />
       </Item>
     );
   });
@@ -123,13 +125,10 @@ const VisuResultatExerciceComponent = (props) => {
   Object.entries(ExosEtudiants).map(([idExo, listeEtus]) => {
     ListeExosEtudiants.push({ idExo: idExo, listeEtus: listeEtus });
   });
-  console.log('avant tri', ...ListeExosEtudiants);
 
   // Trier ce tableau (par défaut alphabétique)
   triEtudiants(ListeExosEtudiants, choixTri);
-  console.log('après tri', ...ListeExosEtudiants);
 
-  console.log('listeEtudiantsExos avant appel', exercices);
   const listeIdSession = recupereSessions(exercices);
 
   const menuTri = [
@@ -152,7 +151,7 @@ const VisuResultatExerciceComponent = (props) => {
         divider={<Divider orientation="horizontal" flexItem />}
         spacing={12}
       >
-        {construitListeExercices(ListeExosEtudiants)}
+        {construitListeExercices(ListeExosEtudiants, exercices)}
       </Stack>
     </div>
   );
@@ -182,6 +181,16 @@ function recupereSessions(exercices) {
   // sessions.sort((a, b) => b.dateSoumission - a.dateSoumission);
 
   return sessions;
+}
+
+function recupereNbEtudiant(exercices) {
+  let etudiants = [];
+  exercices.map((exo) => {
+    if (!etudiants.includes(exo.idEtu)) {
+      etudiants.push(exo.idEtu);
+    }
+  });
+  return etudiants.length;
 }
 
 // TODO : verifier que les fonctions de tri fonctionnent correctement
@@ -220,7 +229,7 @@ function triEtudiants(listeExercicesEtudiants, methode) {
  *
  */
 function compareNbExerciceValide(exo1, exo2) {
-  let listeEtu = [exo1.listeExos, exo2.listeExos];
+  let listeEtu = [exo1.listeEtus, exo2.listeEtus];
   const nbValideExos = [0, 0];
 
   for (let i = 0; i < 2; i++) {
@@ -241,7 +250,7 @@ function compareNbExerciceValide(exo1, exo2) {
  */
 
 function compareNbExerciceNonValide(exo1, exo2) {
-  let listeEtu = [exo1.listeExos, exo2.listeExos];
+  let listeEtu = [exo1.listeEtus, exo2.listeEtus];
   const nbValideExos = [0, 0];
 
   for (let i = 0; i < 2; i++) {
@@ -327,7 +336,7 @@ function compareDateDerniereSoumission(exo1, exo2) {
  * @returns 1 si exo1 a moins de tentatives recues que exo2, -1 sinon
  */
 function triNbTentative(exo1, exo2) {
-  let listeEtu = [exo1.listeExos, exo2.listeExos];
+  let listeEtu = [exo1.listeEtus, exo2.listeEtus];
   const nbTentaExos = [0, 0];
 
   for (let i = 0; i < 2; i++) {
@@ -345,7 +354,7 @@ function triNbTentative(exo1, exo2) {
  * @returns 1 si exo1 est avant exo2 dans l'ordre alphabétique
  */
 function triIdAlphabetique(exo1, exo2) {
-  if (exo1.idExo < exo2.idExo) {
+  if (exo1.listeEtus[0].nomExo < exo2.listeEtus[0].nomExo) {
     return -1;
   } else if (exo1.idExo > exo2.idExo) {
     return 1;

@@ -12,7 +12,6 @@ import Item from '@mui/material/ListItem';
 
 const construitListeBoiteEtudiant = (listeEtudiants) =>
   listeEtudiants.map((etudiantExo, index) => {
-    console.log('etudiantExo :', etudiantExo, 'listeExo :', listeEtudiants);
     return (
       <Item key={index}>
         <BoiteRectangulaireEtudiant etudiantExo={etudiantExo} />
@@ -24,11 +23,12 @@ const Exercice = (props) => {
   const idExo = props.idExo;
   const listeEtudiants = props.listeEtudiants;
 
-  console.log(idExo, listeEtudiants);
+  listeEtudiants.sort(compareEtudiant);
+
   return (
     <Stack direction="row" divider={<Divider orientation="vertical" flexItem />}>
       <Item sx={{ width: '250px' }}>
-        <BoiteRectangulaireExercice listeExo={listeEtudiants} />
+        <BoiteRectangulaireExercice listeExo={listeEtudiants} nbEtu={props.nbEtu} />
       </Item>
       <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
         {construitListeBoiteEtudiant(listeEtudiants)}
@@ -40,6 +40,37 @@ const Exercice = (props) => {
 Exercice.propTypes = {
   idExo: PropTypes.string.isRequired,
   listeEtudiants: PropTypes.array.isRequired,
+  nbEtu: PropTypes.number.isRequired,
 };
 
 export default Exercice;
+//###########################################################################
+
+/**
+ * Fonction qui tri les exercices d'étudiants en fonction de leur réussite et de leur dernière soummission
+ * @param exoEtu1 - exercice de l'étudiant 1
+ * @param exoEtu1 - exercice de l'étudiant 2
+ * @returns positif si exoEtu2 a été terminé avant ou si les deux
+ *  etudiants n'ont pas fini l'exercice et que l'étudiant 1 a fait une soumission plus récente
+ *          négatif sinon
+ */
+function compareEtudiant(exoEtu1, exoEtu2) {
+  if (exoEtu1.estFini && !exoEtu2.estFini) {
+    return 1;
+  }
+  if (exoEtu2.estFini && !exoEtu1.estFini) {
+    return -1;
+  }
+
+  if (exoEtu1.tentatives.length == 0) {
+    return 1;
+  }
+  if (exoEtu2.tentatives.length == 0) {
+    return -1;
+  }
+
+  return (
+    exoEtu1.tentatives[exoEtu1.tentatives.length - 1].dateSoumission -
+    exoEtu2.tentatives[exoEtu2.tentatives.length - 1].dateSoumission
+  );
+}

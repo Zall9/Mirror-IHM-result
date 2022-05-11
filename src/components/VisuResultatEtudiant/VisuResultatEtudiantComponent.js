@@ -14,7 +14,6 @@ import Select from '@mui/material/Select';
 
 const construitListeEtudiants = (ListeEtudiantsExos) =>
   ListeEtudiantsExos.map((objetIdEtuListeExo, index) => {
-    console.log('ETUDIANT :', objetIdEtuListeExo.idEtu);
     // component="div" pour supprimer le warning (https://github.com/mui/material-ui/issues/19827)
     return (
       <Item key={index} component="div">
@@ -121,13 +120,10 @@ const VisuResultatEtudiantComponent = (props) => {
   Object.entries(ExosEtudiants).map(([idEtu, listeExos]) => {
     ListeEtudiantsExos.push({ idEtu: idEtu, listeExos: listeExos });
   });
-  console.log('avant tri', ...ListeEtudiantsExos);
 
   // Trier ce tableau (par défaut alphabétique)
   triEtudiants(ListeEtudiantsExos, choixTri);
-  console.log('après tri', ...ListeEtudiantsExos);
 
-  console.log('listeEtudiantsExos avant appel', exercices);
   const listeIdSession = recupereSessions(exercices);
 
   const menuTri = [
