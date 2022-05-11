@@ -1,51 +1,51 @@
-import React, { useEffect, useState } from "react";
-import EtudiantCliquable from "../EtudiantCliquable/EtudiantCliquable"; //TODO ALIAS SUR LE COMPONENT
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from 'react';
+import EtudiantCliquable from '../EtudiantCliquable/EtudiantCliquable'; //TODO ALIAS SUR LE COMPONENT
+import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Item from '@mui/material/ListItem';
 
-import BoiteRectangulaireEtudiant from "./BoiteRectangulaireEtudiant";
-
-import Stack from "@mui/material/Stack";
-import Divider from "@mui/material/Divider";
-import Item from "@mui/material/ListItem";
+import { Redirect } from 'react-router-dom';
 
 // construire Box par étudiant
 
-const construitListeBoxEtudiants = (listeEtudiants, idExo) =>
-  listeEtudiants.map((etu, index) => {
-    console.log("Etu :", etu, "listeEtudiants :", listeEtudiants);
-    return (
-      <Item key={index}>
-        <BoiteRectangulaireEtudiant etudiant={etu} exercice={exo} />
-      </Item>
-    );
-  });
-
-const Exercice = (props) => {
-  const exo = props.exo;
-  const listeEtudiants = props.listeEtudiants;
+const BoiteRectangulaireEtudiant = (props) => {
+  const exo = props.etudiantExo;
+  const color = getColor(exo);
 
   return (
-    <Stack
-      direction="row"
-      divider={<Divider orientation="vertical" flexItem />}
+    <Box
+      sx={{
+        backgroundColor: color,
+        borderRadius: '30px',
+        '&:hover': {
+          opacity: [0.9, 0.8, 0.7],
+        },
+      }}
     >
-      <Item sx={{ width: "250px" }}>
-        <EtudiantCliquable idExo={exo.idExo} />
-      </Item>
-      <Stack
-        direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        spacing={2}
-      >
-        {construitListeBoxEtudiants(listeEtudiants, exo)}
-      </Stack>
-    </Stack>
+      <EtudiantCliquable idEtu={exo.idEtu} />
+      <ul>
+        <li>nb tentatives : {exo.tentatives.length}</li>
+        <li>
+          derniere soumission :
+          {Date.now() - Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission)} s
+        </li>
+      </ul>
+    </Box>
   );
 };
 
-Exercice.propTypes = {
-  listeEtudiants: PropTypes.arrayOf.isRequired,
-  exo: PropTypes.object.isRequired,
+function getColor(exo) {
+  if (exo.tentatives.length < 4) {
+    return '#FFFF56';
+  }
+  if (exo.tentatives.length < 8) {
+    return '#FF8C00';
+  }
+  return '#FF4500';
+}
+BoiteRectangulaireEtudiant.propTypes = {
+  etudiantExo: PropTypes.object.isRequired,
 };
 
-export default Exercice;
+export default BoiteRectangulaireEtudiant;

@@ -17,7 +17,7 @@ const initExercices = (dispatch) => {
   console.log('INIT PAGE');
 };
 
-const VisuResultatEtudiant = () => {
+const VisuResultatExercice = () => {
   const dispatch = useDispatch();
   console.log(useSelector((state) => state.exercices.data));
 
