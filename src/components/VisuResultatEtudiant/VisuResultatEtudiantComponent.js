@@ -11,6 +11,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 
 const construitListeEtudiants = (ListeEtudiantsExos) =>
   ListeEtudiantsExos.map((objetIdEtuListeExo, index) => {
@@ -75,14 +76,13 @@ const choixTriSelect = (listeNomChoixTri, choixTri, handleChangeTri) => {
 };
 
 const VisuResultatEtudiantComponent = (props) => {
+  const sessionStorageNameSession = 'idSes';
+  const sessionStorageNameTri = 'tri';
   const [choixSession, setSession] = React.useState(
-    sessionStorage.getItem('idSes') ? sessionStorage.getItem('idSes') : '',
+    sessionStorage.getItem(sessionStorageNameSession)
+      ? sessionStorage.getItem(sessionStorageNameSession)
+      : '',
   );
-
-  const handleChangeSession = (event) => {
-    sessionStorage.setItem('idSes', event.target.value);
-    setSession(event.target.value);
-  };
 
   const [choixTri, setTri] = React.useState(
     sessionStorage.getItem('tri') ? sessionStorage.getItem('tri') : 'alphabetique',
@@ -92,8 +92,6 @@ const VisuResultatEtudiantComponent = (props) => {
     sessionStorage.setItem('tri', event.target.value);
     setTri(event.target.value);
   };
-
-  useEffect(() => {}, [choixSession, choixTri]);
 
   // récupérer tous les exercices pour chaque  étudiant
   const exercices = useSelector(getExercices);
@@ -127,6 +125,9 @@ const VisuResultatEtudiantComponent = (props) => {
   triEtudiants(ListeEtudiantsExos, choixTri);
   console.log('après tri', ...ListeEtudiantsExos);
 
+  // Met a jour
+  //useEffect(() => {}, [choixSession, choixTri]);
+
   console.log('listeEtudiantsExos avant appel', exercices);
   const listeIdSession = recupereSessions(exercices);
 
@@ -140,8 +141,21 @@ const VisuResultatEtudiantComponent = (props) => {
 
   return (
     <div>
-      {choixSessionSelect(listeIdSession, choixSession, handleChangeSession)}
-      {choixTriSelect(menuTri, choixTri, handleChangeTri)}
+      <MenuDeroulant
+        Items={listeIdSession}
+        state={choixSession}
+        setState={setSession}
+        storageName={sessionStorageNameSession}
+        name="Session"
+      />
+      <MenuDeroulant
+        Items={menuTri}
+        state={choixTri}
+        setState={setTri}
+        storageName={sessionStorageNameTri}
+        name="Tri"
+      />
+
       <Stack
         direction="column"
         divider={<Divider orientation="horizontal" flexItem />}
