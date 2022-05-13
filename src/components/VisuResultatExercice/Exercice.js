@@ -30,7 +30,7 @@ const Exercice = (props) => {
       <Item sx={{ width: '250px' }}>
         <BoiteRectangulaireExercice listeExo={listeEtudiants} nbEtu={props.nbEtu} />
       </Item>
-      <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
+      <Stack direction="row" divider={<Divider orientation="vertical" flexItem />}>
         {construitListeBoiteEtudiant(listeEtudiants)}
       </Stack>
     </Stack>
