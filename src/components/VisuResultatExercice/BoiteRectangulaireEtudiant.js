@@ -37,8 +37,11 @@ const BoiteRectangulaireEtudiant = (props) => {
     <div onClick={redirection}>
       <Box
         sx={{
+          minWidth: '150px',
+          width: 'auto',
+
           backgroundColor: color,
-          borderRadius: '30px',
+          borderRadius: '15px',
           '&:hover': {
             opacity: [0.9, 0.8, 0.7],
           },

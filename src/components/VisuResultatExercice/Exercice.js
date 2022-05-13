@@ -26,13 +26,11 @@ const Exercice = (props) => {
   listeEtudiants.sort(compareEtudiant);
 
   return (
-    <Stack direction="row" divider={<Divider orientation="vertical" flexItem />}>
+    <Stack direction="row" margin="-20px">
       <Item sx={{ width: '250px' }}>
         <BoiteRectangulaireExercice listeExo={listeEtudiants} nbEtu={props.nbEtu} />
       </Item>
-      <Stack direction="row" divider={<Divider orientation="vertical" flexItem />}>
-        {construitListeBoiteEtudiant(listeEtudiants)}
-      </Stack>
+      <Stack direction="row">{construitListeBoiteEtudiant(listeEtudiants)}</Stack>
     </Stack>
   );
 };

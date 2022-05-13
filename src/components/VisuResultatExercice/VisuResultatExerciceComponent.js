@@ -11,6 +11,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import IconButton from '@mui/material/IconButton';
 
 // renvoyer un composant par exercice
 const construitListeExercices = (ListeExos, exercices) =>
@@ -29,7 +32,7 @@ const construitListeExercices = (ListeExos, exercices) =>
 
 const choixSessionSelect = (listeIdSession, choixSession, handleChangeSession) => {
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 200 }}>
       <FormControl>
         <InputLabel id="choix-session">Session</InputLabel>
         <Select
@@ -55,7 +58,7 @@ const choixSessionSelect = (listeIdSession, choixSession, handleChangeSession) =
 
 const choixTriSelect = (listeNomChoixTri, choixTri, handleChangeTri) => {
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 200 }}>
       <FormControl>
         <InputLabel id="choix-tri">Tri</InputLabel>
         <Select
@@ -74,6 +77,25 @@ const choixTriSelect = (listeNomChoixTri, choixTri, handleChangeTri) => {
           })}
         </Select>
       </FormControl>
+    </Box>
+  );
+};
+
+const arrowReverseTri = (reverseTri, handleReverseTri) => {
+  return (
+    <Box sx={{ minWidth: 200 }}>
+      <IconButton
+        id="reversingArrow"
+        onClick={handleReverseTri}
+        value={reverseTri ? 'false' : 'true'}
+        label="rev"
+      >
+        {reverseTri ? (
+          <ArrowUpwardIcon id="reversingArrowIcon" />
+        ) : (
+          <ArrowDownwardIcon id="reversingArrowIcon" />
+        )}
+      </IconButton>
     </Box>
   );
 };
@@ -97,8 +119,25 @@ const VisuResultatExerciceComponent = (props) => {
     setTri(event.target.value);
   };
 
-  useEffect(() => {}, [choixSession, choixTri]);
+  const [reverseTri, setReverse] = React.useState(
+    sessionStorage.getItem('rev') ? sessionStorage.getItem('rev') : 'false',
+  );
 
+  const handleReverseTri = (event) => {
+    const button = document.getElementById('reversingArrow');
+    sessionStorage.setItem('rev', button.value);
+    setReverse(button.value);
+    button.setAttribute('value', button.value == 'true' ? 'false' : 'true');
+    button.removeChild(document.getElementById('reversingArrowIcon'));
+    const newIcon = button.value ? (
+      <ArrowUpwardIcon id="reversingArrowIcon" />
+    ) : (
+      <ArrowDownwardIcon id="reversingArrowIcon" />
+    );
+    button.appendChild(newIcon);
+  };
+
+  useEffect(() => {}, [choixSession, choixTri, reverseTri]);
   // récupérer tous les exercices
   const exercices = useSelector(getExercices);
   const idSession = choixSession;
@@ -127,7 +166,7 @@ const VisuResultatExerciceComponent = (props) => {
   });
 
   // Trier ce tableau (par défaut alphabétique)
-  triEtudiants(ListeExosEtudiants, choixTri);
+  triEtudiants(ListeExosEtudiants, choixTri, reverseTri);
 
   const listeIdSession = recupereSessions(exercices);
 
@@ -141,16 +180,22 @@ const VisuResultatExerciceComponent = (props) => {
   ];
 
   return (
-    <div display="grid">
-      <div grid-column={1 / 2}>
-        {choixSessionSelect(listeIdSession, choixSession, handleChangeSession)}
-      </div>
-      <div grid-column={2 / 2}>{choixTriSelect(menuTri, choixTri, handleChangeTri)}</div>
-      <Stack
-        direction="column"
-        divider={<Divider orientation="horizontal" flexItem />}
-        spacing={12}
+    <div>
+      <Box
+        sx={{
+          position: 'relative',
+          justifyContent: 'flex-start',
+          display: 'inline-flex',
+          width: '100%',
+        }}
       >
+        {choixSessionSelect(listeIdSession, choixSession, handleChangeSession)}
+
+        {choixTriSelect(menuTri, choixTri, handleChangeTri)}
+
+        {arrowReverseTri(reverseTri, handleReverseTri)}
+      </Box>
+      <Stack direction="column" divider={<Divider orientation="horizontal" flexItem />}>
         {construitListeExercices(ListeExosEtudiants, exercices)}
       </Stack>
     </div>
@@ -194,7 +239,7 @@ function recupereNbEtudiant(exercices) {
 }
 
 // TODO : verifier que les fonctions de tri fonctionnent correctement
-function triEtudiants(listeExercicesEtudiants, methode) {
+function triEtudiants(listeExercicesEtudiants, methode, reverseTri) {
   switch (methode) {
     case 'alphabetique':
       listeExercicesEtudiants.sort(triIdAlphabetique);
@@ -218,6 +263,7 @@ function triEtudiants(listeExercicesEtudiants, methode) {
       listeExercicesEtudiants.sort(triParDifficulte);
       break;
   }
+  if (reverseTri == 'true') listeExercicesEtudiants = listeExercicesEtudiants.reverse();
 }
 
 /**
@@ -233,8 +279,8 @@ function compareNbExerciceValide(exo1, exo2) {
   const nbValideExos = [0, 0];
 
   for (let i = 0; i < 2; i++) {
-    for (const exoInst in listeEtu[i]) {
-      nbValideExos[i] += exoInst.estFini;
+    for (const exoInst of listeEtu[i]) {
+      nbValideExos[i] += exoInst.estFini ? 1 : 0;
     }
   }
   return nbValideExos[0] - nbValideExos[1];
@@ -254,11 +300,11 @@ function compareNbExerciceNonValide(exo1, exo2) {
   const nbValideExos = [0, 0];
 
   for (let i = 0; i < 2; i++) {
-    for (const exoInst in listeEtu[i]) {
-      nbValideExos[i] += !exoInst.estFini;
+    for (const exoInst of listeEtu[i]) {
+      nbValideExos[i] += exoInst.estFini ? 0 : 1;
     }
   }
-  return nbValideExos[0] - nbValideExos[1];
+  return nbValideExos[1] - nbValideExos[0];
 }
 
 /**
