@@ -1,84 +1,63 @@
 import { Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 
-/**
- * Callback: Télécharge les données dans un fichier json
- */
-
-function downloadObjectAsJson(dicoSession, choix) {
-  axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then(
-    (res) => {
-      console.log('ici');
-      //const data = res.data.exercices;
-      const dataStr = JSON.stringify(dicoSession[choix]);
-      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-      const link = document.createElement('a');
-      link.setAttribute('href', dataUri);
-      link.setAttribute('download', 'exercices.json');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    },
-    (err) => {
-      console.log(err);
-    },
-    () => {
-      console.log('done');
-    },
-  );
+async function lancerExport(choix) {
+  //Recuperation des exercices
+  const exercices = await axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices');
+  if (exercices) {
+    const choisis = exercices.data.exercices.filter((exo) => exo.idSession === choix);
+    downloadObjectAsJson(choisis);
+  }
 }
+
+/**
+ * crée un élément de lien, définit l'attribut href sur l'URI de données, définit l'attribut de
+ * téléchargement sur le nom du fichier, ajoute le lien au corps, clique sur le lien, puis supprime le
+ * lien du corps
+ * @param exos - les données que vous souhaitez télécharger
+ */
+function downloadObjectAsJson(exos) {
+  //const data = res.data.exercices;
+  const dataStr = JSON.stringify(exos);
+  const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+  const link = document.createElement('a');
+  link.setAttribute('href', dataUri);
+  link.setAttribute('download', `session-${exos[0].idSession}.json`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+/**
+ * Une fonction qui renvoie un composant.
+ */
 const ExportResultat = () => {
   //variables
   var sessionStorageNameSession = 'idSes';
-  //Recuperation des exercices dans le store
-  var exercices = useSelector(getExercices);
+
+  var sessions = useSelector(getExercices)
+    .map((exo) => exo.idSession)
+    .filter((id, index, self) => self.indexOf(id) === index);
   //hooks
   const [choix, setChoix] = React.useState(
     sessionStorage.getItem(sessionStorageNameSession)
       ? sessionStorage.getItem(sessionStorageNameSession)
       : '',
   );
-  //construction d'un tableau contenant les sessions
-  var dicoSession = {};
-  var cpt = 0;
-  var listeExercices = [];
-  var listeSession = [];
-  //je recupere les sessions et les places dans le tableau
-  exercices.map((exo) => {
-    console.log(exo);
-    if (listeSession.includes(exo.idSession) == false) {
-      listeSession.push(exo.idSession);
-    }
-  });
-  //je place maintenant les exercices
-  // dans un dictionnaire
-  // clé valeur avec pour clé idSession et pour valeur un tableau d'exercices
-  exercices.map((exo) => {
-    if (dicoSession[exo.idSession] === undefined) {
-      dicoSession[exo.idSession] = [];
-    }
-    dicoSession[exo.idSession].push(exo);
-  });
-  console.log(dicoSession);
-  console.log(listeSession);
+
   return (
-    <div>
+    <div id="MaDiv">
       <MenuDeroulant
-        Items={listeSession}
+        Items={sessions}
         state={choix}
         setState={setChoix}
         storageName={sessionStorageNameSession}
         name="Session"
       />
-      <Button
-        onClick={downloadObjectAsJson(dicoSession, choix)}
-        variant="contained"
-        color="primary"
-      >
+      <Button variant="contained" color="primary" onClick={() => lancerExport(choix)}>
         Exporter les resultats
       </Button>
     </div>
