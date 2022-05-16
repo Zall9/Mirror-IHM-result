@@ -51,7 +51,7 @@
     "test": "react-app-rewired test --watchAll=false --ci",
     "test:dev": "react-app-rewired test -- --watchAll=true",
     "eject": "react-scripts eject",
-    "prepare": "husky install",
+    "prepare": "./prepare.sh",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",
     "prettier-format": "run-script-os",
