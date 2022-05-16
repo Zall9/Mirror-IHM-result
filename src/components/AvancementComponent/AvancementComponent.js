@@ -3,6 +3,10 @@ import { DataGrid } from '@mui/x-data-grid';
 import ExportResultat from '../ExportResultat/ExportResultat';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { useNavigate } from 'react-router-dom';
+
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import IconButton from '@mui/material/IconButton';
 
 const AvancementComponent = () => {
   const columns = [
@@ -24,6 +28,11 @@ const AvancementComponent = () => {
       etudiants.push(exo.idEtu);
     }
   }
+
+  let navigate = useNavigate();
+  const redirectionResultat = () => {
+    navigate('/visuresultatetudiant');
+  };
 
   // faire un tableau id etudiant
   let avancement = [];
@@ -62,15 +71,25 @@ const AvancementComponent = () => {
   const rows = avancement;
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-      />
-      <ExportResultat />
+    <div>
+      <IconButton
+        onClick={redirectionResultat}
+        title="Passer à la vue graph"
+        sx={{ align: 'right' }}
+      >
+        <EqualizerIcon />
+      </IconButton>
+
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+        />
+        <ExportResultat />
+      </div>
     </div>
   );
 };

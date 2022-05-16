@@ -6,6 +6,8 @@ import { mockReactRedux } from 'mock-react-redux';
 import VideoprojecteurDetail from '@components/Videoprojecteur/VideoprojecteurDetail/VideoprojecteurDetail';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 const donnees = [
   {
     idExo: '507f1f77bcf86cd799439011',
@@ -51,7 +53,14 @@ it('test du component VideoprojecteurDetail.js', async () => {
   mockReactRedux().give(getExercices, donnees);
 
   await act(async () => {
-    render(<VideoprojecteurDetail />, container);
+    render(
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<VideoprojecteurDetail />} />
+        </Routes>
+      </BrowserRouter>,
+      container,
+    );
   });
   expect(container.textContent).toContain(donnees[0].nomExo);
 });

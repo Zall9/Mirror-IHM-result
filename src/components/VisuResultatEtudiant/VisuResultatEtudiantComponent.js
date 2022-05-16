@@ -5,12 +5,16 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Item from '@mui/material/ListItem';
 import Etudiant from './Etudiant';
+import IconButton from '@mui/material/IconButton';
+
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 import Box from '@mui/material/Box';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import * as triUtils from '../Utilitaires/TriEtudiant';
 import { recupereSessions } from '../Utilitaires/SessionsFromExercice';
 import calculValExtremes from '../Utilitaires/CalculValExtremes';
+import { useNavigate } from 'react-router-dom';
 
 function construitListeEtudiants(ListeEtudiantsExos) {
   const valExtremes = calculValExtremes(ListeEtudiantsExos);
@@ -44,6 +48,11 @@ const VisuResultatEtudiantComponent = (props) => {
   // récupérer tous les exercices pour chaque  étudiant
   const exercices = useSelector(getExercices);
   const idSession = choixSession;
+
+  let navigate = useNavigate();
+  const redirectionResultat = () => {
+    navigate('/avancement');
+  };
 
   // collecter tous les exercices de chaque étudiant
   // clé : idEtu, valeur : listeExercices
@@ -105,6 +114,13 @@ const VisuResultatEtudiantComponent = (props) => {
           storageName={sessionStorageNameTri}
           name="Tri"
         />
+        <IconButton
+          onClick={redirectionResultat}
+          title="Passer à la vue tableau"
+          sx={{ align: 'right' }}
+        >
+          <FormatListNumberedIcon />
+        </IconButton>
       </Box>
 
       <Stack direction="column" divider={<Divider orientation="horizontal" flexItem />} spacing={0}>

@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { mockReactRedux } from 'mock-react-redux';
 import AvancementComponent from '@components/AvancementComponent/AvancementComponent';
 import { getExercices } from '../../services/stores/Exercices/exercicesSlice';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const dataVerfication = {
   id: '45fds4657dsffg56sg5d4cx2',
@@ -62,7 +63,14 @@ it('test du component AvancementComponent.js avec données', async () => {
   mockReactRedux().give(getExercices, data);
   // render du component
   await act(async () => {
-    render(<AvancementComponent />, container);
+    render(
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AvancementComponent />} />
+        </Routes>
+      </BrowserRouter>,
+      container,
+    );
   });
 
   expect(container.textContent).toContain(dataVerfication.id);

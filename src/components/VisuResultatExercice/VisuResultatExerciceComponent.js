@@ -13,6 +13,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import IconButton from '@mui/material/IconButton';
 import CompareArrows from '@mui/icons-material/CompareArrows';
+import { useNavigate } from 'react-router-dom';
+
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 // renvoyer un composant par exercice
 const construitListeExercices = (ListeExos, exercices) =>
@@ -131,6 +134,11 @@ const VisuResultatExerciceComponent = (props) => {
     setReverse(newValue);
   };
 
+  let navigate = useNavigate();
+  const redirectionResultat = () => {
+    navigate('/videoprojecteur');
+  };
+
   useEffect(() => {}, [choixSession, choixTri, reverseTri]);
   // récupérer tous les exercices
   const exercices = useSelector(getExercices);
@@ -188,6 +196,14 @@ const VisuResultatExerciceComponent = (props) => {
         {choixTriSelect(menuTri, choixTri, handleChangeTri)}
 
         {arrowReverseTri(reverseTri, handleReverseTri)}
+
+        <IconButton
+          onClick={redirectionResultat}
+          title="Passer à la vue tableau"
+          sx={{ align: 'right' }}
+        >
+          <FormatListNumberedIcon />
+        </IconButton>
       </Box>
       <Stack direction="column" divider={<Divider orientation="horizontal" flexItem />}>
         {construitListeExercices(ListeExosEtudiants, exercices)}
