@@ -89,6 +89,9 @@ const arrowReverseTri = (reverseTri, handleReverseTri) => {
         label="rev"
         title="Inverser l'ordre du tri"
         sx={{
+          '&:hover': {
+            color: 'black',
+          },
           color: reverseTri == 'false' ? 'black' : 'white',
           backgroundColor: reverseTri == 'false' ? 'white' : 'lightgray',
         }}

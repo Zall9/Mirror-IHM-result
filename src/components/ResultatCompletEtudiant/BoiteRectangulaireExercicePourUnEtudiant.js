@@ -19,11 +19,8 @@ import LinearProgressWithLabel from './LinearProgressWithLabel';
         tentaMoy : TentaMoy/nbEtuValide ,tentaMin : nbTentasMin, tentaMax : nbTentasMax }*/
 
 const BoiteRectangulaireExercicePourUnEtudiant = (props) => {
-  console.log('entrée ');
   const exo = props.Exo;
   const exoClasse = props.ExoClasse;
-  console.log('entrée exo', exo);
-  console.log('entrée exoclasse', exoClasse);
   const proportionTenta =
     ((exo.tentatives.length - exoClasse.tentaMin) / (exoClasse.tentaMax - exoClasse.tentaMin)) *
     100;

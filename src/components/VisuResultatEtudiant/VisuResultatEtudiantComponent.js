@@ -5,18 +5,28 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Item from '@mui/material/ListItem';
 import Etudiant from './Etudiant';
+
+import Box from '@mui/material/Box';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import * as triUtils from '../Utilitaires/TriEtudiant';
 import { recupereSessions } from '../Utilitaires/SessionsFromExercice';
-const construitListeEtudiants = (ListeEtudiantsExos) =>
-  ListeEtudiantsExos.map((objetIdEtuListeExo, index) => {
+import calculValExtremes from '../Utilitaires/CalculValExtremes';
+
+function construitListeEtudiants(ListeEtudiantsExos) {
+  const valExtremes = calculValExtremes(ListeEtudiantsExos);
+  return ListeEtudiantsExos.map((objetIdEtuListeExo, index) => {
     // component="div" pour supprimer le warning (https://github.com/mui/material-ui/issues/19827)
     return (
       <Item key={index} component="div">
-        <Etudiant idEtu={objetIdEtuListeExo.idEtu} listeExercices={objetIdEtuListeExo.listeExos} />
+        <Etudiant
+          idEtu={objetIdEtuListeExo.idEtu}
+          valExtremes={valExtremes}
+          listeExercices={objetIdEtuListeExo.listeExos}
+        />
       </Item>
     );
   });
+}
 
 const VisuResultatEtudiantComponent = (props) => {
   const sessionStorageNameSession = 'idSes';
@@ -73,26 +83,31 @@ const VisuResultatEtudiantComponent = (props) => {
 
   return (
     <div>
-      <MenuDeroulant
-        Items={listeIdSession}
-        state={choixSession}
-        setState={setSession}
-        storageName={sessionStorageNameSession}
-        name="Session"
-      />
-      <MenuDeroulant
-        Items={menuTri}
-        state={choixTri}
-        setState={setTri}
-        storageName={sessionStorageNameTri}
-        name="Tri"
-      />
-
-      <Stack
-        direction="column"
-        divider={<Divider orientation="horizontal" flexItem />}
-        spacing={12}
+      <Box
+        sx={{
+          position: 'relative',
+          justifyContent: 'flex-start',
+          display: 'inline-flex',
+          width: '100%',
+        }}
       >
+        <MenuDeroulant
+          Items={listeIdSession}
+          state={choixSession}
+          setState={setSession}
+          storageName={sessionStorageNameSession}
+          name="Session"
+        />
+        <MenuDeroulant
+          Items={menuTri}
+          state={choixTri}
+          setState={setTri}
+          storageName={sessionStorageNameTri}
+          name="Tri"
+        />
+      </Box>
+
+      <Stack direction="column" divider={<Divider orientation="horizontal" flexItem />} spacing={0}>
         {construitListeEtudiants(ListeEtudiantsExos)}
       </Stack>
     </div>
