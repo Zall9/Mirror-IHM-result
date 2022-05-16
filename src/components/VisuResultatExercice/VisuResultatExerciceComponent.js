@@ -11,9 +11,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import IconButton from '@mui/material/IconButton';
+import CompareArrows from '@mui/icons-material/CompareArrows';
 
 // renvoyer un composant par exercice
 const construitListeExercices = (ListeExos, exercices) =>
@@ -83,18 +82,18 @@ const choixTriSelect = (listeNomChoixTri, choixTri, handleChangeTri) => {
 
 const arrowReverseTri = (reverseTri, handleReverseTri) => {
   return (
-    <Box sx={{ minWidth: 200 }}>
+    <Box>
       <IconButton
         id="reversingArrow"
         onClick={handleReverseTri}
-        value={reverseTri ? 'false' : 'true'}
         label="rev"
+        title="Inverser l'ordre du tri"
+        sx={{
+          color: reverseTri == 'false' ? 'black' : 'white',
+          backgroundColor: reverseTri == 'false' ? 'white' : 'lightgray',
+        }}
       >
-        {reverseTri ? (
-          <ArrowUpwardIcon id="reversingArrowIcon" />
-        ) : (
-          <ArrowDownwardIcon id="reversingArrowIcon" />
-        )}
+        <CompareArrows sx={{ transform: 'rotate(90deg)' }} />
       </IconButton>
     </Box>
   );
@@ -124,17 +123,9 @@ const VisuResultatExerciceComponent = (props) => {
   );
 
   const handleReverseTri = (event) => {
-    const button = document.getElementById('reversingArrow');
-    sessionStorage.setItem('rev', button.value);
-    setReverse(button.value);
-    button.setAttribute('value', button.value == 'true' ? 'false' : 'true');
-    button.removeChild(document.getElementById('reversingArrowIcon'));
-    const newIcon = button.value ? (
-      <ArrowUpwardIcon id="reversingArrowIcon" />
-    ) : (
-      <ArrowDownwardIcon id="reversingArrowIcon" />
-    );
-    button.appendChild(newIcon);
+    const newValue = sessionStorage.getItem('rev') == 'true' ? 'false' : 'true';
+    sessionStorage.setItem('rev', newValue);
+    setReverse(newValue);
   };
 
   useEffect(() => {}, [choixSession, choixTri, reverseTri]);
