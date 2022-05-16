@@ -33,14 +33,14 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell component="th" scope="row" align="center">
           {row.exo}
         </TableCell>
-        <TableCell align="right">{row.nomExo}</TableCell>
-        <TableCell align="right">{row.nbTenta}</TableCell>
-        <TableCell align="right">{row.temps}</TableCell>
-        <TableCell align="right">{row.difficulte}</TableCell>
-        <TableCell align="right">{row.themes}</TableCell>
+        <TableCell align="center">{row.nomExo}</TableCell>
+        <TableCell align="center">{row.nbTenta}</TableCell>
+        <TableCell align="center">{row.temps}</TableCell>
+        <TableCell align="center">{row.difficulte}</TableCell>
+        <TableCell align="center">{row.themes}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

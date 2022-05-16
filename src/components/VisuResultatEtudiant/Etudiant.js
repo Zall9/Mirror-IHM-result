@@ -11,7 +11,6 @@ import Item from '@mui/material/ListItem';
 
 const construitListeDiagrammeExercices = (listeExercices) =>
   listeExercices.map((exercice, index) => {
-    console.log('Exo :', exercice, 'listeExo :', listeExercices);
     return (
       <Item key={index}>
         <DiagrammeCirculaireExercice exercice={exercice} />

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setExercices } from '@stores/Exercices/exercicesSlice';
 import { useParams } from 'react-router-dom';
-import VisuResultatEtudiantComponent from '@components/VisuResultatEtudiant/VisuResultatEtudiantComponent';
+import VisuResultatExerciceComponent from '@components/VisuResultatExercice/VisuResultatExerciceComponent';
 
 const initExercices = (dispatch) => {
   axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
@@ -13,7 +13,7 @@ const initExercices = (dispatch) => {
   });
 };
 
-const VisuResultatEtudiant = () => {
+const VisuResultatExercice = () => {
   const dispatch = useDispatch();
   useSelector((state) => state.exercices.data);
 
@@ -21,16 +21,15 @@ const VisuResultatEtudiant = () => {
     initExercices(dispatch);
   }, []);
 
-  //TODO : Choisir la session (pour l instant session1) :
   return (
     <Box>
       <Navigation />
 
-      <h2 align="center"> État actuel de la séance : </h2>
+      <h2 align="center"> État actuel de la séance (vue par exercice) : </h2>
 
-      <VisuResultatEtudiantComponent />
+      <VisuResultatExerciceComponent />
     </Box>
   );
 };
 
-export default VisuResultatEtudiant;
+export default VisuResultatExercice;

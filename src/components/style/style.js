@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 
-const useRowStyles = makeStyles({
+const useCarteStyles = makeStyles({
   root: {
     '& > *': {
       borderBottom: 'unset',
@@ -9,4 +9,4 @@ const useRowStyles = makeStyles({
   },
 });
 
-export default useRowStyles;
+export default useCarteStyles;

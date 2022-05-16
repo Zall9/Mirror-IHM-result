@@ -14,7 +14,14 @@ import NotificationRetard from '@components/NotificationRetard/NotificationRetar
 
 import useStyle from './style';
 
-const pages = ['Accueil ', 'Resultat', 'Avancement', 'Videoprojecteur', 'VisuResultat'];
+const pages = [
+  'Accueil ',
+  'Resultat',
+  'Avancement',
+  'Videoprojecteur',
+  'VisuResultatEtudiant',
+  'VisuResultatExercice',
+];
 
 const Navigation = () => {
   const style = useStyle();

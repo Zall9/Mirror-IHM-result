@@ -10,7 +10,6 @@ import * as triUtils from '../Utilitaires/TriEtudiant';
 import { recupereSessions } from '../Utilitaires/SessionsFromExercice';
 const construitListeEtudiants = (ListeEtudiantsExos) =>
   ListeEtudiantsExos.map((objetIdEtuListeExo, index) => {
-    console.log('ETUDIANT :', objetIdEtuListeExo.idEtu);
     // component="div" pour supprimer le warning (https://github.com/mui/material-ui/issues/19827)
     return (
       <Item key={index} component="div">
