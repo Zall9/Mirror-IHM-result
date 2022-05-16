@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider';
 import Item from '@mui/material/ListItem';
 import Etudiant from './Etudiant';
 import IconButton from '@mui/material/IconButton';
+import CompareArrows from '@mui/icons-material/CompareArrows';
 
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
@@ -32,6 +33,28 @@ function construitListeEtudiants(ListeEtudiantsExos) {
   });
 }
 
+const arrowReverseTri = (reverseTri, handleReverseTri) => {
+  return (
+    <Box>
+      <IconButton
+        id="reversingArrow"
+        onClick={handleReverseTri}
+        label="rev"
+        title="Inverser l'ordre du tri"
+        sx={{
+          '&:hover': {
+            color: 'black',
+          },
+          color: reverseTri == 'false' ? 'black' : 'white',
+          backgroundColor: reverseTri == 'false' ? 'white' : 'lightgray',
+        }}
+      >
+        <CompareArrows sx={{ transform: 'rotate(90deg)' }} />
+      </IconButton>
+    </Box>
+  );
+};
+
 const VisuResultatEtudiantComponent = (props) => {
   const sessionStorageNameSession = 'idSes';
   const sessionStorageNameTri = 'tri';
@@ -44,6 +67,16 @@ const VisuResultatEtudiantComponent = (props) => {
   const [choixTri, setTri] = React.useState(
     sessionStorage.getItem('tri') ? sessionStorage.getItem('tri') : 'alphabetique',
   );
+
+  const [reverseTri, setReverse] = React.useState(
+    sessionStorage.getItem('rev') ? sessionStorage.getItem('rev') : 'false',
+  );
+
+  const handleReverseTri = (event) => {
+    const newValue = sessionStorage.getItem('rev') == 'true' ? 'false' : 'true';
+    sessionStorage.setItem('rev', newValue);
+    setReverse(newValue);
+  };
 
   // récupérer tous les exercices pour chaque  étudiant
   const exercices = useSelector(getExercices);
@@ -78,7 +111,7 @@ const VisuResultatEtudiantComponent = (props) => {
   });
 
   // Trier ce tableau (par défaut alphabétique)
-  triUtils.triEtudiants(ListeEtudiantsExos, choixTri);
+  triUtils.triEtudiants(ListeEtudiantsExos, choixTri, reverseTri);
 
   const listeIdSession = recupereSessions(exercices);
 
@@ -114,6 +147,7 @@ const VisuResultatEtudiantComponent = (props) => {
           storageName={sessionStorageNameTri}
           name="Tri"
         />
+        {arrowReverseTri(reverseTri, handleReverseTri)}
         <IconButton
           onClick={redirectionResultat}
           title="Passer à la vue tableau"

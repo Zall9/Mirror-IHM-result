@@ -1,4 +1,4 @@
-export function triEtudiants(listeEtudiantsExos, methode) {
+export function triEtudiants(listeEtudiantsExos, methode, reverseTri) {
   switch (methode) {
     case 'alphabetique':
       listeEtudiantsExos.sort(triIdAlphabetique);
@@ -16,6 +16,7 @@ export function triEtudiants(listeEtudiantsExos, methode) {
       listeEtudiantsExos.sort(triParDifficulte);
       break;
   }
+  if (reverseTri == 'true') listeEtudiantsExos = listeEtudiantsExos.reverse();
 }
 /**
  * Fonction qUI compare le nombre d'exercices effectués par deux élèves
