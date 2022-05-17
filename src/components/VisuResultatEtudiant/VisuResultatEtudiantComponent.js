@@ -16,6 +16,7 @@ import * as triUtils from '../Utilitaires/TriEtudiant';
 import { recupereSessions } from '../Utilitaires/SessionsFromExercice';
 import calculValExtremes from '../Utilitaires/CalculValExtremes';
 import { useNavigate } from 'react-router-dom';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 function construitListeEtudiants(ListeEtudiantsExos) {
   const valExtremes = calculValExtremes(ListeEtudiantsExos);
@@ -55,6 +56,24 @@ const arrowReverseTri = (reverseTri, handleReverseTri) => {
   );
 };
 
+const iconeFiltreExerciceValides = (exoValides, handleExoValides) => {
+  const textToPrint =
+    exoValides == 'all' ? 'Tous' : exoValides == 'valides' ? 'Réussis' : 'En cours';
+  return (
+    <Box orientation="row">
+      <IconButton
+        onClick={handleExoValides}
+        sx={{ align: 'right' }}
+        label="exV"
+        title="!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      >
+        <FilterAltIcon />
+      </IconButton>
+      <div id="textExoValides">{textToPrint}</div>
+    </Box>
+  );
+};
+
 const VisuResultatEtudiantComponent = (props) => {
   const sessionStorageNameSession = 'idSes';
   const sessionStorageNameTri = 'tri';
@@ -76,6 +95,23 @@ const VisuResultatEtudiantComponent = (props) => {
     const newValue = sessionStorage.getItem('rev') == 'true' ? 'false' : 'true';
     sessionStorage.setItem('rev', newValue);
     setReverse(newValue);
+  };
+
+  const [exoValides, setExoValides] = React.useState(
+    sessionStorage.getItem('exV') ? sessionStorage.getItem('exV') : 'invalides',
+  );
+
+  const handleExoValides = (event) => {
+    const newValue =
+      sessionStorage.getItem('exV') == 'all'
+        ? 'valides'
+        : sessionStorage.getItem('exV') == 'valides'
+        ? 'invalides'
+        : 'all';
+    sessionStorage.setItem('exV', newValue);
+    setExoValides(newValue);
+    document.getElementById('textExoValides').innerHTML =
+      newValue == 'all' ? 'Tous' : newValue == 'valides' ? 'Réussis' : 'En cours';
   };
 
   // récupérer tous les exercices pour chaque  étudiant
@@ -111,7 +147,7 @@ const VisuResultatEtudiantComponent = (props) => {
   });
 
   // Trier ce tableau (par défaut alphabétique)
-  triUtils.triEtudiants(ListeEtudiantsExos, choixTri, reverseTri);
+  ListeEtudiantsExos = triUtils.triEtudiants(ListeEtudiantsExos, choixTri, reverseTri, exoValides);
 
   const listeIdSession = recupereSessions(exercices);
 
@@ -131,6 +167,7 @@ const VisuResultatEtudiantComponent = (props) => {
           justifyContent: 'flex-start',
           display: 'inline-flex',
           width: '100%',
+          margin: '10px',
         }}
       >
         <MenuDeroulant
@@ -148,6 +185,7 @@ const VisuResultatEtudiantComponent = (props) => {
           name="Tri"
         />
         {arrowReverseTri(reverseTri, handleReverseTri)}
+        {iconeFiltreExerciceValides(exoValides, handleExoValides)}
         <IconButton
           onClick={redirectionResultat}
           title="Passer à la vue tableau"

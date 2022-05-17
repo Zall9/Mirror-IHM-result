@@ -7,8 +7,8 @@ const MenuDeroulant = (props) => {
   //fonction component jsx
   const choixItemSelect = (listeId, choix, handleChange, nomArticle) => {
     return (
-      <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
+      <Box>
+        <FormControl sx={{ minWidth: 250 }}>
           <InputLabel id={'choix' + nomArticle}>{nomArticle}</InputLabel>
           <Select
             labelId={nomArticle + '-label'}

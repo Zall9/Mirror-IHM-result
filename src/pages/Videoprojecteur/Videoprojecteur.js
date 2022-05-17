@@ -23,7 +23,6 @@ const Videoprojecteur = () => {
   return (
     <Box>
       <Navigation />
-      <h2 align="center"> état actuel de la séance</h2>
       <VideoprojecteurGeneral />
       <VideoprojecteurDetail />
     </Box>

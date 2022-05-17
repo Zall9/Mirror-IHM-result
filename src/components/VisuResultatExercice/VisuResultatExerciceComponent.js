@@ -34,8 +34,8 @@ const construitListeExercices = (ListeExos, exercices) =>
 
 const choixSessionSelect = (listeIdSession, choixSession, handleChangeSession) => {
   return (
-    <Box sx={{ minWidth: 200 }}>
-      <FormControl>
+    <Box>
+      <FormControl sx={{ minWidth: 200 }}>
         <InputLabel id="choix-session">Session</InputLabel>
         <Select
           labelId="session-label"
@@ -143,6 +143,14 @@ const VisuResultatExerciceComponent = (props) => {
   // récupérer tous les exercices
   const exercices = useSelector(getExercices);
   const idSession = choixSession;
+
+  // filtre suivant difficulté
+  // récupéré toutes les difficultés des exercices
+  // ajouter une checkbox pour chaque difficulté
+  // on considere qu'elles sont toutes cochées de base
+  // si on décoche cela supprime les exercices correspondant
+
+  // filtre suivant
 
   // collecter tous les étudiants de chaque exercice
   // clé : idExo, valeur : listeEtudiants

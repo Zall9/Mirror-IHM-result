@@ -24,9 +24,6 @@ const VisuResultatExercice = () => {
   return (
     <Box>
       <Navigation />
-
-      <h2 align="center"> État actuel de la séance (vue par exercice) : </h2>
-
       <VisuResultatExerciceComponent />
     </Box>
   );
