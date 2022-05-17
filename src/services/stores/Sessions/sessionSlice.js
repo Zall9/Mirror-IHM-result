@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const sessionSlice = createSlice({
-  name: 'session',
+  name: 'sessions',
   initialState: {
     data: [],
   },
   reducers: {
     setSession: (state, respSession) => {
-      state.data = respSesion.payload;
+      state.data = respSession.payload;
     },
     addSession: (state, respSession) => {
       state.data.push(respSession.payload);
     },
   },
 });
-export const { setSesion, addSession } = sessionSlice.actions;
+export const getSessions = (state) => state.sessions.data;
+
+export const { setSession, addSession } = sessionSlice.actions;
 export default sessionSlice.reducer;
