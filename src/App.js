@@ -9,13 +9,31 @@ import Videoprojecteur from '@pages/Videoprojecteur/Videoprojecteur';
 import VisuResultatEtudiant from '@pages/VisuResultatEtudiant/VisuResultatEtudiant';
 import VisuResultatExercice from '@pages/VisuResultatExercice/VisuResultatExercice';
 import { initSocketConnection } from '@services/socket/socket';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSessions, setSession } from '@stores/Sessions/sessionSlice';
+import { setExercices } from '@stores/Exercices/exercicesSlice';
+import axios from 'axios';
+
+const initExercices = (dispatch) => {
+  axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
+    dispatch(setExercices(res.data.exercices));
+  });
+};
+
+const initSessions = (dispatch) => {
+  axios.get(process.env.REACT_APP_SRVEXO_URL + '/sessions').then((res) => {
+    dispatch(setSession(res.data.sessions));
+  });
+};
 
 export default function App() {
   const dispatch = useDispatch();
+  const sessions = useSelector(getSessions);
 
   useEffect(() => {
-    initSocketConnection(dispatch);
+    initExercices(dispatch);
+    initSocketConnection(dispatch, sessions);
+    initSessions(dispatch);
   }, []);
 
   return (
