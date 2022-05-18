@@ -6,7 +6,7 @@ import CircularProgressWithLabel from '../VisuResultatExercice/CircularProgressW
 import { useNavigate } from 'react-router-dom';
 import calculScoreListeExo from '../Utilitaires/CalculScoreListeExo';
 import compteNbExoValides from '../Utilitaires/CompteNbExoValides';
-
+import etudiantParser from '../Utilitaires/Etudiant/etudiantParser';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import { IconButton } from '@mui/material';
 import axios from 'axios';
@@ -24,7 +24,7 @@ const construitListeDiagrammeExercices = (listeExercices) =>
   });
 
 const Etudiant = (props) => {
-  const idEtu = props.idEtu;
+  const idEtu = etudiantParser(props.idEtu);
   const listeExercices = props.listeExercices;
   const nbExoValides = compteNbExoValides(listeExercices);
   const scoreExo = calculScoreListeExo(listeExercices);
