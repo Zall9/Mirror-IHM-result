@@ -4,7 +4,6 @@ import ExportResultat from '../ExportResultat/ExportResultat';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { useNavigate } from 'react-router-dom';
-
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import IconButton from '@mui/material/IconButton';
 import etudiantParser from '../Utilitaires/Etudiant/etudiantParser';
