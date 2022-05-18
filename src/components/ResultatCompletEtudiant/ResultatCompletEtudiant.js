@@ -6,6 +6,7 @@ import BoiteRectangulaireExercicePourUnEtudiant from './BoiteRectangulaireExerci
 import Row from './RowResultatComplet/RowResultatComplet';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 import {
@@ -17,6 +18,7 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 import Item from '@mui/material/ListItem';
 
@@ -177,16 +179,11 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
     // recuperer les exercices faits par l'étudiant
     // parcourir les exercices
     // récupérer les paramètres de cet exercice
-    console.log('liste Exercices', listeExercices);
     const exercices = useSelector(getExercices);
-    console.log(exercices);
-    console.log('fonction affiche boite exercice');
     return listeExercices.map((exercice, index) => {
       const parametres = calculParametresMoyens(exercice.idExo, exercices, exercice.idSession);
-      console.log('exercices', exercice);
-      console.log('parametres', parametres);
       return (
-        <Item key={index} component="div" width-min>
+        <Item key={index} component="div">
           <BoiteRectangulaireExercicePourUnEtudiant Exo={exercice} ExoClasse={parametres} />
         </Item>
       );
@@ -198,6 +195,11 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
       scoreSeance += exo.difficulte;
     }
   });
+
+  let navigate = useNavigate();
+  const redirectionResultat = () => {
+    navigate('/visuresultatexercice');
+  };
 
   return (
     <Box>

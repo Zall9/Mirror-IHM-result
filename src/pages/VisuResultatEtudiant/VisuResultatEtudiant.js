@@ -8,9 +8,6 @@ const VisuResultatEtudiant = () => {
   return (
     <Box>
       <Navigation />
-
-      <h2 align="center"> État actuel de la séance : </h2>
-
       <VisuResultatEtudiantComponent />
     </Box>
   );

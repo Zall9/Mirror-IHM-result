@@ -8,6 +8,9 @@ import Item from '@mui/material/ListItem';
 import { useNavigate } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import LinearProgressWithLabel from './LinearProgressWithLabel';
+import IconButton from '@mui/material/IconButton';
+
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 // construire Box par étudiant
 
@@ -19,20 +22,20 @@ import LinearProgressWithLabel from './LinearProgressWithLabel';
         tentaMoy : TentaMoy/nbEtuValide ,tentaMin : nbTentasMin, tentaMax : nbTentasMax }*/
 
 const BoiteRectangulaireExercicePourUnEtudiant = (props) => {
-  console.log('entrée ');
   const exo = props.Exo;
   const exoClasse = props.ExoClasse;
-  console.log('entrée exo', exo);
-  console.log('entrée exoclasse', exoClasse);
   const proportionTenta =
     ((exo.tentatives.length - exoClasse.tentaMin) / (exoClasse.tentaMax - exoClasse.tentaMin)) *
     100;
-  const proportionTemps =
-    ((Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission) -
-      Date.parse(exo.debut) -
-      exoClasse.tpsMin) /
-      (exoClasse.tpsMax - exoClasse.tpsMin)) *
-    100;
+  var proportionTemps;
+  if (exo.tentatives.length != 0) {
+    proportionTemps =
+      ((Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission) -
+        Date.parse(exo.debut) -
+        exoClasse.tpsMin) /
+        (exoClasse.tpsMax - exoClasse.tpsMin)) *
+      100;
+  }
 
   const color = getColor(exo);
   const estFini = exo.estFini;

@@ -4,12 +4,26 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
+/**
+ *
+ * @param {*} props
+ * @returns
+ */
 function CircularProgressWithLabel(props) {
-  const textOvering = () => <p>{props.textOver}</p>;
+  const textInside =
+    props.minValue || props.maxValue || props.mustBe100percent
+      ? Math.round(props.value)
+      : Math.round(props.value) + '%';
+  const percentCircle =
+    props.mustBe100percent == true
+      ? 100
+      : props.minValue == undefined || props.maxValue == undefined
+      ? props.value
+      : 100 * ((props.value - props.minValue) / (props.maxValue - props.minValue));
   return (
     <div title={props.textOver}>
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-        <CircularProgress variant="determinate" value={props.value} color={props.color} />
+        <CircularProgress variant="determinate" value={percentCircle} color={props.color} />
         <Box
           sx={{
             top: 0,
@@ -23,7 +37,7 @@ function CircularProgressWithLabel(props) {
           }}
         >
           <Typography variant="caption" component="div" color="text.secondary">
-            {props.isAPercentage ? `${Math.round(props.value)}%` : `${props.value / 10}`}
+            {textInside}
           </Typography>
         </Box>
       </Box>
@@ -39,8 +53,10 @@ CircularProgressWithLabel.propTypes = {
    */
   value: PropTypes.number.isRequired,
   color: PropTypes.string,
-  isAPercentage: PropTypes.bool.isRequired,
   textOver: PropTypes.string.isRequired,
+  mustBe100percent: PropTypes.bool,
+  minValue: PropTypes.number,
+  maxValue: PropTypes.number,
 };
 
 export default CircularProgressWithLabel;

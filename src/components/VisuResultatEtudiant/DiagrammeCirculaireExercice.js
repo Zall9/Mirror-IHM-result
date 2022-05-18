@@ -52,7 +52,7 @@ const DiagrammeCirculaireExercice = (props) => {
   const tempsRestant = tempsMoyen - tempsEcouleMinute < 0 ? 0 : tempsMoyen - tempsEcouleMinute;
   var dataAEnvoyer = [tempsEcouleMinute, tempsRestant];
 
-  const tailleAEnvoyer = 10;
+  const tailleAEnvoyer = 5;
   const titreAEnvoyer = exercice.nomExo;
   const clickCallbackAEnvoyer = null;
   const idAEnvoyer =
@@ -74,12 +74,14 @@ const DiagrammeCirculaireExercice = (props) => {
       id={idAEnvoyer}
       labels={labelsAEnvoyer}
       optionsElementCentral={optionsElementCentralAEnvoyer}
+      displayLegend={props.display}
     />
   );
 };
 
 DiagrammeCirculaireExercice.propTypes = {
   exercice: PropTypes.object,
+  display: PropTypes.bool,
 };
 
 export default DiagrammeCirculaireExercice;

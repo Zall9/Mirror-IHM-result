@@ -13,6 +13,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import IconButton from '@mui/material/IconButton';
 import CompareArrows from '@mui/icons-material/CompareArrows';
+import { useNavigate } from 'react-router-dom';
+
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 // renvoyer un composant par exercice
 const construitListeExercices = (ListeExos, exercices) =>
@@ -31,8 +34,8 @@ const construitListeExercices = (ListeExos, exercices) =>
 
 const choixSessionSelect = (listeIdSession, choixSession, handleChangeSession) => {
   return (
-    <Box sx={{ minWidth: 200 }}>
-      <FormControl>
+    <Box>
+      <FormControl sx={{ minWidth: 200 }}>
         <InputLabel id="choix-session">Session</InputLabel>
         <Select
           labelId="session-label"
@@ -89,6 +92,9 @@ const arrowReverseTri = (reverseTri, handleReverseTri) => {
         label="rev"
         title="Inverser l'ordre du tri"
         sx={{
+          '&:hover': {
+            color: 'black',
+          },
           color: reverseTri == 'false' ? 'black' : 'white',
           backgroundColor: reverseTri == 'false' ? 'white' : 'lightgray',
         }}
@@ -128,10 +134,23 @@ const VisuResultatExerciceComponent = (props) => {
     setReverse(newValue);
   };
 
+  let navigate = useNavigate();
+  const redirectionResultat = () => {
+    navigate('/videoprojecteur');
+  };
+
   useEffect(() => {}, [choixSession, choixTri, reverseTri]);
   // récupérer tous les exercices
   const exercices = useSelector(getExercices);
   const idSession = choixSession;
+
+  // filtre suivant difficulté
+  // récupéré toutes les difficultés des exercices
+  // ajouter une checkbox pour chaque difficulté
+  // on considere qu'elles sont toutes cochées de base
+  // si on décoche cela supprime les exercices correspondant
+
+  // filtre suivant
 
   // collecter tous les étudiants de chaque exercice
   // clé : idExo, valeur : listeEtudiants
@@ -185,6 +204,14 @@ const VisuResultatExerciceComponent = (props) => {
         {choixTriSelect(menuTri, choixTri, handleChangeTri)}
 
         {arrowReverseTri(reverseTri, handleReverseTri)}
+
+        <IconButton
+          onClick={redirectionResultat}
+          title="Passer à la vue tableau"
+          sx={{ align: 'right' }}
+        >
+          <FormatListNumberedIcon />
+        </IconButton>
       </Box>
       <Stack direction="column" divider={<Divider orientation="horizontal" flexItem />}>
         {construitListeExercices(ListeExosEtudiants, exercices)}

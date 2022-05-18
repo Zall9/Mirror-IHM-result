@@ -20,7 +20,6 @@ const BoiteRectangulaireExercice = (props) => {
       nbEtudiantReussite++;
     }
   }
-  console.log(nbEtudiantReussite);
   const progress = (listeExo.length / props.nbEtu) * 100;
   const tauxReussite = (nbEtudiantReussite / listeExo.length) * 100;
   return (
@@ -36,10 +35,12 @@ const BoiteRectangulaireExercice = (props) => {
       >
         <Stack direction="row">
           <CircularProgressWithLabel
-            value={listeExo[0].difficulte * 10}
+            value={listeExo[0].difficulte}
             color="secondary"
             isAPercentage={false}
             textOver="difficulté de l'exercice"
+            minValue={0}
+            maxValue={10}
           />
           <CircularProgressWithLabel
             value={progress}

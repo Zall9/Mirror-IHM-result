@@ -7,7 +7,6 @@ const Avancement = () => {
   return (
     <Box>
       <Navigation />
-      <h2 align="center"> état actuel des étudiants</h2>
       <AvancementComponent />
     </Box>
   );
