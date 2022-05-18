@@ -42,6 +42,7 @@ const ExportResultat = () => {
     .map((exo) => exo.idSession)
     .filter((id, index, self) => self.indexOf(id) === index);
   //hooks
+  //permets de stocker dans le cache session la valeur selectionnée dans le menu déroulant
   const [choix, setChoix] = React.useState(
     sessionStorage.getItem(sessionStorageNameSession)
       ? sessionStorage.getItem(sessionStorageNameSession)
