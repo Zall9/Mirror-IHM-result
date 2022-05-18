@@ -37,15 +37,21 @@ function downloadObjectAsJson(exos) {
 const ExportResultat = () => {
   //variables
   var sessionStorageNameSession = 'idSes';
-
+  var sessionStorageNameSeance = 'idSeance';
   var sessions = useSelector(getExercices)
     .map((exo) => exo.idSession)
     .filter((id, index, self) => self.indexOf(id) === index);
   //hooks
+  var seances = useSelector(getExercices).map((exo) => exo.idSeance);
   //permets de stocker dans le cache session la valeur selectionnée dans le menu déroulant
   const [choix, setChoix] = React.useState(
     sessionStorage.getItem(sessionStorageNameSession)
       ? sessionStorage.getItem(sessionStorageNameSession)
+      : '',
+  );
+  const [seance, setSeance] = React.useState(
+    sessionStorage.getItem(sessionStorageNameSeance)
+      ? sessionStorage.getItem(sessionStorageNameSeance)
       : '',
   );
 
@@ -57,6 +63,12 @@ const ExportResultat = () => {
         setState={setChoix}
         storageName={sessionStorageNameSession}
         name="Session"
+      />
+      <MenuDeroulant
+        Items={seances}
+        state={seance}
+        setState={setSeance}
+        storageName={sessionStorageNameSeance}
       />
       <Button variant="contained" color="primary" onClick={() => lancerExport(choix)}>
         Exporter les resultats
