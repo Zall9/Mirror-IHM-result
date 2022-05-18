@@ -9,6 +9,19 @@ import { useNavigate } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import getColor from '../Utilitaires/DegradeColorDansTemps';
 
+function getTimeProportion(exo) {
+  const tm = parseInt(exo.tempsMoyen) ?? 10;
+  const ta =
+    (Date.now() -
+      Date.parse(
+        exo.tentatives.length != 0
+          ? exo.tentatives[exo.tentatives.length - 1].dateSoumission
+          : exo.debut,
+      )) /
+    60000;
+  return ta / (tm <= 0 ? 10 : tm);
+}
+
 // construire Box par étudiant
 
 const BoiteRectangulaireEtudiant = (props) => {
@@ -86,19 +99,6 @@ function affichageTemps(exo) {
   ) : (
     <li>temps :{Math.floor((Date.now() - Date.parse(exo.debut)) / 60000)} m</li>
   );
-}
-
-function getTimeProportion(exo) {
-  const tm = parseInt(exo.tempsMoyen) ?? 10;
-  const ta =
-    (Date.now() -
-      Date.parse(
-        exo.tentatives.length != 0
-          ? exo.tentatives[exo.tentatives.length - 1].dateSoumission
-          : exo.debut,
-      )) /
-    60000;
-  return ta / (tm <= 0 ? 10 : tm);
 }
 
 BoiteRectangulaireEtudiant.propTypes = {

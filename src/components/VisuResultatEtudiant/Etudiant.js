@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import DiagrammeCirculaireExercice from './DiagrammeCirculaireExercice';
 import CircularProgressWithLabel from '../VisuResultatExercice/CircularProgressWithLabel';
@@ -9,9 +9,8 @@ import compteNbExoValides from '../Utilitaires/CompteNbExoValides';
 
 import PanToolIcon from '@mui/icons-material/PanTool';
 import { IconButton } from '@mui/material';
-import { jsx, css, keyframes } from '@emotion/react';
 import axios from 'axios';
-import { Stack, Box, Divider } from '@mui/material';
+import { Stack, Divider } from '@mui/material';
 import Item from '@mui/material/ListItem';
 import NotificationRetardEtudiant from '../NotificationRetardEtudiant/NotificationRetardEtudiant';
 
@@ -72,7 +71,7 @@ const Etudiant = (props) => {
       .filter((value) => value == 1).length != 0
       ? '#CC0000'
       : '#CCCCCC';
-  useEffect(() => {}, []);
+
   return (
     <Stack
       direction="row"

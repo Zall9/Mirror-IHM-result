@@ -95,17 +95,6 @@ const AvancementComponent = () => {
 };
 
 ////////////////////////// FONCTIONS ANNEXES //////////////////////////////////////////////
-function collectEtudiantIds(exercices) {
-  const etus = new Set();
-  return exercices.filter((item) => {
-    let k = key(item);
-    return etus.has(k.idEtu) ? false : etus.add(k.idEtu);
-  });
-}
-
-function tempsSoumissionToString(temps) {
-  return temps;
-}
 filtreResultat;
 function stringDateToTimestamp(stringDate) {
   return Date.parse(stringDate).valueOf();
