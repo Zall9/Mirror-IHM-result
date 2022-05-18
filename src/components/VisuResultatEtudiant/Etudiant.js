@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DiagrammeCirculaireExercice from './DiagrammeCirculaireExercice';
-import CircularProgressWithLabel from '../VisuResultatExercice/CircularProgressWithLabel';
+import CircularProgressWithLabel from '@components/CircularProgressWithLabel/CircularProgressWithLabel';
 
 import { useNavigate } from 'react-router-dom';
 import calculScoreListeExo from '../Utilitaires/CalculScoreListeExo';
