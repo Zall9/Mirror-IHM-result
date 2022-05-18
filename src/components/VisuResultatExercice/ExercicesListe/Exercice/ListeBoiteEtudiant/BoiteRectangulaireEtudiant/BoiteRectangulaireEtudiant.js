@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import EtudiantCliquable from '../EtudiantCliquable/EtudiantCliquable'; //TODO ALIAS SUR LE COMPONENT
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Divider from '@mui/material/Divider';
-import Item from '@mui/material/ListItem';
 import { useNavigate } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
-import getColor from '../Utilitaires/DegradeColorDansTemps';
+import getColor from '@components/Utilitaires/DegradeColorDansTemps';
 
 function getTimeProportion(exo) {
   const tm = parseInt(exo.tempsMoyen) ?? 10;
@@ -22,8 +17,9 @@ function getTimeProportion(exo) {
   return ta / (tm <= 0 ? 10 : tm);
 }
 
-// construire Box par étudiant
-
+/**
+ * Une carte étudiant correspondant à son avancée dans l'exercice
+ */
 const BoiteRectangulaireEtudiant = (props) => {
   const exo = props.etudiantExo;
   const color = getColor(
@@ -77,6 +73,7 @@ const BoiteRectangulaireEtudiant = (props) => {
     </div>
   );
 };
+
 function affichageTemps(exo) {
   return exo.estFini ? (
     <li>

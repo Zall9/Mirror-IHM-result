@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BoiteRectangulaireEtudiant from './BoiteRectangulaireEtudiant';
-import BoiteRectangulaireExercice from './BoiteRectangulaireExercice';
+import BoiteRectangulaireExercice from './BoiteRectangulaireExercice/BoiteRectangulaireExercice';
 
 import Stack from '@mui/material/Stack';
 import Item from '@mui/material/ListItem';
+import ListeBoiteEtudiant from './ListeBoiteEtudiant/ListeBoiteEtudiant';
 
 /**
  * Fonction qui tri les exercices d'étudiants en fonction de leur réussite et de leur dernière soummission
@@ -35,17 +35,10 @@ function compareEtudiant(exoEtu1, exoEtu2) {
   );
 }
 
-const construitListeBoiteEtudiant = (listeEtudiants) =>
-  listeEtudiants.map((etudiantExo, index) => {
-    return (
-      <Item key={index}>
-        <BoiteRectangulaireEtudiant etudiantExo={etudiantExo} />
-      </Item>
-    );
-  });
-
+/**
+ * Une ligne correspondant à un exercice ainsi que les étudiants y ayant participé
+ */
 const Exercice = (props) => {
-  const idExo = props.idExo;
   const listeEtudiants = props.listeEtudiants;
 
   listeEtudiants.sort(compareEtudiant);
@@ -55,13 +48,13 @@ const Exercice = (props) => {
       <Item sx={{ width: '250px' }}>
         <BoiteRectangulaireExercice listeExo={listeEtudiants} nbEtu={props.nbEtu} />
       </Item>
-      <Stack direction="row">{construitListeBoiteEtudiant(listeEtudiants)}</Stack>
+
+      <ListeBoiteEtudiant listeEtudiants={listeEtudiants} />
     </Stack>
   );
 };
 
 Exercice.propTypes = {
-  idExo: PropTypes.string.isRequired,
   listeEtudiants: PropTypes.array.isRequired,
   nbEtu: PropTypes.number.isRequired,
 };
