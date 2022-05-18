@@ -20,7 +20,6 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
   const idEtu = param.idEtu;
 
   const exercices = useSelector(getExercices).filter((exo) => exo.idEtu == idEtu);
-  console.log(exercices);
   exercices.sort(triTab);
 
   // tri les résultats en fonction du fait qu'il soit fini ou non et de la date des soumissions
@@ -108,7 +107,6 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
       scoreSeance += exo.difficulte;
     }
   });
-  console.log(exercices);
   return (
     <Box>
       <h2 align="center"> Score : {scoreSeance}</h2>

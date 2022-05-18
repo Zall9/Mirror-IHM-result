@@ -9,7 +9,6 @@ export function etudiantParser(idEtu) {
   let prenomMaj = prenom.charAt(0).toUpperCase() + prenom.slice(1);
 
   let nomMaj = nom.charAt(0).toUpperCase() + nom.slice(1);
-  console.log(prenomMaj + ' ' + nomMaj);
   return prenomMaj + ' ' + nomMaj;
 }
 

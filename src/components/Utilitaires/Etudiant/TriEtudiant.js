@@ -24,9 +24,7 @@ export function triEtudiants(listeEtudiantsExos, methode, reverseTri, exoValides
       const tmpNewListExo = etu.listeExos.filter((exo) => estValide === exo.estFini);
       if (tmpNewListExo.length != 0) tmpList.push({ idEtu: etu.idEtu, listeExos: tmpNewListExo });
     }
-    console.log(listeEtudiantsExos);
     listeEtudiantsExos = tmpList;
-    console.log(listeEtudiantsExos);
   }
   return listeEtudiantsExos;
 }
