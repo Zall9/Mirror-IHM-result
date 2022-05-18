@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import { addExercice, addTentative } from '@stores/Exercices/exercicesSlice';
+import { addExercice, addTentative, addAide } from '@stores/Exercices/exercicesSlice';
 
 export const initSocketConnection = (dispatch) => {
   const socket = io(process.env.REACT_APP_SRVRESULT_URL);
@@ -10,5 +10,10 @@ export const initSocketConnection = (dispatch) => {
 
   socket.on('tentatives', ({ etudiantFaitNouvelleTentative }) => {
     dispatch(addTentative(etudiantFaitNouvelleTentative));
+  });
+
+  socket.on('aides', ({ etudiantDemandeAide }) => {
+    console.log(etudiantDemandeAide);
+    dispatch(addAide(etudiantDemandeAide));
   });
 };

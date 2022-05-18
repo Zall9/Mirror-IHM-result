@@ -30,7 +30,9 @@ const Exercice = (props) => {
       <Item sx={{ width: '250px' }}>
         <BoiteRectangulaireExercice listeExo={listeEtudiants} nbEtu={props.nbEtu} />
       </Item>
-      <Stack direction="row">{construitListeBoiteEtudiant(listeEtudiants)}</Stack>
+      <Stack direction="row" spacing={0.5}>
+        {construitListeBoiteEtudiant(listeEtudiants)}
+      </Stack>
     </Stack>
   );
 };

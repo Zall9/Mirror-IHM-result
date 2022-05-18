@@ -24,36 +24,13 @@ const construitListeDiagrammeExercices = (listeExercices) =>
     );
   });
 
-const Etudiant = (props) => {
-  const idEtu = props.idEtu;
-  const listeExercices = props.listeExercices;
-  const nbExoValides = compteNbExoValides(listeExercices);
-  const scoreExo = calculScoreListeExo(listeExercices);
-  const minValue = props.valExtremes.min;
-  const maxValue = props.valExtremes.max;
-
-  let navigate = useNavigate();
-  const redirection = () => {
-    navigate('/resultat/' + idEtu.toLowerCase());
-  };
-
+const iconeMainDemandeAide = (listeExercices, remetAZero) => {
   // const shakeAnimation = () => keyframes`
   //   0% { transform: translate3d(0,0,0); },
   //   50% { transform: rotate(0deg) },
   //   100% { transform: rotate(30deg) },
   // `;
-  function remetAZero() {
-    // trouver le bon exo
-    for (const exo of listeExercices) {
-      if (!exo.estFini) {
-        axios
-          .get(process.env.REACT_APP_SRVRESULT_URL + '/aides/resolve', {
-            params: { idExo: exo.idExo, idEtu: exo.idEtu, idSession: exo.idSession },
-          })
-          .then();
-      }
-    }
-  }
+
   const color =
     listeExercices
       .map((exo) => {
@@ -72,16 +49,60 @@ const Etudiant = (props) => {
       .filter((value) => value == 1).length != 0
       ? '#CC0000'
       : '#CCCCCC';
-  useEffect(() => {}, []);
+  return (
+    <IconButton onClick={remetAZero}>
+      <PanToolIcon
+        sx={{
+          color: { color },
+          // animation: `${shakeAnimation} 0.7s ease-out 0s infinite alternate;`,
+        }}
+      />
+    </IconButton>
+  );
+};
+
+const Etudiant = (props) => {
+  const idEtu = props.idEtu;
+  const listeExercices = props.listeExercices;
+  const nbExoValides = compteNbExoValides(listeExercices);
+  const scoreExo = calculScoreListeExo(listeExercices);
+  const minValue = props.valExtremes.min;
+  const maxValue = props.valExtremes.max;
+  let actualize = 0;
+  function remetAZero() {
+    // trouver le bon exo
+    for (const exo of listeExercices) {
+      if (!exo.estFini) {
+        axios.put(process.env.REACT_APP_SRVRESULT_URL + '/exercices/' + exo.id + '/aides').then();
+      }
+    }
+    actualize++;
+  }
+
+  let navigate = useNavigate();
+  const redirection = () => {
+    navigate('/resultat/' + idEtu.toLowerCase());
+  };
+
+  const [time, setTime] = useState(Date.now());
+  var interval;
+
+  useEffect(() => {
+    interval = setInterval(() => setTime(Date.now()), 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <Stack
-      direction="row"
+      direction="column"
       divider={<Divider orientation="vertical" flexItem />}
-      sx={{ h2: { lineHeight: 0 }, marginBottom: '-10px' }}
+      sx={{ h2: { lineHeight: 0 }, marginRight: '-10px' }}
     >
       <div display="block flow">
         <div onClick={redirection}>
-          <h2>
+          <h2 align="center">
             {' '}
             {idEtu} {'  '}
           </h2>
@@ -102,18 +123,11 @@ const Etudiant = (props) => {
             minValue={minValue}
             maxValue={maxValue}
           />
-          <IconButton onClick={remetAZero}>
-            <PanToolIcon
-              sx={{
-                color: { color },
-                // animation: `${shakeAnimation} 0.7s ease-out 0s infinite alternate;`,
-              }}
-            />
-          </IconButton>
+          {iconeMainDemandeAide(listeExercices, remetAZero)}
         </Stack>
       </div>
       <div>
-        <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
+        <Stack direction="column" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
           {construitListeDiagrammeExercices(listeExercices)}
         </Stack>
       </div>

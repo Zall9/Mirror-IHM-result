@@ -195,7 +195,12 @@ const VisuResultatEtudiantComponent = (props) => {
         </IconButton>
       </Box>
 
-      <Stack direction="column" divider={<Divider orientation="horizontal" flexItem />} spacing={0}>
+      <Stack
+        direction="row"
+        alignItems="flex-start"
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={0}
+      >
         {construitListeEtudiants(ListeEtudiantsExos)}
       </Stack>
     </div>

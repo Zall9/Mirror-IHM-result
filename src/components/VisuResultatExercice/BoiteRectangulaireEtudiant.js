@@ -8,6 +8,8 @@ import Item from '@mui/material/ListItem';
 import { useNavigate } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import getColor from '../Utilitaires/DegradeColorDansTemps';
+import Typography from '@mui/material/Typography';
+import style from '../style/style';
 
 // construire Box par étudiant
 
@@ -56,17 +58,15 @@ const BoiteRectangulaireEtudiant = (props) => {
         }}
       >
         <h2 align="center"> {exo.idEtu}</h2>
-        <ul>
-          <li>tentatives : {exo.tentatives.length}</li>
-          {affichageTemps(exo)}
-        </ul>
+        <Typography>tentatives : {exo.tentatives.length}</Typography>
+        {affichageTemps(exo)}
       </Box>
     </div>
   );
 };
 function affichageTemps(exo) {
   return exo.estFini ? (
-    <li>
+    <Typography>
       temps :{' '}
       {Math.floor(
         (Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission) -
@@ -74,17 +74,17 @@ function affichageTemps(exo) {
           60000,
       )}{' '}
       m
-    </li>
+    </Typography>
   ) : exo.tentatives.length != 0 ? (
-    <li>
+    <Typography>
       temps :{' '}
       {Math.floor(
         (Date.now() - Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission)) / 60000,
       )}{' '}
       m
-    </li>
+    </Typography>
   ) : (
-    <li>temps :{Math.floor((Date.now() - Date.parse(exo.debut)) / 60000)} m</li>
+    <Typography> temps :{Math.floor((Date.now() - Date.parse(exo.debut)) / 60000)} m</Typography>
   );
 }
 
