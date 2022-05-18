@@ -13,7 +13,7 @@ import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 import Box from '@mui/material/Box';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
-import * as triUtils from '../Utilitaires/TriEtudiant';
+import * as triUtils from '../Utilitaires/Etudiant/TriEtudiant';
 import { recupereSessions, recupereSeance } from '../Utilitaires/gestionSession';
 import calculValExtremes from '../Utilitaires/CalculValExtremes';
 import { useNavigate } from 'react-router-dom';
