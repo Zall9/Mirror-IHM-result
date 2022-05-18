@@ -1,15 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
-import Etudiant from '@components/VisuResultatEtudiant/Etudiant';
-import BoiteRectangulaireExercicePourUnEtudiant from './BoiteRectangulaireExercicePourUnEtudiant';
 import Row from './RowResultatComplet/RowResultatComplet';
-import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-import { useNavigate } from 'react-router-dom';
-import etudiantParser from '../Utilitaires/Etudiant/etudiantParser';
 
-import Stack from '@mui/material/Stack';
 import {
   Table,
   TableBody,
@@ -19,9 +13,8 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
-import EqualizerIcon from '@mui/icons-material/Equalizer';
 
-import Item from '@mui/material/ListItem';
+import AfficheBoiteExercice from './AfficheBoiteExercice/AfficheBoiteExercice';
 
 const ResultatCompletEtudiant = (param /*, seance*/) => {
   // const [data, setData] = useState([]);
@@ -115,81 +108,7 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
   }
 
   //Calcul nb etudiants de la session
-  function EtudiantSession(exercices, idSession) {
-    const etudiants = [];
-    exercices.map((exo) => {
-      if (exo.idSession == idSession && !etudiants.includes(exo.idEtu)) {
-        etudiants.push(idEtu);
-      }
-    });
-    return etudiants.length;
-  }
 
-  // Cré l'objet des paramètres "moyen" de la session a transmettre à la boite exercice
-  function calculParametresMoyens(idExo, exercices, idSession) {
-    let nbTentasReussi = 0;
-    let temps = 0;
-    let tpsEtu = 0;
-    let nbTentaEtu = 0;
-    let nbEtu = 0;
-    let nbEtuValide = 0;
-    let tpsMin = Infinity;
-    let tpsMax = 0;
-    let nbTentaMin = Infinity;
-    let nbTentaMax = 0;
-    let nbEtuSession = EtudiantSession(exercices, idSession);
-    exercices.filter(filtreResultatExercice);
-
-    // fitre les mêmes exercices et la meme session
-    function filtreResultatExercice(exercice) {
-      if (exercice.idExo == idExo && exercice.idSession == idSession) {
-        return true;
-      }
-      return false;
-    }
-    // construit le parametre
-    exercices.map((exo) => {
-      nbEtu++;
-      if (exo.estFini) {
-        tpsEtu =
-          Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission) -
-          Date.parse(exo.debut);
-        temps += tpsEtu;
-        nbEtuValide++;
-        nbTentaEtu = exo.tentatives.length;
-        nbTentasReussi += nbTentaEtu;
-        nbTentaMax = nbTentaMax > nbTentaEtu ? nbTentaMax : nbTentaEtu;
-        nbTentaMin = nbTentaMin < nbTentaEtu ? nbTentaMin : nbTentaEtu;
-        tpsMin = tpsMin > tpsEtu ? tpsEtu : tpsMin;
-        tpsMax = tpsMax < tpsEtu ? tpsEtu : tpsMax;
-      }
-    });
-    return {
-      nbEtu: nbEtuSession,
-      nbEtuValide: nbEtuValide,
-      tpsMoy: temps / nbEtu,
-      tpsMin: tpsMin,
-      tpsMax: tpsMax,
-      tentaMoy: nbTentasReussi / nbEtuValide,
-      tentaMin: nbTentaMin,
-      tentaMax: nbTentaMax,
-    };
-  }
-
-  function afficheBoiteExercice(listeExercices) {
-    // recuperer les exercices faits par l'étudiant
-    // parcourir les exercices
-    // récupérer les paramètres de cet exercice
-    const exercices = useSelector(getExercices);
-    return listeExercices.map((exercice, index) => {
-      const parametres = calculParametresMoyens(exercice.idExo, exercices, exercice.idSession);
-      return (
-        <Item key={index} component="div">
-          <BoiteRectangulaireExercicePourUnEtudiant Exo={exercice} ExoClasse={parametres} />
-        </Item>
-      );
-    });
-  }
   let scoreSeance = 0;
   exercices.map((exo) => {
     if (exo.estFini) {
@@ -197,18 +116,11 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
     }
   });
 
-  let navigate = useNavigate();
-  const redirectionResultat = () => {
-    navigate('/visuresultatexercice');
-  };
-
   return (
     <Box>
       <h2 align="center"> Score : {scoreSeance}</h2>
       <h2>progression résumée : </h2>
-      <Stack direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={1}>
-        {afficheBoiteExercice(exercices)}
-      </Stack>
+      <AfficheBoiteExercice listeExercices={exercices} />
 
       <h2>progression détaillée :</h2>
       <TableContainer component={Paper}>
@@ -246,12 +158,5 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
     </Box>
   );
 };
-function tempsSoumissionToString(temps) {
-  return temps;
-}
-
-function stringDateToTimestamp(stringDate) {
-  return Date.parse(stringDate).valueOf();
-}
 
 export default ResultatCompletEtudiant;
