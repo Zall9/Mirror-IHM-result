@@ -23,11 +23,11 @@ import MenuDeroulantSession from '../MenuDeroulantSession/MenuDeroulantSession';
 
 function construitListeEtudiants(ListeEtudiantsExos) {
   const valExtremes = calculValExtremes(ListeEtudiantsExos);
-  return ListeEtudiantsExos.map((objetIdEtuListeExo, index) => {
+  return ListeEtudiantsExos.map((objetIdEtuListeExo) => {
     // component="div" pour supprimer le warning (https://github.com/mui/material-ui/issues/19827)
     return (
       <Etudiant
-        key={index}
+        key={objetIdEtuListeExo.idEtu}
         idEtu={objetIdEtuListeExo.idEtu}
         valExtremes={valExtremes}
         listeExercices={objetIdEtuListeExo.listeExos}
@@ -174,14 +174,14 @@ const VisuResultatEtudiantComponent = () => {
   ];
 
   return (
-    <div>
+    <Box sx={{ marginLeft: '1em' }}>
       <Box
         sx={{
           position: 'relative',
           justifyContent: 'flex-start',
           display: 'inline-flex',
           width: '100%',
-          margin: '10px',
+          marginTop: '1em',
         }}
       >
         <Stack direction="row" divider={<Divider orientation="horizontal" flexItem />}>
@@ -220,7 +220,7 @@ const VisuResultatEtudiantComponent = () => {
       <Grid container spacing={2}>
         {construitListeEtudiants(ListeEtudiantsExos)}
       </Grid>
-    </div>
+    </Box>
   );
 };
 

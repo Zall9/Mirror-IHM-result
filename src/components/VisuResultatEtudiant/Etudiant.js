@@ -24,7 +24,7 @@ const construitListeDiagrammeExercices = (listeExercices) =>
   });
 
 const Etudiant = (props) => {
-  const idEtu = etudiantParser(props.idEtu);
+  const idEtu = props.idEtu;
   const listeExercices = props.listeExercices;
   const nbExoValides = compteNbExoValides(listeExercices);
   const scoreExo = calculScoreListeExo(listeExercices);
@@ -80,9 +80,9 @@ const Etudiant = (props) => {
       <Grid container>
         <Grid item xs={3}>
           <Grid container>
-            <Grid item xs={5} sx={{ marginLeft: '1em' }}>
+            <Grid item xs={5}>
               <Box onClick={redirection}>
-                <h2>{idEtu}</h2>
+                <h2>{etudiantParser(idEtu)}</h2>
               </Box>
             </Grid>
             <Grid item xs={2} sx={{ my: 1.6 }}>
@@ -104,7 +104,7 @@ const Etudiant = (props) => {
                 maxValue={maxValue}
               />
             </Grid>
-            <Grid item xs={1} sx={{ my: 1.6 }}>
+            <Grid item xs={2} sx={{ my: 1.6 }}>
               <IconButton onClick={remetAZero}>
                 <PanToolIcon
                   sx={{
@@ -114,7 +114,7 @@ const Etudiant = (props) => {
                 />
               </IconButton>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={1} sx={{ my: 2.5 }}>
               <NotificationRetardEtudiant idEtudiant={idEtu} />
             </Grid>
           </Grid>
