@@ -4,9 +4,6 @@ import DiagrammeCirculaireExercice from './DiagrammeCirculaireExercice';
 import CircularProgressWithLabel from '../VisuResultatExercice/CircularProgressWithLabel';
 
 import { useNavigate } from 'react-router-dom';
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import Item from '@mui/material/ListItem';
 import calculScoreListeExo from '../Utilitaires/CalculScoreListeExo';
 import compteNbExoValides from '../Utilitaires/CompteNbExoValides';
 
@@ -14,6 +11,9 @@ import PanToolIcon from '@mui/icons-material/PanTool';
 import { IconButton } from '@mui/material';
 import { jsx, css, keyframes } from '@emotion/react';
 import axios from 'axios';
+import { Stack, Box, Divider } from '@mui/material';
+import Item from '@mui/material/ListItem';
+import NotificationRetardEtudiant from '../NotificationRetardEtudiant/NotificationRetardEtudiant';
 
 const construitListeDiagrammeExercices = (listeExercices) =>
   listeExercices.map((exercice, index) => {
@@ -110,6 +110,7 @@ const Etudiant = (props) => {
               }}
             />
           </IconButton>
+          <NotificationRetardEtudiant idEtudiant={idEtu} />
         </Stack>
       </div>
       <div>

@@ -27,12 +27,15 @@ const BoiteRectangulaireExercicePourUnEtudiant = (props) => {
   const proportionTenta =
     ((exo.tentatives.length - exoClasse.tentaMin) / (exoClasse.tentaMax - exoClasse.tentaMin)) *
     100;
-  const proportionTemps =
-    ((Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission) -
-      Date.parse(exo.debut) -
-      exoClasse.tpsMin) /
-      (exoClasse.tpsMax - exoClasse.tpsMin)) *
-    100;
+  var proportionTemps;
+  if (exo.tentatives.length != 0) {
+    proportionTemps =
+      ((Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission) -
+        Date.parse(exo.debut) -
+        exoClasse.tpsMin) /
+        (exoClasse.tpsMax - exoClasse.tpsMin)) *
+      100;
+  }
 
   const color = getColor(exo);
   const estFini = exo.estFini;

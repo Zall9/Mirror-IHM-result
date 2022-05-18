@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DiagrammeCirculaire from '../DiagrammeCirculaire/DiagrammeCirculaire'; //TODO ALIAS SUR LE COMPONENT
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
 
 const DiagrammeCirculaireExercice = (props) => {
   const [time, setTime] = useState(Date.now());
