@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import Row from './RowResultatComplet/RowResultatComplet';
-
 import {
   Table,
   TableBody,
@@ -21,7 +20,6 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
 
   // filtre les résultats TODO : sessions
   function filtreResultat(exercice) {
-    console.log(exercice.tentatives);
     if (exercice.idEtu == idEtu) {
       return true;
     }
@@ -62,7 +60,6 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
     } else {
       temps = Date.now().valueOf() - stringDateToTimestamp(exercice.debut);
     }
-    console.log(exercice);
     const tentative = [];
     for (let i = 0; i < exercice.tentatives.length; i++) {
       if (i == 0) {
@@ -126,7 +123,6 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
 };
 
 function tempsSoumissionToString(temps) {
-  console.log(temps);
   return temps;
 }
 

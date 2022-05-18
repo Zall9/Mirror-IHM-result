@@ -12,6 +12,7 @@ beforeEach(() => {
   // met en place un élément DOM comme cible de rendu
   container = document.createElement('div');
   document.body.appendChild(container);
+  jest.resetAllMocks();
 });
 
 afterEach(() => {

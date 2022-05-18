@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-
+import ExportResultat from '../ExportResultat/ExportResultat';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 
-const Avancement2 = () => {
+const AvancementComponent = () => {
   const columns = [
     { field: 'id', headerName: 'id Etudiant', width: 150 },
     { field: 'nbExoValid', headerName: 'nb exo valide', type: 'number', width: 130 },
@@ -14,7 +14,6 @@ const Avancement2 = () => {
     { field: 'themes', headerName: 'themes', sortable: false, width: 250 },
     { field: 'difficulte', headerName: 'difficultes', type: 'number', width: 130 },
   ];
-  console.log(columns);
 
   // récupérer tous les résultats
   const exercices = useSelector(getExercices);
@@ -26,14 +25,12 @@ const Avancement2 = () => {
     }
   }
 
-  console.log(etudiants);
   // faire un tableau id etudiant
   let avancement = [];
   // faire un tableau id etudiant / avec le nb d'exercices validés
   // et des informations sur l'exercice courant : nb de tentative / le temps passé / nom exo / thèmes / difficultés
 
   for (const etudiant of etudiants) {
-    console.log('etudiant', etudiant);
     let tempsExo, nomExercice, themesExercice, difficulteExercice, nombreTentatives;
     const exoEnCours = exercices.filter((exo) => exo.idEtu == etudiant && exo.estFini == false);
     if (exoEnCours.length == 0) {
@@ -51,8 +48,6 @@ const Avancement2 = () => {
       themesExercice = exoEnCours[0].themes.join();
       difficulteExercice = exoEnCours[0].difficulte ?? 0;
     }
-    console.log('exoEncours');
-    console.log(exoEnCours);
 
     avancement.push({
       id: etudiant,
@@ -65,7 +60,6 @@ const Avancement2 = () => {
     });
   }
   const rows = avancement;
-  console.log(rows);
 
   return (
     <div style={{ height: 400, width: '100%' }}>
@@ -76,6 +70,7 @@ const Avancement2 = () => {
         rowsPerPageOptions={[5]}
         checkboxSelection
       />
+      <ExportResultat />
     </div>
   );
 };
@@ -90,7 +85,6 @@ function collectEtudiantIds(exercices) {
 }
 
 function tempsSoumissionToString(temps) {
-  console.log(temps);
   return temps;
 }
 filtreResultat;
@@ -100,12 +94,10 @@ function stringDateToTimestamp(stringDate) {
 
 // filtre les résultats d'un étudiant
 function filtreResultat(exercice, idEtu) {
-  console.log(exercice.idEtu);
-  console.log(idEtu);
   if (exercice.idEtu == idEtu) {
     return true;
   }
   return false;
 }
 
-export default Avancement2;
+export default AvancementComponent;
