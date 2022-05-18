@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getSessions } from '@stores/Sessions/sessionSlice';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Item from '@mui/material/ListItem';
 import Etudiant from './Etudiant';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import * as triUtils from '../Utilitaires/TriEtudiant';
-import { recupereSessions } from '../Utilitaires/SessionsFromExercice';
+import { recupereSessions, recupereSeance } from '../Utilitaires/gestionSession';
+
 const construitListeEtudiants = (ListeEtudiantsExos) =>
   ListeEtudiantsExos.map((objetIdEtuListeExo, index) => {
     // component="div" pour supprimer le warning (https://github.com/mui/material-ui/issues/19827)
@@ -18,14 +20,21 @@ const construitListeEtudiants = (ListeEtudiantsExos) =>
     );
   });
 
-const VisuResultatEtudiantComponent = (props) => {
+const VisuResultatEtudiantComponent = () => {
+  const sessions = useSelector(getSessions);
   const sessionStorageNameSession = 'idSes';
   const sessionStorageNameTri = 'tri';
+  const sessionStorageSeance = 'idSeance';
 
   const [choixSession, setSession] = React.useState(
     sessionStorage.getItem(sessionStorageNameSession)
       ? sessionStorage.getItem(sessionStorageNameSession)
-      : '',
+      : 'all',
+  );
+  const [seance, setSeance] = React.useState(
+    sessionStorage.getItem(sessionStorageSeance)
+      ? sessionStorage.getItem(sessionStorageSeance)
+      : 'all',
   );
   const [choixTri, setTri] = React.useState(
     sessionStorage.getItem('tri') ? sessionStorage.getItem('tri') : 'alphabetique',
@@ -33,7 +42,6 @@ const VisuResultatEtudiantComponent = (props) => {
 
   // récupérer tous les exercices pour chaque  étudiant
   const exercices = useSelector(getExercices);
-  const idSession = choixSession;
 
   // collecter tous les exercices de chaque étudiant
   // clé : idEtu, valeur : listeExercices
@@ -42,7 +50,10 @@ const VisuResultatEtudiantComponent = (props) => {
   let ListeEtudiants = [];
 
   exercices.map((exo) => {
-    if (exo.idSession == idSession) {
+    if (
+      (exo.idSession == choixSession || choixSession == 'all') &&
+      (exo.idSeance == seance || seance == 'all')
+    ) {
       if (ExosEtudiants[exo.idEtu] === undefined) {
         ExosEtudiants[exo.idEtu] = [];
         ListeEtudiants.push(exo.idEtu);
@@ -61,7 +72,9 @@ const VisuResultatEtudiantComponent = (props) => {
   // Trier ce tableau (par défaut alphabétique)
   triUtils.triEtudiants(ListeEtudiantsExos, choixTri);
 
-  const listeIdSession = recupereSessions(exercices);
+  const listeIdSession = recupereSessions(sessions);
+
+  const listeIdSeance = recupereSeance(sessions);
 
   const menuTri = [
     'alphabetique',
@@ -80,6 +93,14 @@ const VisuResultatEtudiantComponent = (props) => {
         storageName={sessionStorageNameSession}
         name="Session"
       />
+      <MenuDeroulant
+        Items={listeIdSeance}
+        state={seance}
+        setState={setSeance}
+        storageName={sessionStorageSeance}
+        name="Seance"
+      />
+
       <MenuDeroulant
         Items={menuTri}
         state={choixTri}
