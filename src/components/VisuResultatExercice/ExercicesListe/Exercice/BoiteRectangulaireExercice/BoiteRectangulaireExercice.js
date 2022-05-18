@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import EtudiantCliquable from '../EtudiantCliquable/EtudiantCliquable'; //TODO ALIAS SUR LE COMPONENT
+import React from 'react';
 import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import Item from '@mui/material/ListItem';
-import Grid from '@mui/material/Grid';
-import CircularProgressWithLabel from './CircularProgressWithLabel';
+import CircularProgressWithLabel from '@components/CircularProgressWithLabel/CircularProgressWithLabel';
 import Box from '@mui/material/Box';
-import Tooltip from '@mui/material/Tooltip';
 
-// construire Box par étudiant
-
+/**
+ * Entête de la ligne d'exercice, permettant de décrire les infos générales sur celui-ci
+ */
 const BoiteRectangulaireExercice = (props) => {
   const listeExo = props.listeExo;
 
@@ -38,7 +34,7 @@ const BoiteRectangulaireExercice = (props) => {
             value={listeExo[0].difficulte}
             color="secondary"
             isAPercentage={false}
-            textOver="difficulté de l'exercice"
+            textOver="Difficulté de l'exercice"
             minValue={0}
             maxValue={10}
           />

@@ -3,7 +3,7 @@ import Navigation from '@components/NavigationBar/NavigationBar';
 import { Box } from '@mui/material';
 import ResultatCompletEtudiant from '@components/ResultatCompletEtudiant/ResultatCompletEtudiant';
 import { useParams } from 'react-router-dom';
-
+import etudiantParser from '../../components/Utilitaires/Etudiant/etudiantParser';
 const ResultatEtudiant = () => {
   return (
     <Box>

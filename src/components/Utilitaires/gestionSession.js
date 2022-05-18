@@ -22,7 +22,6 @@ export function recupereSessions(sessions) {
 
 export function recupereSeance(sessions) {
   let seances = [];
-  console.log(sessions);
   sessions.map((session) => {
     session.seances.map((seance) => {
       if (!seances.includes(seance.id)) {
@@ -30,7 +29,6 @@ export function recupereSeance(sessions) {
       }
     });
   });
-  console.log(seances);
   seances.push('all');
   return seances;
 }

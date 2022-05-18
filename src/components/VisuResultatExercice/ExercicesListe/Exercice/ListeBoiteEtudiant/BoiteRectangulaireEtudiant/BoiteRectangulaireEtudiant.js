@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import EtudiantCliquable from '../EtudiantCliquable/EtudiantCliquable'; //TODO ALIAS SUR LE COMPONENT
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Divider from '@mui/material/Divider';
-import Item from '@mui/material/ListItem';
 import { useNavigate } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
-import getColor from '../Utilitaires/DegradeColorDansTemps';
+import getColor from '@components/Utilitaires/DegradeColorDansTemps';
 
-// construire Box par étudiant
+function getTimeProportion(exo) {
+  const tm = parseInt(exo.tempsMoyen) ?? 10;
+  const ta =
+    (Date.now() -
+      Date.parse(
+        exo.tentatives.length != 0
+          ? exo.tentatives[exo.tentatives.length - 1].dateSoumission
+          : exo.debut,
+      )) /
+    60000;
+  return ta / (tm <= 0 ? 10 : tm);
+}
 
+/**
+ * Une carte étudiant correspondant à son avancée dans l'exercice
+ */
 const BoiteRectangulaireEtudiant = (props) => {
   const exo = props.etudiantExo;
   const color = getColor(
@@ -64,6 +73,7 @@ const BoiteRectangulaireEtudiant = (props) => {
     </div>
   );
 };
+
 function affichageTemps(exo) {
   return exo.estFini ? (
     <li>
@@ -86,19 +96,6 @@ function affichageTemps(exo) {
   ) : (
     <li>temps :{Math.floor((Date.now() - Date.parse(exo.debut)) / 60000)} m</li>
   );
-}
-
-function getTimeProportion(exo) {
-  const tm = parseInt(exo.tempsMoyen) ?? 10;
-  const ta =
-    (Date.now() -
-      Date.parse(
-        exo.tentatives.length != 0
-          ? exo.tentatives[exo.tentatives.length - 1].dateSoumission
-          : exo.debut,
-      )) /
-    60000;
-  return ta / (tm <= 0 ? 10 : tm);
 }
 
 BoiteRectangulaireEtudiant.propTypes = {

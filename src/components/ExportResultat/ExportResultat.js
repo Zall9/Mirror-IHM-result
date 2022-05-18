@@ -1,16 +1,20 @@
 import { Button } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { recupereSeance, recupereSessions } from '../Utilitaires/gestionSession';
+import { getSessions } from '@stores/Sessions/sessionSlice';
 
 async function lancerExport(choix) {
   //Recuperation des exercices
   const exercices = await axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices');
   if (exercices) {
-    const choisis = exercices.data.exercices.filter((exo) => exo.idSession === choix);
-    downloadObjectAsJson(choisis);
+    const choisis =
+      choix === 'all'
+        ? exercices.data.exercices
+        : exercices.data.exercices.filter((exo) => exo.idSession === choix);
+    downloadObjectAsJson(choisis, choix);
   }
 }
 
@@ -20,13 +24,13 @@ async function lancerExport(choix) {
  * lien du corps
  * @param exos - les données que vous souhaitez télécharger
  */
-function downloadObjectAsJson(exos) {
+function downloadObjectAsJson(exos, choix) {
   //const data = res.data.exercices;
   const dataStr = JSON.stringify(exos);
   const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
   const link = document.createElement('a');
   link.setAttribute('href', dataUri);
-  link.setAttribute('download', `session-${exos[0].idSession}.json`);
+  link.setAttribute('download', `session-${choix}.json`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -36,26 +40,41 @@ function downloadObjectAsJson(exos) {
  */
 const ExportResultat = () => {
   //variables
-  var sessionStorageNameSession = 'idSes';
+  const sessionStorageNameSession = 'idSes';
+  const sessionStorageNameSeance = 'idSeance';
 
-  var sessions = useSelector(getExercices)
-    .map((exo) => exo.idSession)
-    .filter((id, index, self) => self.indexOf(id) === index);
+  const sessions = useSelector(getSessions);
+
+  const sessionsId = recupereSessions(sessions);
   //hooks
+  const seancesId = recupereSeance(sessions);
+  //permets de stocker dans le cache session la valeur selectionnée dans le menu déroulant
   const [choix, setChoix] = React.useState(
     sessionStorage.getItem(sessionStorageNameSession)
       ? sessionStorage.getItem(sessionStorageNameSession)
+      : 'all',
+  );
+  const [seance, setSeance] = React.useState(
+    sessionStorage.getItem(sessionStorageNameSeance)
+      ? sessionStorage.getItem(sessionStorageNameSeance)
       : '',
   );
 
   return (
     <div id="MaDiv">
       <MenuDeroulant
-        Items={sessions}
-        state={choix}
+        listeId={sessionsId}
+        choix={choix}
         setState={setChoix}
-        storageName={sessionStorageNameSession}
+        nomArticle={sessionStorageNameSession}
         name="Session"
+      />
+      <MenuDeroulant
+        listeId={seancesId}
+        choix={seance}
+        setState={setSeance}
+        nomArticle={sessionStorageNameSeance}
+        name="Seance"
       />
       <Button variant="contained" color="primary" onClick={() => lancerExport(choix)}>
         Exporter les resultats

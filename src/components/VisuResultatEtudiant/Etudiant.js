@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import DiagrammeCirculaireExercice from './DiagrammeCirculaireExercice';
-import CircularProgressWithLabel from '../VisuResultatExercice/CircularProgressWithLabel';
+import CircularProgressWithLabel from '@components/CircularProgressWithLabel/CircularProgressWithLabel';
 
 import { useNavigate } from 'react-router-dom';
 import calculScoreListeExo from '../Utilitaires/CalculScoreListeExo';
 import compteNbExoValides from '../Utilitaires/CompteNbExoValides';
-import etudiantParser from '../Utilitaires/Etudiant/etudiantParser';
+import { etudiantParser, etudiantUnParser } from '../Utilitaires/Etudiant/etudiantParser';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import { IconButton } from '@mui/material';
-import { jsx, css, keyframes } from '@emotion/react';
 import axios from 'axios';
-import { Stack, Box, Divider } from '@mui/material';
+import { Stack, Divider } from '@mui/material';
 import Item from '@mui/material/ListItem';
 import NotificationRetardEtudiant from '../NotificationRetardEtudiant/NotificationRetardEtudiant';
 
@@ -34,7 +33,7 @@ const Etudiant = (props) => {
 
   let navigate = useNavigate();
   const redirection = () => {
-    navigate('/resultat/' + idEtu.toLowerCase());
+    navigate('/resultat/' + etudiantUnParser(idEtu.toLowerCase()));
   };
 
   // const shakeAnimation = () => keyframes`
@@ -72,7 +71,7 @@ const Etudiant = (props) => {
       .filter((value) => value == 1).length != 0
       ? '#CC0000'
       : '#CCCCCC';
-  useEffect(() => {}, []);
+
   return (
     <Stack
       direction="row"

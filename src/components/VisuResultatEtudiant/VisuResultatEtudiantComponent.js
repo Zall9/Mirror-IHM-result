@@ -184,23 +184,22 @@ const VisuResultatEtudiantComponent = () => {
       >
         <Stack direction="row" divider={<Divider orientation="horizontal" flexItem />}>
           <MenuDeroulant
-            Items={listeIdSession}
-            state={choixSession}
+            listeId={listeIdSession}
+            choix={choixSession}
             setState={setSession}
-            storageName={sessionStorageNameSession}
+            nomArticle={sessionStorageNameSession}
             name="Session"
           />
           <MenuDeroulant
-            Items={listeIdSeance}
-            state={seance}
+            listeId={listeIdSeance}
+            choix={seance}
             setState={setSeance}
             storageName={sessionStorageSeance}
             name="Seance"
           />
-
           <MenuDeroulant
-            Items={menuTri}
-            state={choixTri}
+            listeId={menuTri}
+            choix={choixTri}
             setState={setTri}
             storageName={sessionStorageNameTri}
             name="Tri"
