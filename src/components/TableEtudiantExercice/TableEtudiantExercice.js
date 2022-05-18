@@ -14,9 +14,9 @@ import {
 // import redux/store
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
-import etudiantParser from '../Utilitaires/Etudiant/etudiantParser';
+import { etudiantParser, etudiantUnParser } from '@components/Utilitaires/Etudiant/etudiantParser';
 
-const TableEtudiantExerciceComponent = () => {
+const TableEtudiantExercice = () => {
   const exercices = useSelector(getExercices);
   let navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const TableEtudiantExerciceComponent = () => {
   }, {});
 
   const redirection = (event) => {
-    let uri = '/resultat/' + event.currentTarget.innerText.toLowerCase();
+    let uri = '/resultat/' + etudiantUnParser(event.currentTarget.innerText.toLowerCase());
     navigate(uri);
   };
 
@@ -70,4 +70,4 @@ const TableEtudiantExerciceComponent = () => {
   );
 };
 
-export default TableEtudiantExerciceComponent;
+export default TableEtudiantExercice;

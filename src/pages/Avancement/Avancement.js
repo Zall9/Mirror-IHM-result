@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigation from '@components/NavigationBar/NavigationBar';
 import { Box } from '@mui/material';
-import AvancementComponent from '@components/AvancementComponent/AvancementComponent';
+import AvancementComponent from '@components/Avancement/Avancement';
 
 const Avancement = () => {
   return (

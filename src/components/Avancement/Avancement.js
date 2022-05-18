@@ -6,9 +6,9 @@ import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { useNavigate } from 'react-router-dom';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import IconButton from '@mui/material/IconButton';
-import etudiantParser from '../Utilitaires/Etudiant/etudiantParser';
+import { etudiantParser } from '../Utilitaires/Etudiant/etudiantParser';
 
-const AvancementComponent = () => {
+const Avancement = () => {
   const columns = [
     { field: 'id', headerName: 'id Etudiant', width: 150 },
     { field: 'nbExoValid', headerName: 'nb exo valide', type: 'number', width: 130 },
@@ -112,4 +112,4 @@ function filtreResultat(exercice, idEtu) {
   return false;
 }
 
-export default AvancementComponent;
+export default Avancement;

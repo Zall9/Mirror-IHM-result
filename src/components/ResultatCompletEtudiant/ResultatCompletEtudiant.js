@@ -17,18 +17,11 @@ import {
 import AfficheBoiteExercice from './AfficheBoiteExercice/AfficheBoiteExercice';
 
 const ResultatCompletEtudiant = (param /*, seance*/) => {
-  // const [data, setData] = useState([]);
   const idEtu = param.idEtu;
-  const exercices = useSelector(getExercices).filter(filtreResultat);
-  exercices.sort(triTab);
 
-  // filtre les résultats TODO : sessions
-  function filtreResultat(exercice) {
-    if (exercice.idEtu == idEtu) {
-      return true;
-    }
-    return false;
-  }
+  const exercices = useSelector(getExercices).filter((exo) => exo.idEtu == idEtu);
+  console.log(exercices);
+  exercices.sort(triTab);
 
   // tri les résultats en fonction du fait qu'il soit fini ou non et de la date des soumissions
   function triTab(exercice1, exercice2) {
@@ -115,7 +108,7 @@ const ResultatCompletEtudiant = (param /*, seance*/) => {
       scoreSeance += exo.difficulte;
     }
   });
-
+  console.log(exercices);
   return (
     <Box>
       <h2 align="center"> Score : {scoreSeance}</h2>

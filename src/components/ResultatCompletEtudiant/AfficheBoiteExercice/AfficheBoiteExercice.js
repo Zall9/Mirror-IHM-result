@@ -72,16 +72,18 @@ const AfficheBoiteExercice = ({ listeExercices }) => {
   // parcourir les exercices
   // récupérer les paramètres de cet exercice
   const exercices = useSelector(getExercices);
+  console.log('coucou afficheboiteexo');
+  console.log(listeExercices);
   return (
     <Stack direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={1}>
-      {listeExercices.map((exercice, index) => {
-        const parametres = calculParametresMoyens(exercice.idExo, exercices, exercice.idSession);
-        return (
-          <Item key={index} component="div">
-            <BoiteRectangulaireExercicePourUnEtudiant Exo={exercice} ExoClasse={parametres} />
-          </Item>
-        );
-      })}
+      {listeExercices.map((exercice, index) => (
+        <Item key={index} component="div">
+          <BoiteRectangulaireExercicePourUnEtudiant
+            Exo={exercice}
+            ExoClasse={calculParametresMoyens(exercice.idExo, exercices, exercice.idSession)}
+          />
+        </Item>
+      ))}
     </Stack>
   );
 };

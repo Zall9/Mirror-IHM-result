@@ -6,7 +6,7 @@ import CircularProgressWithLabel from '@components/CircularProgressWithLabel/Cir
 import { useNavigate } from 'react-router-dom';
 import calculScoreListeExo from '../Utilitaires/CalculScoreListeExo';
 import compteNbExoValides from '../Utilitaires/CompteNbExoValides';
-import etudiantParser from '../Utilitaires/Etudiant/etudiantParser';
+import { etudiantParser, etudiantUnParser } from '../Utilitaires/Etudiant/etudiantParser';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import { IconButton } from '@mui/material';
 import axios from 'axios';
@@ -33,7 +33,7 @@ const Etudiant = (props) => {
 
   let navigate = useNavigate();
   const redirection = () => {
-    navigate('/resultat/' + idEtu.toLowerCase());
+    navigate('/resultat/' + etudiantUnParser(idEtu.toLowerCase()));
   };
 
   // const shakeAnimation = () => keyframes`

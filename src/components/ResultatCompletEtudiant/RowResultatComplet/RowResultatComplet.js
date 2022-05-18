@@ -15,7 +15,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import useRowStyles from './style';
 
-function Row(props) {
+const Row = (props) => {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
@@ -75,7 +75,7 @@ function Row(props) {
       </TableRow>
     </React.Fragment>
   );
-}
+};
 
 Row.propTypes = {
   row: PropTypes.shape({
