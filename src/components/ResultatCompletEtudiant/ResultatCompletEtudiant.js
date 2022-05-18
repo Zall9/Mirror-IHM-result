@@ -7,6 +7,7 @@ import Row from './RowResultatComplet/RowResultatComplet';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
+import etudiantParser from '../Utilitaires/Etudiant/etudiantParser';
 
 import Stack from '@mui/material/Stack';
 import {

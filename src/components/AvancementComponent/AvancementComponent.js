@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import IconButton from '@mui/material/IconButton';
+import etudiantParser from '../Utilitaires/Etudiant/etudiantParser';
 
 const AvancementComponent = () => {
   const columns = [
@@ -25,7 +26,7 @@ const AvancementComponent = () => {
   let etudiants = [];
   for (const exo of exercices) {
     if (!etudiants.includes(exo.idEtu)) {
-      etudiants.push(exo.idEtu);
+      etudiants.push(etudiantParser(exo.idEtu));
     }
   }
 
@@ -41,7 +42,9 @@ const AvancementComponent = () => {
 
   for (const etudiant of etudiants) {
     let tempsExo, nomExercice, themesExercice, difficulteExercice, nombreTentatives;
-    const exoEnCours = exercices.filter((exo) => exo.idEtu == etudiant && exo.estFini == false);
+    const exoEnCours = exercices.filter(
+      (exo) => etudiantParser(exo.idEtu) == etudiant && exo.estFini == false,
+    );
     if (exoEnCours.length == 0) {
       // cas ou un étudiant n'a pas d'exercice en cours
       tempsExo = 0;
@@ -60,7 +63,9 @@ const AvancementComponent = () => {
 
     avancement.push({
       id: etudiant,
-      nbExoValid: exercices.filter((exo) => exo.idEtu == etudiant && exo.estFini == true).length,
+      nbExoValid: exercices.filter(
+        (exo) => etudiantParser(exo.idEtu) == etudiant && exo.estFini == true,
+      ).length,
       tpsExo: tempsExo,
       nbTentatives: nombreTentatives,
       nomExo: nomExercice,
@@ -102,7 +107,7 @@ function stringDateToTimestamp(stringDate) {
 
 // filtre les résultats d'un étudiant
 function filtreResultat(exercice, idEtu) {
-  if (exercice.idEtu == idEtu) {
+  if (etudiantParser(exercice.idEtu) == idEtu) {
     return true;
   }
   return false;
