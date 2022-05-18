@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import EtudiantCliquable from '../EtudiantCliquable/EtudiantCliquable'; //TODO ALIAS SUR LE COMPONENT
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
 import DiagrammeCirculaireExercice from './DiagrammeCirculaireExercice';
 
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
+import { Stack, Box, Divider } from '@mui/material';
 import Item from '@mui/material/ListItem';
+import NotificationRetardEtudiant from '../NotificationRetardEtudiant/NotificationRetardEtudiant';
 
 const construitListeDiagrammeExercices = (listeExercices) =>
   listeExercices.map((exercice, index) => {
@@ -25,7 +23,10 @@ const Etudiant = (props) => {
   return (
     <Stack direction="row" divider={<Divider orientation="vertical" flexItem />}>
       <Item sx={{ width: '250px' }}>
-        <EtudiantCliquable idEtu={idEtu} />
+        <Box>
+          <EtudiantCliquable idEtu={idEtu} />
+        </Box>
+        <NotificationRetardEtudiant idEtudiant={idEtu} />
       </Item>
       <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
         {construitListeDiagrammeExercices(listeExerices)}
