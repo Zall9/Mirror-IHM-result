@@ -18,19 +18,20 @@ import { recupereSessions, recupereSeance } from '../Utilitaires/gestionSession'
 import calculValExtremes from '../Utilitaires/CalculValExtremes';
 import { useNavigate } from 'react-router-dom';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import Grid from '@mui/material/Grid';
+import MenuDeroulantSession from '../MenuDeroulantSession/MenuDeroulantSession';
 
 function construitListeEtudiants(ListeEtudiantsExos) {
   const valExtremes = calculValExtremes(ListeEtudiantsExos);
   return ListeEtudiantsExos.map((objetIdEtuListeExo, index) => {
     // component="div" pour supprimer le warning (https://github.com/mui/material-ui/issues/19827)
     return (
-      <Item key={index} component="div">
-        <Etudiant
-          idEtu={objetIdEtuListeExo.idEtu}
-          valExtremes={valExtremes}
-          listeExercices={objetIdEtuListeExo.listeExos}
-        />
-      </Item>
+      <Etudiant
+        key={index}
+        idEtu={objetIdEtuListeExo.idEtu}
+        valExtremes={valExtremes}
+        listeExercices={objetIdEtuListeExo.listeExos}
+      />
     );
   });
 }
@@ -77,6 +78,7 @@ const iconeFiltreExerciceValides = (exoValides, handleExoValides) => {
 
 const VisuResultatEtudiantComponent = () => {
   const sessions = useSelector(getSessions);
+  console.log('sessions : ', sessions);
   const sessionStorageNameSession = 'idSes';
   const sessionStorageNameTri = 'tri';
   const sessionStorageSeance = 'idSeance';
@@ -183,26 +185,26 @@ const VisuResultatEtudiantComponent = () => {
         }}
       >
         <Stack direction="row" divider={<Divider orientation="horizontal" flexItem />}>
-          <MenuDeroulant
-            listeId={listeIdSession}
-            choix={choixSession}
-            setState={setSession}
-            nomArticle={sessionStorageNameSession}
-            name="Session"
+          <MenuDeroulantSession
+            sessions={sessions}
+            choixSession={choixSession}
+            setSession={setSession}
+            storageName={sessionStorageNameSession}
+            nomArticle="Nom de session"
           />
           <MenuDeroulant
             listeId={listeIdSeance}
             choix={seance}
             setState={setSeance}
             storageName={sessionStorageSeance}
-            name="Seance"
+            nomArticle="Seance"
           />
           <MenuDeroulant
             listeId={menuTri}
             choix={choixTri}
             setState={setTri}
             storageName={sessionStorageNameTri}
-            name="Tri"
+            nomArticle="Tri"
           />
           {arrowReverseTri(reverseTri, handleReverseTri)}
           {iconeFiltreExerciceValides(exoValides, handleExoValides)}
@@ -215,10 +217,9 @@ const VisuResultatEtudiantComponent = () => {
           </IconButton>
         </Stack>
       </Box>
-
-      <Stack direction="column" divider={<Divider orientation="horizontal" flexItem />} spacing={0}>
+      <Grid container spacing={2}>
         {construitListeEtudiants(ListeEtudiantsExos)}
-      </Stack>
+      </Grid>
     </div>
   );
 };

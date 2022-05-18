@@ -8,9 +8,9 @@ import calculScoreListeExo from '../Utilitaires/CalculScoreListeExo';
 import compteNbExoValides from '../Utilitaires/CompteNbExoValides';
 import { etudiantParser, etudiantUnParser } from '../Utilitaires/Etudiant/etudiantParser';
 import PanToolIcon from '@mui/icons-material/PanTool';
-import { IconButton } from '@mui/material';
+import { Divider, IconButton, Stack } from '@mui/material';
 import axios from 'axios';
-import { Stack, Divider } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import Item from '@mui/material/ListItem';
 import NotificationRetardEtudiant from '../NotificationRetardEtudiant/NotificationRetardEtudiant';
 
@@ -73,51 +73,58 @@ const Etudiant = (props) => {
       : '#CCCCCC';
 
   return (
-    <Stack
-      direction="row"
-      divider={<Divider orientation="vertical" flexItem />}
-      sx={{ h2: { lineHeight: 0 }, marginBottom: '-10px' }}
-    >
-      <div display="block flow">
-        <div onClick={redirection}>
-          <h2>
-            {' '}
-            {idEtu} {'  '}
-          </h2>
-        </div>
-        <Stack direction="row">
-          <CircularProgressWithLabel
-            value={nbExoValides}
-            color="secondary"
-            isAPercentage={false}
-            textOver="Nombre d'exercices réussis."
-            mustBe100percent={true}
-          />
-          <CircularProgressWithLabel
-            value={scoreExo}
-            color="primary"
-            isAPercentage={false}
-            textOver="Score par rapport au score maximum."
-            minValue={minValue}
-            maxValue={maxValue}
-          />
-          <IconButton onClick={remetAZero}>
-            <PanToolIcon
-              sx={{
-                color: { color },
-                // animation: `${shakeAnimation} 0.7s ease-out 0s infinite alternate;`,
-              }}
-            />
-          </IconButton>
-          <NotificationRetardEtudiant idEtudiant={idEtu} />
-        </Stack>
-      </div>
-      <div>
-        <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
-          {construitListeDiagrammeExercices(listeExercices)}
-        </Stack>
-      </div>
-    </Stack>
+    <Grid item xs={12}>
+      <Grid item xs={12}>
+        <Divider orientation="horizontal" flexItem sx={{ margin: '1em' }} />
+      </Grid>
+      <Grid container>
+        <Grid item xs={3}>
+          <Grid container>
+            <Grid item xs={5} sx={{ marginLeft: '1em' }}>
+              <Box onClick={redirection}>
+                <h2>{idEtu}</h2>
+              </Box>
+            </Grid>
+            <Grid item xs={2} sx={{ my: 1.6 }}>
+              <CircularProgressWithLabel
+                value={nbExoValides}
+                color="secondary"
+                isAPercentage={false}
+                textOver="Nombre d'exercices réussis."
+                mustBe100percent={true}
+              />
+            </Grid>
+            <Grid item xs={2} sx={{ my: 1.6 }}>
+              <CircularProgressWithLabel
+                value={scoreExo}
+                color="primary"
+                isAPercentage={false}
+                textOver="Score par rapport au score maximum."
+                minValue={minValue}
+                maxValue={maxValue}
+              />
+            </Grid>
+            <Grid item xs={1} sx={{ my: 1.6 }}>
+              <IconButton onClick={remetAZero}>
+                <PanToolIcon
+                  sx={{
+                    color: { color },
+                    // animation: `${shakeAnimation} 0.7s ease-out 0s infinite alternate;`,
+                  }}
+                />
+              </IconButton>
+            </Grid>
+            <Grid item xs={2}>
+              <NotificationRetardEtudiant idEtudiant={idEtu} />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={9} sx={{ display: 'flex' }}>
+          <Divider orientation="vertical" flexItem />
+          <Stack direction="row">{construitListeDiagrammeExercices(listeExercices)}</Stack>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 
