@@ -27,10 +27,14 @@ const NotificationRetardEtudiant = (props) => {
     };
   }, []);
 
-  var differenceTemps = time - Date.parse(exerciceCourant.debut);
+  let differenceTemps = 0;
+  let retard = false;
 
-  var retard = differenceTemps > exerciceCourant.tempsMoyen * 2 * 60000;
-
+  // On test si l'exercice courant existe au cas ou l'étudiant n'as aucun exercice non fini
+  if (exerciceCourant) {
+    differenceTemps = time - Date.parse(exerciceCourant.debut);
+    retard = differenceTemps > exerciceCourant.tempsMoyen * 2 * 60000;
+  }
   // affiche AccessAlarmIcon si l'etudiant à passé plus de  fois le temps moyen
   return <Box>{retard ? <AccessAlarmIcon /> : null}</Box>;
 };
