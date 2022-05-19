@@ -78,7 +78,6 @@ const iconeFiltreExerciceValides = (exoValides, handleExoValides) => {
 
 const VisuResultatEtudiantComponent = () => {
   const sessions = useSelector(getSessions);
-  console.log('sessions : ', sessions);
   const sessionStorageNameSession = 'idSes';
   const sessionStorageNameTri = 'tri';
   const sessionStorageSeance = 'idSeance';
