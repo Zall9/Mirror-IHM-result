@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import getColor from '@components/Utilitaires/DegradeColorDansTemps';
-
+import { etudiantParser } from '@components/Utilitaires/Etudiant/etudiantParser';
 function getTimeProportion(exo) {
   const tm = parseInt(exo.tempsMoyen) ?? 10;
   const ta =
@@ -66,9 +66,11 @@ const BoiteRectangulaireEtudiant = (props) => {
           },
         }}
       >
-        <h2 align="center"> {exo.idEtu}</h2>
-        <Typography>tentatives : {exo.tentatives.length}</Typography>
-        {affichageTemps(exo)}
+        <h2 align="center"> {etudiantParser(exo.idEtu)}</h2>
+        <ul>
+          <li>tentatives : {exo.tentatives.length}</li>
+          {affichageTemps(exo)}
+        </ul>
       </Box>
     </div>
   );
