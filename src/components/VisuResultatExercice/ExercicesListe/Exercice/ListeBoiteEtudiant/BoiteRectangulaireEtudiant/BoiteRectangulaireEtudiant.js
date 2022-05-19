@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import getColor from '@components/Utilitaires/DegradeColorDansTemps';
 import { etudiantParser } from '@components/Utilitaires/Etudiant/etudiantParser';
@@ -77,7 +78,7 @@ const BoiteRectangulaireEtudiant = (props) => {
 
 function affichageTemps(exo) {
   return exo.estFini ? (
-    <li>
+    <Typography>
       temps :{' '}
       {Math.floor(
         (Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission) -
@@ -85,17 +86,17 @@ function affichageTemps(exo) {
           60000,
       )}{' '}
       m
-    </li>
+    </Typography>
   ) : exo.tentatives.length != 0 ? (
-    <li>
+    <Typography>
       temps :{' '}
       {Math.floor(
         (Date.now() - Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission)) / 60000,
       )}{' '}
       m
-    </li>
+    </Typography>
   ) : (
-    <li>temps :{Math.floor((Date.now() - Date.parse(exo.debut)) / 60000)} m</li>
+    <Typography> temps :{Math.floor((Date.now() - Date.parse(exo.debut)) / 60000)} m</Typography>
   );
 }
 

@@ -14,10 +14,11 @@ export const exercicesSlice = createSlice({
     },
     addTentative: (state, respTentative) => {
       if (state.data.length > 0) {
-        // todo: a terme, il faudra aussi tester si c'est le bon idSession
         let exercice = state.data.find(
           (exo) =>
-            exo.idExo === respTentative.payload.idExo && exo.idEtu === respTentative.payload.idEtu,
+            exo.idExo === respTentative.payload.idExo &&
+            exo.idEtu === respTentative.payload.idEtu &&
+            exo.idSession === respTentative.payload.idSession,
         );
 
         // delete infos en double
@@ -34,11 +35,38 @@ export const exercicesSlice = createSlice({
         }
       }
     },
+    addAide: (state, respAide) => {
+      let exercice = state.data.find(
+        (exo) =>
+          exo.idExo === respAide.payload.idExo &&
+          exo.idEtu === respAide.payload.idEtu &&
+          exo.idSession === respAide.payload.idSession,
+      );
+
+      if (exercice) {
+        delete respAide.payload.idEtu;
+        delete respAide.payload.idExo;
+        delete respAide.payload.idSession;
+        delete respAide.payload.idSeance;
+
+        // Si l'aide existe déjà, on la met à jour
+        let exist = false;
+        exercice.aides = exercice.aides.map((aide) => {
+          if (aide.id == respAide.payload.id) {
+            exist = true;
+            return respAide.payload;
+          } else {
+            return aide;
+          }
+        });
+        if (!exist) exercice.aides.push(respAide.payload);
+      }
+    },
   },
 });
 
 export const getExercices = (state) => state.exercices.data;
 // Action creators are generated for each case reducer function
-export const { setExercices, addExercice, addTentative } = exercicesSlice.actions;
+export const { setExercices, addExercice, addTentative, addAide } = exercicesSlice.actions;
 
 export default exercicesSlice.reducer;

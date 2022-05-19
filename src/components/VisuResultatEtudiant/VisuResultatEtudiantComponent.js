@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
-import Item from '@mui/material/ListItem';
 import Etudiant from './Etudiant';
 import IconButton from '@mui/material/IconButton';
 import CompareArrows from '@mui/icons-material/CompareArrows';
