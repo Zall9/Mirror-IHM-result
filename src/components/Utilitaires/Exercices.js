@@ -7,8 +7,6 @@
 export function recupereExerciceCourantEtudiant(exercices, idEtudiant) {
   // On récupère les exercices de l'étudiant
   const exercicesEtudiant = exercices.filter((exercice) => exercice.idEtu === idEtudiant);
-  console.log('EXERCICES ', exercices);
-  console.log('EXERCICES ETUDIANT : ', exercicesEtudiant);
 
   // parcourir les exercices de l'étudiant et garder le temps mini si il est fini
   let derniereSoumission = 0;

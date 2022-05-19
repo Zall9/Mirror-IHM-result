@@ -4,10 +4,7 @@ import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import { useSelector } from 'react-redux';
 
 const MenuDeroulantSession = ({ sessions, choixSession, setSession, storageName, nomArticle }) => {
-  console.log('MenuDeroulantSession :', choixSession);
-  console.log('sessions :', sessions);
   const nomSessions = sessions.map((session) => session.nom).concat('all');
-  console.log('nomSessions :', nomSessions);
 
   const idVersNom = (id) => sessions?.find((session) => session.id === id)?.nom ?? 'all';
   const nomVersId = (nom) => sessions?.find((session) => session.nom === nom)?.id ?? 'all';
