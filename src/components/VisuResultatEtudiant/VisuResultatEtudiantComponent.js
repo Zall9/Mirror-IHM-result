@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getSessions } from '@stores/Sessions/sessionSlice';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
-import Item from '@mui/material/ListItem';
 import Etudiant from './Etudiant';
 import IconButton from '@mui/material/IconButton';
 import CompareArrows from '@mui/icons-material/CompareArrows';
@@ -12,24 +12,25 @@ import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 import Box from '@mui/material/Box';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
-import * as triUtils from '../Utilitaires/TriEtudiant';
-import { recupereSessions } from '../Utilitaires/SessionsFromExercice';
+import * as triUtils from '../Utilitaires/Etudiant/TriEtudiant';
+import { recupereSessions, recupereSeance } from '../Utilitaires/gestionSession';
 import calculValExtremes from '../Utilitaires/CalculValExtremes';
 import { useNavigate } from 'react-router-dom';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import Grid from '@mui/material/Grid';
+import MenuDeroulantSession from '../MenuDeroulantSession/MenuDeroulantSession';
 
 function construitListeEtudiants(ListeEtudiantsExos) {
   const valExtremes = calculValExtremes(ListeEtudiantsExos);
-  return ListeEtudiantsExos.map((objetIdEtuListeExo, index) => {
+  return ListeEtudiantsExos.map((objetIdEtuListeExo) => {
     // component="div" pour supprimer le warning (https://github.com/mui/material-ui/issues/19827)
     return (
-      <Item key={index} component="div">
-        <Etudiant
-          idEtu={objetIdEtuListeExo.idEtu}
-          valExtremes={valExtremes}
-          listeExercices={objetIdEtuListeExo.listeExos}
-        />
-      </Item>
+      <Etudiant
+        key={objetIdEtuListeExo.idEtu}
+        idEtu={objetIdEtuListeExo.idEtu}
+        valExtremes={valExtremes}
+        listeExercices={objetIdEtuListeExo.listeExos}
+      />
     );
   });
 }
@@ -74,14 +75,21 @@ const iconeFiltreExerciceValides = (exoValides, handleExoValides) => {
   );
 };
 
-const VisuResultatEtudiantComponent = (props) => {
+const VisuResultatEtudiantComponent = () => {
+  const sessions = useSelector(getSessions);
   const sessionStorageNameSession = 'idSes';
   const sessionStorageNameTri = 'tri';
+  const sessionStorageSeance = 'idSeance';
 
   const [choixSession, setSession] = React.useState(
     sessionStorage.getItem(sessionStorageNameSession)
       ? sessionStorage.getItem(sessionStorageNameSession)
-      : '',
+      : 'all',
+  );
+  const [seance, setSeance] = React.useState(
+    sessionStorage.getItem(sessionStorageSeance)
+      ? sessionStorage.getItem(sessionStorageSeance)
+      : 'all',
   );
   const [choixTri, setTri] = React.useState(
     sessionStorage.getItem('tri') ? sessionStorage.getItem('tri') : 'alphabetique',
@@ -116,7 +124,6 @@ const VisuResultatEtudiantComponent = (props) => {
 
   // récupérer tous les exercices pour chaque  étudiant
   const exercices = useSelector(getExercices);
-  const idSession = choixSession;
 
   let navigate = useNavigate();
   const redirectionResultat = () => {
@@ -130,7 +137,10 @@ const VisuResultatEtudiantComponent = (props) => {
   let ListeEtudiants = [];
 
   exercices.map((exo) => {
-    if (exo.idSession == idSession) {
+    if (
+      (exo.idSession == choixSession || choixSession == 'all') &&
+      (exo.idSeance == seance || seance == 'all')
+    ) {
       if (ExosEtudiants[exo.idEtu] === undefined) {
         ExosEtudiants[exo.idEtu] = [];
         ListeEtudiants.push(exo.idEtu);
@@ -149,7 +159,9 @@ const VisuResultatEtudiantComponent = (props) => {
   // Trier ce tableau (par défaut alphabétique)
   ListeEtudiantsExos = triUtils.triEtudiants(ListeEtudiantsExos, choixTri, reverseTri, exoValides);
 
-  const listeIdSession = recupereSessions(exercices);
+  const listeIdSession = recupereSessions(sessions);
+
+  const listeIdSeance = recupereSeance(sessions);
 
   const menuTri = [
     'alphabetique',
@@ -160,50 +172,53 @@ const VisuResultatEtudiantComponent = (props) => {
   ];
 
   return (
-    <div>
+    <Box sx={{ marginLeft: '1em' }}>
       <Box
         sx={{
           position: 'relative',
           justifyContent: 'flex-start',
           display: 'inline-flex',
           width: '100%',
-          margin: '10px',
+          marginTop: '1em',
         }}
       >
-        <MenuDeroulant
-          Items={listeIdSession}
-          state={choixSession}
-          setState={setSession}
-          storageName={sessionStorageNameSession}
-          name="Session"
-        />
-        <MenuDeroulant
-          Items={menuTri}
-          state={choixTri}
-          setState={setTri}
-          storageName={sessionStorageNameTri}
-          name="Tri"
-        />
-        {arrowReverseTri(reverseTri, handleReverseTri)}
-        {iconeFiltreExerciceValides(exoValides, handleExoValides)}
-        <IconButton
-          onClick={redirectionResultat}
-          title="Passer à la vue tableau"
-          sx={{ align: 'right' }}
-        >
-          <FormatListNumberedIcon />
-        </IconButton>
+        <Stack direction="row" divider={<Divider orientation="horizontal" flexItem />}>
+          <MenuDeroulantSession
+            sessions={sessions}
+            choixSession={choixSession}
+            setSession={setSession}
+            storageName={sessionStorageNameSession}
+            nomArticle="Nom de session"
+          />
+          <MenuDeroulant
+            listeId={listeIdSeance}
+            choix={seance}
+            setState={setSeance}
+            storageName={sessionStorageSeance}
+            nomArticle="Seance"
+          />
+          <MenuDeroulant
+            listeId={menuTri}
+            choix={choixTri}
+            setState={setTri}
+            storageName={sessionStorageNameTri}
+            nomArticle="Tri"
+          />
+          {arrowReverseTri(reverseTri, handleReverseTri)}
+          {iconeFiltreExerciceValides(exoValides, handleExoValides)}
+          <IconButton
+            onClick={redirectionResultat}
+            title="Passer à la vue tableau"
+            sx={{ align: 'right' }}
+          >
+            <FormatListNumberedIcon />
+          </IconButton>
+        </Stack>
       </Box>
-
-      <Stack
-        direction="row"
-        alignItems="flex-start"
-        divider={<Divider orientation="vertical" flexItem />}
-        spacing={0}
-      >
+      <Grid container spacing={2}>
         {construitListeEtudiants(ListeEtudiantsExos)}
-      </Stack>
-    </div>
+      </Grid>
+    </Box>
   );
 };
 

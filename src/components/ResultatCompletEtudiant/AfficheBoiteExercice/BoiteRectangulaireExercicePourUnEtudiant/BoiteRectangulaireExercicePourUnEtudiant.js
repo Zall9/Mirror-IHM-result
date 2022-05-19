@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import EtudiantCliquable from '../EtudiantCliquable/EtudiantCliquable'; //TODO ALIAS SUR LE COMPONENT
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Divider from '@mui/material/Divider';
-import Item from '@mui/material/ListItem';
-import { useNavigate } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
-import LinearProgressWithLabel from './LinearProgressWithLabel';
-import IconButton from '@mui/material/IconButton';
 
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import LinearProgressWithLabel from './LinearProgressWithLabel/LinearProgressWithLabel';
 
 // construire Box par étudiant
 
@@ -27,12 +19,15 @@ const BoiteRectangulaireExercicePourUnEtudiant = (props) => {
   const proportionTenta =
     ((exo.tentatives.length - exoClasse.tentaMin) / (exoClasse.tentaMax - exoClasse.tentaMin)) *
     100;
-  const proportionTemps =
-    ((Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission) -
-      Date.parse(exo.debut) -
-      exoClasse.tpsMin) /
-      (exoClasse.tpsMax - exoClasse.tpsMin)) *
-    100;
+  var proportionTemps;
+  if (exo.tentatives.length != 0) {
+    proportionTemps =
+      ((Date.parse(exo.tentatives[exo.tentatives.length - 1].dateSoumission) -
+        Date.parse(exo.debut) -
+        exoClasse.tpsMin) /
+        (exoClasse.tpsMax - exoClasse.tpsMin)) *
+      100;
+  }
 
   const color = getColor(exo);
   const estFini = exo.estFini;

@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import DiagrammeCirculaireExercice from './DiagrammeCirculaireExercice';
-import CircularProgressWithLabel from '../VisuResultatExercice/CircularProgressWithLabel';
+import CircularProgressWithLabel from '@components/CircularProgressWithLabel/CircularProgressWithLabel';
 
 import { useNavigate } from 'react-router-dom';
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import Item from '@mui/material/ListItem';
 import calculScoreListeExo from '../Utilitaires/CalculScoreListeExo';
 import compteNbExoValides from '../Utilitaires/CompteNbExoValides';
-
+import { etudiantParser, etudiantUnParser } from '../Utilitaires/Etudiant/etudiantParser';
 import PanToolIcon from '@mui/icons-material/PanTool';
-import { IconButton } from '@mui/material';
-import { jsx, css, keyframes } from '@emotion/react';
+import { Divider, IconButton, Stack } from '@mui/material';
 import axios from 'axios';
+import { Grid, Box } from '@mui/material';
+import Item from '@mui/material/ListItem';
+import NotificationRetardEtudiant from '../NotificationRetardEtudiant/NotificationRetardEtudiant';
 
 const construitListeDiagrammeExercices = (listeExercices) =>
   listeExercices.map((exercice, index) => {
@@ -24,7 +23,19 @@ const construitListeDiagrammeExercices = (listeExercices) =>
     );
   });
 
-const iconeMainDemandeAide = (listeExercices, remetAZero) => {
+const Etudiant = (props) => {
+  const idEtu = props.idEtu;
+  const listeExercices = props.listeExercices;
+  const nbExoValides = compteNbExoValides(listeExercices);
+  const scoreExo = calculScoreListeExo(listeExercices);
+  const minValue = props.valExtremes.min;
+  const maxValue = props.valExtremes.max;
+
+  let navigate = useNavigate();
+  const redirection = () => {
+    navigate('/resultat/' + etudiantUnParser(idEtu.toLowerCase()));
+  };
+
   // const shakeAnimation = () => keyframes`
   //   0% { transform: translate3d(0,0,0); },
   //   50% { transform: rotate(0deg) },
@@ -49,45 +60,22 @@ const iconeMainDemandeAide = (listeExercices, remetAZero) => {
       .filter((value) => value == 1).length != 0
       ? '#CC0000'
       : '#CCCCCC';
-  return (
-    <IconButton onClick={remetAZero}>
-      <PanToolIcon
-        sx={{
-          color: { color },
-          // animation: `${shakeAnimation} 0.7s ease-out 0s infinite alternate;`,
-        }}
-      />
-    </IconButton>
-  );
-};
 
-const Etudiant = (props) => {
-  const idEtu = props.idEtu;
-  const listeExercices = props.listeExercices;
-  const nbExoValides = compteNbExoValides(listeExercices);
-  const scoreExo = calculScoreListeExo(listeExercices);
-  const minValue = props.valExtremes.min;
-  const maxValue = props.valExtremes.max;
-  let actualize = 0;
-  function remetAZero() {
+  let actualize = false;
+  const remetAZero = () => {
     // trouver le bon exo
     for (const exo of listeExercices) {
       if (!exo.estFini) {
         axios.put(process.env.REACT_APP_SRVRESULT_URL + '/exercices/' + exo.id + '/aides').then();
       }
     }
-    actualize++;
-  }
-
-  let navigate = useNavigate();
-  const redirection = () => {
-    navigate('/resultat/' + idEtu.toLowerCase());
+    actualize = !actualize;
   };
 
-  const [time, setTime] = useState(Date.now());
+  const [time, setTime] = React.useState(Date.now());
   var interval;
 
-  useEffect(() => {
+  React.useEffect(() => {
     interval = setInterval(() => setTime(Date.now()), 1000);
     return () => {
       clearInterval(interval);
@@ -95,43 +83,58 @@ const Etudiant = (props) => {
   }, []);
 
   return (
-    <Stack
-      direction="column"
-      divider={<Divider orientation="vertical" flexItem />}
-      sx={{ h2: { lineHeight: 0 }, marginRight: '-10px' }}
-    >
-      <div display="block flow">
-        <div onClick={redirection}>
-          <h2 align="center">
-            {' '}
-            {idEtu} {'  '}
-          </h2>
-        </div>
-        <Stack direction="row">
-          <CircularProgressWithLabel
-            value={nbExoValides}
-            color="secondary"
-            isAPercentage={false}
-            textOver="Nombre d'exercices réussis."
-            mustBe100percent={true}
-          />
-          <CircularProgressWithLabel
-            value={scoreExo}
-            color="primary"
-            isAPercentage={false}
-            textOver="Score par rapport au score maximum."
-            minValue={minValue}
-            maxValue={maxValue}
-          />
-          {iconeMainDemandeAide(listeExercices, remetAZero)}
-        </Stack>
-      </div>
-      <div>
-        <Stack direction="column" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
-          {construitListeDiagrammeExercices(listeExercices)}
-        </Stack>
-      </div>
-    </Stack>
+    <Grid item xs={12}>
+      <Grid item xs={12}>
+        <Divider orientation="horizontal" flexItem sx={{ margin: '1em' }} />
+      </Grid>
+      <Grid container>
+        <Grid item xs={3}>
+          <Grid container>
+            <Grid item xs={5}>
+              <Box onClick={redirection}>
+                <h2>{etudiantParser(idEtu)}</h2>
+              </Box>
+            </Grid>
+            <Grid item xs={2} sx={{ my: 1.6 }}>
+              <CircularProgressWithLabel
+                value={nbExoValides}
+                color="secondary"
+                isAPercentage={false}
+                textOver="Nombre d'exercices réussis."
+                mustBe100percent={true}
+              />
+            </Grid>
+            <Grid item xs={2} sx={{ my: 1.6 }}>
+              <CircularProgressWithLabel
+                value={scoreExo}
+                color="primary"
+                isAPercentage={false}
+                textOver="Score par rapport au score maximum."
+                minValue={minValue}
+                maxValue={maxValue}
+              />
+            </Grid>
+            <Grid item xs={2} sx={{ my: 1.6 }}>
+              <IconButton onClick={remetAZero}>
+                <PanToolIcon
+                  sx={{
+                    color: { color },
+                    // animation: `${shakeAnimation} 0.7s ease-out 0s infinite alternate;`,
+                  }}
+                />
+              </IconButton>
+            </Grid>
+            <Grid item xs={1} sx={{ my: 2.5 }}>
+              <NotificationRetardEtudiant idEtudiant={idEtu} />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={9} sx={{ display: 'flex' }}>
+          <Divider orientation="vertical" flexItem />
+          <Stack direction="row">{construitListeDiagrammeExercices(listeExercices)}</Stack>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 
