@@ -41,18 +41,7 @@ const Etudiant = (props) => {
   //   50% { transform: rotate(0deg) },
   //   100% { transform: rotate(30deg) },
   // `;
-  function remetAZero() {
-    // trouver le bon exo
-    for (const exo of listeExercices) {
-      if (!exo.estFini) {
-        axios
-          .get(process.env.REACT_APP_SRVRESULT_URL + '/aides/resolve', {
-            params: { idExo: exo.idExo, idEtu: exo.idEtu, idSession: exo.idSession },
-          })
-          .then();
-      }
-    }
-  }
+
   const color =
     listeExercices
       .map((exo) => {
@@ -71,6 +60,27 @@ const Etudiant = (props) => {
       .filter((value) => value == 1).length != 0
       ? '#CC0000'
       : '#CCCCCC';
+
+  let actualize = false;
+  const remetAZero = () => {
+    // trouver le bon exo
+    for (const exo of listeExercices) {
+      if (!exo.estFini) {
+        axios.put(process.env.REACT_APP_SRVRESULT_URL + '/exercices/' + exo.id + '/aides').then();
+      }
+    }
+    actualize = !actualize;
+  };
+
+  const [time, setTime] = React.useState(Date.now());
+  var interval;
+
+  React.useEffect(() => {
+    interval = setInterval(() => setTime(Date.now()), 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <Grid item xs={12}>

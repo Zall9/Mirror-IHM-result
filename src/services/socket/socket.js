@@ -21,4 +21,9 @@ export const initSocketConnection = (dispatch, sessions) => {
   socket.on('tentatives', ({ etudiantFaitNouvelleTentative }) => {
     dispatch(addTentative(etudiantFaitNouvelleTentative));
   });
+
+  socket.on('aides', ({ etudiantDemandeAide }) => {
+    console.log(etudiantDemandeAide);
+    dispatch(addAide(etudiantDemandeAide));
+  });
 };
