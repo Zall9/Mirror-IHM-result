@@ -4,7 +4,9 @@ import { addSession } from '@stores/Sessions/sessionSlice';
 import axios from 'axios';
 
 export const initSocketConnection = (dispatch, sessions) => {
-  const socket = io(process.env.REACT_APP_SRVRESULT_URL);
+  const socket = io(process.env.REACT_APP_SRVRESULT_URL, {
+    path: process.env.REACT_APP_SRVRESULT_SUBFOLDER,
+  });
 
   socket.on('exercices', ({ etudiantCommenceExo }) => {
     dispatch(addExercice(etudiantCommenceExo));
