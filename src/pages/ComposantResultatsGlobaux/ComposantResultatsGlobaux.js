@@ -2,7 +2,7 @@ import React from 'react';
 import Navigation from '@components/NavigationBar/NavigationBar';
 import { Box } from '@mui/material';
 import ComposantResultatGlobaux from '@components/ComposantResultatsGlobaux/ComposantResultatsGlobaux';
-const Avancement = () => {
+const ComposantResultatsGlobaux = () => {
   return (
     <Box>
       <Navigation />
@@ -11,4 +11,4 @@ const Avancement = () => {
   );
 };
 
-export default Avancement;
+export default ComposantResultatsGlobaux;
