@@ -8,6 +8,7 @@ import Avancement from '@pages/Avancement/Avancement';
 import Videoprojecteur from '@pages/Videoprojecteur/Videoprojecteur';
 import VisuResultatEtudiant from '@pages/VisuResultatEtudiant/VisuResultatEtudiant';
 import VisuResultatExercice from '@pages/VisuResultatExercice/VisuResultatExercice';
+import ComposantResultatsGlobaux from '@pages/ComposantResultatsGlobaux/ComposantResultatsGlobaux';
 import { initSocketConnection } from '@services/socket/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessions, setSession } from '@stores/Sessions/sessionSlice';
@@ -47,6 +48,7 @@ export default function App() {
           <Route path="/videoprojecteur" element={<Videoprojecteur />} />
           <Route path="/visuresultatetudiant" element={<VisuResultatEtudiant />} />
           <Route path="/visuresultatexercice" element={<VisuResultatExercice />} />
+          <Route path="/ComposantResultatsGlobaux" element={<ComposantResultatsGlobaux />} />
           {/* <Route path="/hello" element={<Hello />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
