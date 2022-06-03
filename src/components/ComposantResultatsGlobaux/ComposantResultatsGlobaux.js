@@ -39,7 +39,13 @@ const ComposantResultatsGlobaux = () => {
       tabExo.push(exo.nomExo);
     }
   }
-
+  function getExercicese(listeExo, idExo, idEtu) {
+    for (const exo of listeExo) {
+      if (exo.idExo === idExo && exo.idEtu === idEtu) {
+        return exo.tentatives[exo.tentatives.length - 1];
+      }
+    }
+  }
   // let columns = [
   //   { field: 'idEtu', headerName: 'id etudiant', width: 180 },
   //   {
@@ -68,21 +74,28 @@ const ComposantResultatsGlobaux = () => {
     if (!columns.find((col) => col.field === exo.idExo)) {
       columns.push({
         field: exo.idExo,
-        headerName: '',
+        headerName: exo.idExo,
         renderCell: (params) => {
           return (
             <Box
               sx={{ margin: 0, padding: 0, backgroundColor: '#ff000011', width: 100, height: 100 }}
-            >
-              {console.log(params.value)}
-            </Box>
+            ></Box>
           );
         },
       });
     }
   }
   let rows_etu = [];
-
+  let exoEtu = [];
+  for (const etu of tabEtu) {
+    exoEtu = exercices.filter((exo) => exo.idEtu == etu);
+  }
+  //genre le dico des exercices
+  let dicoExo = {};
+  for (const exo of exercices) {
+    dicoExo[exo.idExo] = exo;
+  }
+  console.log('dico', dicoExo);
   for (const etu of tabEtu) {
     rows_etu.push({
       id: etu,
@@ -97,7 +110,7 @@ const ComposantResultatsGlobaux = () => {
       <DataGrid
         rows={rows_etu}
         columns={columns}
-        loading={rows_etu.length === 0}
+        loading={rows_etu.length === 2}
         autoHeight={true}
         autoWidth={true}
         headerHeight={36}
