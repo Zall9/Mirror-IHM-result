@@ -1,16 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { DataGrid } from '@mui/x-data-grid';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { Box } from '@mui/system';
 import Popover from '@mui/material/Popover';
-import { Chip, Typography } from '@mui/material';
+import { Chip, List, ListItem, Typography } from '@mui/material';
 
 const ComposantResultatsGlobaux = () => {
+  const exercices = useSelector(getExercices);
   //Handlers
-  const [exo, setExo] = useState(null);
+  const [exo, setExo] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const handlePopoverOpen = (event) => {
     setExo(event.currentTarget.parentElement.attributes['data-field']);
@@ -25,7 +25,6 @@ const ComposantResultatsGlobaux = () => {
   };
 
   //Initialisations
-  const exercices = useSelector(getExercices);
   let tabEtu = [];
   let tabExo = [];
 
@@ -95,6 +94,11 @@ const ComposantResultatsGlobaux = () => {
     rows_etu.push(row_etu);
   }
 
+  //utils
+  function getExoFromIds(idEtu, idExo, ListeExo) {
+    console.log(ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo));
+    return ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo);
+  }
   return (
     <>
       <Box
@@ -156,7 +160,44 @@ const ComposantResultatsGlobaux = () => {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography sx={{ p: 1 }}>{exo.nodeValue}</Typography>
+        <List>
+          {console.log('exo', exo)}
+          <ListItem sx={{ display: 'flex' }}>
+            <Typography variant="h6">
+              {exo === '' ? '' : exo.ownerElement.parentElement.dataset.id}
+            </Typography>
+          </ListItem>
+          <List sx={{ display: 'flex' }}>
+            {/* <ListItem>
+              <Typography sx={{ p: 1 }}>{exo === '' ? '' : exo.nodeValue}</Typography>
+            </ListItem> */}
+            <ListItem>
+              <Typography>
+                {exo === ''
+                  ? ''
+                  : getExoFromIds(
+                      exo.ownerElement.parentElement.dataset.id,
+                      exo.nodeValue,
+                      exercices,
+                    ).nomExo}
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography sx={{ p: 1 }}>
+                {exo === ''
+                  ? ''
+                  : getExoFromIds(
+                      exo.ownerElement.parentElement.dataset.id,
+                      exo.nodeValue,
+                      exercices,
+                    ).difficulte}
+              </Typography>
+            </ListItem>
+          </List>
+          <ListItem>
+            <Typography variant="h6">Tentatives:</Typography>
+          </ListItem>
+        </List>
       </Popover>
     </>
   );

@@ -3,5 +3,6 @@
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "docwriter.language": "French",
-  "docwriter.style": "JSDoc"
+  "docwriter.style": "JSDoc",
+  "docwriter.hotkey.mac": "⌥ + ."
 }
