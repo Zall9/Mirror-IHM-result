@@ -194,9 +194,11 @@ const ComposantResultatsGlobaux = () => {
               </Typography>
             </ListItem>
           </List>
-          <ListItem>
-            <Typography variant="h6">Tentatives:</Typography>
-          </ListItem>
+          <List>
+            <ListItem>
+              <Typography variant="h6">Tentatives:</Typography>
+            </ListItem>
+          </List>
         </List>
       </Popover>
     </>
