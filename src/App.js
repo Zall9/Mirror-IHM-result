@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Accueil from '@pages/Accueil/Accueil';
+import Login from '@pages/Login/Login';
+import LoginCallback from '@pages/LoginCallback/LoginCallback';
 import Resultat from '@pages/Resultat/Resultat';
 import NotFound from '@pages/NotFound/NotFound';
 import ResultatEtudiant from '@pages/ResultatEtudiant/ResultatEtudiant';
@@ -13,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSessions, setSession } from '@stores/Sessions/sessionSlice';
 import { setExercices } from '@stores/Exercices/exercicesSlice';
 import axios from 'axios';
+import AuthLayout from '@components/AuthLayout/AuthLayout';
 
 const initExercices = (dispatch) => {
   axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
@@ -37,9 +40,10 @@ export default function App() {
   }, []);
 
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
+    <BrowserRouter>
+      <Routes>
+        {/* Protected routes */}
+        <Route element={<AuthLayout redirect="/login" />}>
           <Route path="/" element={<Accueil />} />
           <Route path="/resultat/:etu" element={<ResultatEtudiant />} />
           <Route path="/resultat" element={<Resultat />} />
@@ -47,10 +51,13 @@ export default function App() {
           <Route path="/videoprojecteur" element={<Videoprojecteur />} />
           <Route path="/visuresultatetudiant" element={<VisuResultatEtudiant />} />
           <Route path="/visuresultatexercice" element={<VisuResultatExercice />} />
-          {/* <Route path="/hello" element={<Hello />} /> */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+        </Route>
+
+        {/* Public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/login/callback" element={<LoginCallback />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

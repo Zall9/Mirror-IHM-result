@@ -32,6 +32,7 @@
     "@reduxjs/toolkit": "^1.8.0",
     "axios": "^0.26.0",
     "chart.js": "^3.7.1",
+    "client-oauth2": "^4.3.3",
     "highlight.js": "^11.4.0",
     "mock-react-redux": "^0.4.0",
     "node-sass": "^7.0.1",
