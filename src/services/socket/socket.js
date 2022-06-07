@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export const initSocketConnection = (dispatch, sessions) => {
   const socket = io(process.env.REACT_APP_SRVRESULT_URL, {
-    path: process.env.REACT_APP_SRVRESULT_SUBFOLDER,
+    path: process.env.REACT_APP_SRVRESULT_SOCKETIO_SUBFOLDER,
   });
 
   socket.on('exercices', ({ etudiantCommenceExo }) => {

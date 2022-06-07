@@ -5,7 +5,7 @@ services:
       context: ./
       args:
         REACT_APP_SRVRESULT_URL: ${REACT_APP_SRVRESULT_URL?error API URL not set}
-        REACT_APP_SRVRESULT_SUBFOLDER: ${REACT_APP_SRVRESULT_SUBFOLDER?error API URL not set}
+        REACT_APP_SRVRESULT_SOCKETIO_SUBFOLDER: ${REACT_APP_SRVRESULT_SUBFOLDER?error API URL not set}
         REACT_APP_SRVEXO_URL: ${REACT_APP_SRVEXO_URL?error API URL not set}
     ports:
       - '8080:80'
