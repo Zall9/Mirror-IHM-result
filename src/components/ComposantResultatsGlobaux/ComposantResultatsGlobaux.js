@@ -1,45 +1,40 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { Box } from '@mui/system';
-
-const HoveredItem = (props) => {
-  let exo = props._getExo();
-  console.log(exo);
-  return (
-    <div>
-      {exo && (
-        <div>
-          <h2>Only visible when hovering</h2>
-        </div>
-      )}
-    </div>
-  );
-};
+import Popover from '@mui/material/Popover';
+import { Chip, Typography } from '@mui/material';
 
 const ComposantResultatsGlobaux = () => {
   //Handlers
   const [exo, setExo] = useState(null);
-  const _getExo = (_) => exo;
-  const _setExo = (exo) => setExo(exo);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handlePopoverOpen = (event) => {
+    setExo(event.currentTarget.parentElement.attributes['data-field']);
+    console.log('ex:Open', exo);
+    setAnchorEl(event.currentTarget);
+  };
+  const open = Boolean(anchorEl);
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    console.log('ex:Close', exo);
+  };
 
   //Initialisations
   const exercices = useSelector(getExercices);
   let tabEtu = [];
   let tabExo = [];
-  let tabIdExo = [];
+
   for (const exo of exercices) {
     if (!tabEtu.includes(exo.idEtu)) {
       tabEtu.push(exo.idEtu);
     }
     if (!tabExo.includes(exo.nomExo)) {
       tabExo.push(exo.nomExo);
-    }
-    if (!tabIdExo.includes(exo.idExo)) {
-      tabIdExo.push(exo.idExo);
     }
   }
   let columns = [
@@ -65,14 +60,21 @@ const ComposantResultatsGlobaux = () => {
             positive: params.value > 6,
           });
         },
+        renderCell: (params) => {
+          return (
+            <Chip
+              onMouseEnter={handlePopoverOpen}
+              onMouseLeave={handlePopoverClose}
+              variant="outlined"
+              size="small"
+              label={params.value}
+            />
+          );
+        },
       });
     }
   }
 
-  let exoEtu = [];
-  for (const etu of tabEtu) {
-    exoEtu = exercices.filter((exo) => exo.idEtu == etu);
-  }
   let exoEtus = [];
   for (const etu of tabEtu) {
     exoEtus.push({
@@ -93,16 +95,6 @@ const ComposantResultatsGlobaux = () => {
     rows_etu.push(row_etu);
   }
 
-  const choisiCouleurSelonNbTentativesEtDifficulte = (nbTentatives, difficulte) => {
-    const coulNbTentative = ['#097504', '#F96D0C', '#D10D04'];
-    if (nbTentatives <= Math.ceil(difficulte / 2) + 1) {
-      return coulNbTentative[0];
-    } else if (nbTentatives <= difficulte + 2) {
-      return coulNbTentative[1];
-    } else {
-      return coulNbTentative[2];
-    }
-  };
   return (
     <>
       <Box
@@ -131,7 +123,6 @@ const ComposantResultatsGlobaux = () => {
           },
         }}
       >
-        <HoveredItem _setExo={_setExo} _getExo={_getExo} />
         <DataGrid
           rows={rows_etu}
           columns={columns}
@@ -147,16 +138,30 @@ const ComposantResultatsGlobaux = () => {
           }}
         />
       </Box>
+      <Popover
+        id="mouse-over-popover"
+        sx={{
+          pointerEvents: 'none',
+        }}
+        open={open}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        onClose={handlePopoverClose}
+        disableRestoreFocus
+      >
+        <Typography sx={{ p: 1 }}>{exo.nodeValue}</Typography>
+      </Popover>
     </>
   );
 };
 
 ComposantResultatsGlobaux.propTypes = {};
-HoveredItem.propTypes = {
-  boolean: PropTypes.bool,
-  exoRef: PropTypes.string,
-  _getExo: PropTypes.func,
-  _setExo: PropTypes.func,
-};
 
 export default ComposantResultatsGlobaux;
