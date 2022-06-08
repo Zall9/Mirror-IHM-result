@@ -6,7 +6,14 @@ import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { Box } from '@mui/system';
 import Popover from '@mui/material/Popover';
 import { Chip, List, ListItem, Typography } from '@mui/material';
-
+const getExoFromIds = (idEtu, idExo, ListeExo) => {
+  console.log(ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo));
+  let res = ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo);
+  if (res !== undefined && res !== null) {
+    return res;
+  }
+  return -1;
+};
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   //Handlers
@@ -14,14 +21,12 @@ const ComposantResultatsGlobaux = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const handlePopoverOpen = (event) => {
     setExo(event.currentTarget.parentElement.attributes['data-field']);
-    console.log('ex:Open', exo);
     setAnchorEl(event.currentTarget);
   };
   const open = Boolean(anchorEl);
 
   const handlePopoverClose = () => {
     setAnchorEl(null);
-    console.log('ex:Close', exo);
   };
 
   //Initialisations
@@ -95,10 +100,7 @@ const ComposantResultatsGlobaux = () => {
   }
 
   //utils
-  function getExoFromIds(idEtu, idExo, ListeExo) {
-    console.log(ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo));
-    return ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo);
-  }
+
   return (
     <>
       <Box
@@ -168,9 +170,6 @@ const ComposantResultatsGlobaux = () => {
             </Typography>
           </ListItem>
           <List sx={{ display: 'flex' }}>
-            {/* <ListItem>
-              <Typography sx={{ p: 1 }}>{exo === '' ? '' : exo.nodeValue}</Typography>
-            </ListItem> */}
             <ListItem>
               <Typography>
                 {exo === ''
