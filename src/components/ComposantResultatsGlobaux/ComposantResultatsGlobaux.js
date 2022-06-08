@@ -6,17 +6,11 @@ import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { Box } from '@mui/system';
 import Popover from '@mui/material/Popover';
 import { Chip, List, ListItem, Typography } from '@mui/material';
-const getExoFromIds = (idEtu, idExo, ListeExo) => {
-  console.log(ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo));
-  let res = ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo);
-  if (res !== undefined && res !== null) {
-    return res;
-  }
-  return -1;
-};
+import FriseChrono from './FriseChrono';
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   //Handlers
+
   const [exo, setExo] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const handlePopoverOpen = (event) => {
@@ -24,7 +18,6 @@ const ComposantResultatsGlobaux = () => {
     setAnchorEl(event.currentTarget);
   };
   const open = Boolean(anchorEl);
-
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
@@ -54,27 +47,40 @@ const ComposantResultatsGlobaux = () => {
       columns.push({
         field: exo.idExo,
         headerName: exo.idExo,
-        cellClassName: (params) => {
-          if (params.value === true) {
-            return '';
-          }
-          return clsx('super-app', {
-            negative: params.value <= 3,
-            normal: params.value <= 6 && params.value > 3,
-            positive: params.value > 6,
-          });
-        },
         renderCell: (params) => {
           return (
             <Chip
               onMouseEnter={handlePopoverOpen}
               onMouseLeave={handlePopoverClose}
               variant="outlined"
-              size="small"
+              size="medium"
               label={params.value}
+              sx={{
+                width: '50%',
+                height: '100%',
+                margin: 'auto',
+                backgroundColor:
+                  params.value <= '3'
+                    ? '#097504'
+                    : params.value <= 6 && params.value > 3
+                    ? '#F96D0C'
+                    : params.value > 6
+                    ? '#D10D04'
+                    : '#ffffff',
+              }}
             />
           );
         },
+        // cellClassName: (params) => {
+        //   if (params.value === true) {
+        //     return '';
+        //   }
+        //   return clsx('super-app', {
+        //     negative: params.value <= 3,
+        //     normal: params.value <= 6 && params.value > 3,
+        //     positive: params.value > 6,
+        //   });
+        // },
       });
     }
   }
@@ -87,6 +93,7 @@ const ComposantResultatsGlobaux = () => {
       exos: exercices.filter((exo) => exo.idEtu == etu),
     });
   }
+
   let rows_etu = [];
   for (const etu of exoEtus) {
     let row_etu = {
@@ -94,60 +101,70 @@ const ComposantResultatsGlobaux = () => {
       idEtu: etu.idEtu,
     };
     for (const exo of etu.exos) {
-      row_etu[exo.idExo] = exo.tentatives.length + 1;
+      row_etu[exo.idExo] = exo.tentatives.length;
     }
     rows_etu.push(row_etu);
   }
 
   //utils
 
+  const getExoFromIds = (idEtu, idExo, ListeExo) => {
+    let res = ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo);
+    if (res !== undefined && res !== null) {
+      return res;
+    }
+    return -1;
+  };
   return (
     <>
-      <Box
+      {/* <Box
         sx={{
           height: 300,
           width: 1,
           '& .super-app-theme--cell': {
             backgroundColor: '#f5f6fa',
-            color: '#1a3e72',
+            color: '#000000',
             fontWeight: '600',
           },
           '& .super-app.negative': {
             backgroundColor: '#097504', //vert
-            color: '#1a3e72',
+            color: '#000000',
             fontWeight: '600',
           },
           '& .super-app.positive': {
             backgroundColor: '#D10D04', //orange
-            color: '#1a3e72',
+            color: '#0000000=',
             fontWeight: '600',
           },
           '& .super-app.normal': {
             backgroundColor: '#F96D0C', //rouge
-            color: '#1a3e72',
+            color: '#000000',
             fontWeight: '600',
           },
         }}
-      >
-        <DataGrid
-          rows={rows_etu}
-          columns={columns}
-          loading={rows_etu.length === 2}
-          autoHeight={true}
-          autoWidth={true}
-          headerHeight={36}
-          density={'compact'}
-          initialState={{
-            sorting: {
-              sortModel: [{ field: 'idEtu', sort: 'desc' }],
-            },
-          }}
-        />
-      </Box>
+      > */}
+      <DataGrid
+        rows={rows_etu}
+        columns={columns}
+        loading={rows_etu.length == 0}
+        autoHeight={true}
+        autoWidth={true}
+        headerHeight={36}
+        density={'compact'}
+        initialState={{
+          sorting: {
+            sortModel: [{ field: 'idEtu', sort: 'desc' }],
+          },
+        }}
+      />
+      {/* </Box> */}
       <Popover
         id="mouse-over-popover"
         sx={{
           pointerEvents: 'none',
+        }}
+        PaperProps={{
+          style: { width: '375px' },
         }}
         open={open}
         anchorEl={anchorEl}
@@ -159,11 +176,25 @@ const ComposantResultatsGlobaux = () => {
           vertical: 'top',
           horizontal: 'left',
         }}
-        onClose={handlePopoverClose}
-        disableRestoreFocus
+        transitionDuration={'auto'}
+        disableAutoFocus={false}
+        disableEnforceFocus={false}
       >
-        <List>
-          {console.log('exo', exo)}
+        <List sx={{ width: '100%', height: '100%' }}>
+          {exo == '' ||
+          getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) ==
+            -1 ? (
+            ''
+          ) : (
+            <ListItem>
+              <FriseChrono
+                exo={
+                  getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices)
+                    .tentatives
+                }
+              ></FriseChrono>
+            </ListItem>
+          )}
           <ListItem sx={{ display: 'flex' }}>
             <Typography variant="h6">
               {exo === '' ? '' : exo.ownerElement.parentElement.dataset.id}
@@ -193,9 +224,31 @@ const ComposantResultatsGlobaux = () => {
               </Typography>
             </ListItem>
           </List>
+
           <List>
             <ListItem>
               <Typography variant="h6">Tentatives:</Typography>
+            </ListItem>
+            <ListItem sx={{ display: 'inline-block', overflow: 'auto' }}>
+              {exo === '' ||
+              getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) ==
+                -1
+                ? ''
+                : getExoFromIds(
+                    exo.ownerElement.parentElement.dataset.id,
+                    exo.nodeValue,
+                    exercices,
+                  ).tentatives.map((tentative) => (
+                    <Box key={tentative.id + 'Box'}>
+                      <ListItem key={tentative.id + 'dateSoumission'}>
+                        {tentative.dateSoumission}
+                      </ListItem>
+                      <ListItem key={tentative.id + 'Logs'}>
+                        <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
+                      </ListItem>
+                      <ListItem key={tentative.id + 'code'}>{tentative.reponseEtudiant}</ListItem>
+                    </Box>
+                  ))}
             </ListItem>
           </List>
         </List>
