@@ -50,8 +50,9 @@ const ComposantResultatsGlobaux = () => {
         renderCell: (params) => {
           return (
             <Chip
-              onMouseEnter={handlePopoverOpen}
-              onMouseLeave={handlePopoverClose}
+              onClick={handlePopoverOpen}
+              // onMouseEnter={handlePopoverOpen}
+              // onMouseLeave={handlePopoverClose}
               variant="outlined"
               size="medium"
               label={params.value}
@@ -116,7 +117,7 @@ const ComposantResultatsGlobaux = () => {
     return -1;
   };
   return (
-    <>
+    <Box>
       {/* <Box
         sx={{
           height: 300,
@@ -164,7 +165,7 @@ const ComposantResultatsGlobaux = () => {
           pointerEvents: 'none',
         }}
         PaperProps={{
-          style: { width: '375px' },
+          style: { width: 'auto' },
         }}
         open={open}
         anchorEl={anchorEl}
@@ -179,22 +180,23 @@ const ComposantResultatsGlobaux = () => {
         transitionDuration={'auto'}
         disableAutoFocus={false}
         disableEnforceFocus={false}
+        onClose={handlePopoverClose}
+        disableScrollLock={true}
       >
+        {exo == '' ||
+        getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) == -1 ? (
+          ''
+        ) : (
+          <ListItem>
+            <FriseChrono
+              exo={
+                getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices)
+                  .tentatives
+              }
+            ></FriseChrono>
+          </ListItem>
+        )}
         <List sx={{ width: '100%', height: '100%' }}>
-          {exo == '' ||
-          getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) ==
-            -1 ? (
-            ''
-          ) : (
-            <ListItem>
-              <FriseChrono
-                exo={
-                  getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices)
-                    .tentatives
-                }
-              ></FriseChrono>
-            </ListItem>
-          )}
           <ListItem sx={{ display: 'flex' }}>
             <Typography variant="h6">
               {exo === '' ? '' : exo.ownerElement.parentElement.dataset.id}
@@ -253,7 +255,7 @@ const ComposantResultatsGlobaux = () => {
           </List>
         </List>
       </Popover>
-    </>
+    </Box>
   );
 };
 

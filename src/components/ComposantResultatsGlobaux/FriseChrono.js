@@ -7,13 +7,13 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import { makeStyles } from '@mui/styles';
-import { Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import PauseCircleFilledIcon from '@mui/icons-material/PauseCircleFilled';
 import Cached from '@mui/icons-material/Cached';
 import Error from '@mui/icons-material/Error';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import PropTypes from 'prop-types';
-
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 const useStyles = makeStyles({
   timeline: {
     transform: 'rotate(-90deg)',
@@ -37,7 +37,7 @@ const FriseChrono = (props) => {
 
   console.log('exoFrise', exo);
   return (
-    <>
+    <Box sx={{ display: 'flex', flex_wrap: 'wrap' }}>
       {console.log('frise', exo)}
       {exo.map((tentative) => (
         <Timeline key={tentative.id + 'Timeline'} className={classes.timeline} align="alternate">
@@ -111,7 +111,7 @@ const FriseChrono = (props) => {
           </TimelineContent>
         </TimelineItem>
       </Timeline> */}
-    </>
+    </Box>
   );
 };
 
