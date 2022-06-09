@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { Box } from '@mui/system';
-import Popover from '@mui/material/Popover';
-import { Chip, List, ListItem, Typography } from '@mui/material';
+import { Chip, Fade, List, ListItem, Popper, Typography } from '@mui/material';
 import FriseChrono from './FriseChrono';
+
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   //Handlers
@@ -50,9 +49,7 @@ const ComposantResultatsGlobaux = () => {
         renderCell: (params) => {
           return (
             <Chip
-              onClick={handlePopoverOpen}
-              // onMouseEnter={handlePopoverOpen}
-              // onMouseLeave={handlePopoverClose}
+              onMouseEnter={handlePopoverOpen}
               variant="outlined"
               size="medium"
               label={params.value}
@@ -117,7 +114,7 @@ const ComposantResultatsGlobaux = () => {
     return -1;
   };
   return (
-    <Box>
+    <Box sx={{ width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%' }}>
       {/* <Box
         sx={{
           height: 300,
@@ -159,102 +156,118 @@ const ComposantResultatsGlobaux = () => {
         }}
       />
       {/* </Box> */}
-      <Popover
-        id="mouse-over-popover"
-        sx={{
-          pointerEvents: 'none',
-        }}
-        PaperProps={{
-          style: { width: 'auto' },
-        }}
+      <Popper
+        sx={{ max_width: '' }}
         open={open}
         anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transitionDuration={'auto'}
-        disableAutoFocus={false}
-        disableEnforceFocus={false}
-        onClose={handlePopoverClose}
-        disableScrollLock={true}
+        onMouseLeave={handlePopoverClose}
+        transition={true}
+        disablePortal={true}
+        placement={'top-end'}
+        // modifiers={[
+        //   {
+        //     name: 'preventOverflow',
+        //     enabled: true,
+        //     requiresIfExists: ['offset'],
+        //     options: {
+        //       context: 'popper',
+        //       altAxis: true,
+        //       altBoundary: true,
+        //       tether: true,
+        //       boundary: 'clippingParents',
+        //       rootBoundary: 'viewport',
+        //       padding: 50,
+        //       detectOverflow: true,
+        //     },
+        //   },
+        //]}
       >
-        {exo == '' ||
-        getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) == -1 ? (
-          ''
-        ) : (
-          <ListItem>
-            <FriseChrono
-              exo={
-                getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices)
-                  .tentatives
-              }
-            ></FriseChrono>
-          </ListItem>
-        )}
-        <List sx={{ width: '100%', height: '100%' }}>
-          <ListItem sx={{ display: 'flex' }}>
-            <Typography variant="h6">
-              {exo === '' ? '' : exo.ownerElement.parentElement.dataset.id}
-            </Typography>
-          </ListItem>
-          <List sx={{ display: 'flex' }}>
-            <ListItem>
-              <Typography>
-                {exo === ''
-                  ? ''
-                  : getExoFromIds(
-                      exo.ownerElement.parentElement.dataset.id,
-                      exo.nodeValue,
-                      exercices,
-                    ).nomExo}
-              </Typography>
-            </ListItem>
-            <ListItem>
-              <Typography sx={{ p: 1 }}>
-                {exo === ''
-                  ? ''
-                  : getExoFromIds(
-                      exo.ownerElement.parentElement.dataset.id,
-                      exo.nodeValue,
-                      exercices,
-                    ).difficulte}
-              </Typography>
-            </ListItem>
-          </List>
-
-          <List>
-            <ListItem>
-              <Typography variant="h6">Tentatives:</Typography>
-            </ListItem>
-            <ListItem sx={{ display: 'inline-block', overflow: 'auto' }}>
-              {exo === '' ||
+        {({ TransitionProps }) => (
+          <Fade {...TransitionProps} timeout={350}>
+            <div style={{ width: 'auto', height: 'auto', backgroundColor: 'white' }}>
+              {exo == '' ||
               getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) ==
-                -1
-                ? ''
-                : getExoFromIds(
-                    exo.ownerElement.parentElement.dataset.id,
-                    exo.nodeValue,
-                    exercices,
-                  ).tentatives.map((tentative) => (
-                    <Box key={tentative.id + 'Box'}>
-                      <ListItem key={tentative.id + 'dateSoumission'}>
-                        {tentative.dateSoumission}
-                      </ListItem>
-                      <ListItem key={tentative.id + 'Logs'}>
-                        <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
-                      </ListItem>
-                      <ListItem key={tentative.id + 'code'}>{tentative.reponseEtudiant}</ListItem>
-                    </Box>
-                  ))}
-            </ListItem>
-          </List>
-        </List>
-      </Popover>
+                -1 ? (
+                ''
+              ) : (
+                <ListItem>
+                  <FriseChrono
+                    exo={
+                      getExoFromIds(
+                        exo.ownerElement.parentElement.dataset.id,
+                        exo.nodeValue,
+                        exercices,
+                      ).tentatives
+                    }
+                  ></FriseChrono>
+                </ListItem>
+              )}
+              <List sx={{ width: '100%', height: '100%' }}>
+                <ListItem>
+                  <Typography variant="h6">
+                    {exo === '' ? '' : exo.ownerElement.parentElement.dataset.id}
+                  </Typography>
+                </ListItem>
+                <List sx={{ display: 'flex' }}>
+                  <ListItem>
+                    <Typography>
+                      {exo === ''
+                        ? ''
+                        : getExoFromIds(
+                            exo.ownerElement.parentElement.dataset.id,
+                            exo.nodeValue,
+                            exercices,
+                          ).nomExo}
+                    </Typography>
+                  </ListItem>
+                  <ListItem>
+                    <Typography sx={{ p: 1 }}>
+                      {exo === ''
+                        ? ''
+                        : getExoFromIds(
+                            exo.ownerElement.parentElement.dataset.id,
+                            exo.nodeValue,
+                            exercices,
+                          ).difficulte}
+                    </Typography>
+                  </ListItem>
+                </List>
+                <List>
+                  <ListItem>
+                    <Typography variant="h6">Tentatives:</Typography>
+                  </ListItem>
+                  <ListItem sx={{ display: 'inline-block', overflow: 'auto', height: '96px' }}>
+                    {exo === '' ||
+                    getExoFromIds(
+                      exo.ownerElement.parentElement.dataset.id,
+                      exo.nodeValue,
+                      exercices,
+                    ) == -1
+                      ? ''
+                      : getExoFromIds(
+                          exo.ownerElement.parentElement.dataset.id,
+                          exo.nodeValue,
+                          exercices,
+                        ).tentatives.map((tentative) => (
+                          <Box key={tentative.id + 'Box'}>
+                            <ListItem key={tentative.id + 'dateSoumission'}>
+                              {tentative.dateSoumission}
+                            </ListItem>
+                            <ListItem key={tentative.id + 'Logs'}>
+                              <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
+                            </ListItem>
+                            <ListItem key={tentative.id + 'code'}>
+                              {tentative.reponseEtudiant}
+                            </ListItem>
+                          </Box>
+                        ))}
+                  </ListItem>
+                </List>
+              </List>
+            </div>
+          </Fade>
+        )}
+      </Popper>
     </Box>
   );
 };
