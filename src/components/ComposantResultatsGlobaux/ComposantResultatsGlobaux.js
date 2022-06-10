@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
-import { Box } from '@mui/system';
-import { Chip, Fade, List, ListItem, Popper, Typography } from '@mui/material';
-import FriseChrono from './FriseChrono';
+import { Box, Chip, Grid } from '@mui/material';
+
+import PopperDetails from './PopperDetails';
 
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
@@ -12,12 +12,21 @@ const ComposantResultatsGlobaux = () => {
 
   const [exo, setExo] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
+
   const handlePopoverOpen = (event) => {
-    setExo(event.currentTarget.parentElement.attributes['data-field']);
-    setAnchorEl(event.currentTarget);
+    console.log(
+      'evt',
+      event.currentTarget.parentElement.attributes['data-field'].ownerElement.innerText,
+    );
+    if (event.currentTarget.parentElement.attributes['data-field'].ownerElement.innerText != '') {
+      setExo(event.currentTarget.parentElement.attributes['data-field']);
+      setAnchorEl(document.getElementById('container'));
+    }
   };
+
   const open = Boolean(anchorEl);
   const handlePopoverClose = () => {
+    console.log('handlePopoverClose', anchorEl);
     setAnchorEl(null);
   };
 
@@ -69,16 +78,6 @@ const ComposantResultatsGlobaux = () => {
             />
           );
         },
-        // cellClassName: (params) => {
-        //   if (params.value === true) {
-        //     return '';
-        //   }
-        //   return clsx('super-app', {
-        //     negative: params.value <= 3,
-        //     normal: params.value <= 6 && params.value > 3,
-        //     positive: params.value > 6,
-        //   });
-        // },
       });
     }
   }
@@ -104,43 +103,8 @@ const ComposantResultatsGlobaux = () => {
     rows_etu.push(row_etu);
   }
 
-  //utils
-
-  const getExoFromIds = (idEtu, idExo, ListeExo) => {
-    let res = ListeExo.find((exo) => exo.idEtu == idEtu && exo.idExo == idExo);
-    if (res !== undefined && res !== null) {
-      return res;
-    }
-    return -1;
-  };
   return (
-    <Box sx={{ width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%' }}>
-      {/* <Box
-        sx={{
-          height: 300,
-          width: 1,
-          '& .super-app-theme--cell': {
-            backgroundColor: '#f5f6fa',
-            color: '#000000',
-            fontWeight: '600',
-          },
-          '& .super-app.negative': {
-            backgroundColor: '#097504', //vert
-            color: '#000000',
-            fontWeight: '600',
-          },
-          '& .super-app.positive': {
-            backgroundColor: '#D10D04', //orange
-            color: '#0000000=',
-            fontWeight: '600',
-          },
-          '& .super-app.normal': {
-            backgroundColor: '#F96D0C', //rouge
-            color: '#000000',
-            fontWeight: '600',
-          },
-        }}
-      > */}
+    <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
         rows={rows_etu}
         columns={columns}
@@ -155,119 +119,23 @@ const ComposantResultatsGlobaux = () => {
           },
         }}
       />
-      {/* </Box> */}
-      <Popper
-        sx={{ max_width: '' }}
-        open={open}
+      <Box
+        id="container"
+        sx={{
+          width: '100%',
+          backgroundColor: '',
+          position: 'fixed',
+          top: '75vh !important',
+          left: '75vh !important',
+        }}
+      ></Box>
+      <PopperDetails
+        exercices={exercices}
+        handlePopoverClose={handlePopoverClose}
+        exo={exo === '' ? '' : exo}
         anchorEl={anchorEl}
-        onMouseLeave={handlePopoverClose}
-        transition={true}
-        disablePortal={true}
-        placement={'top-end'}
-        // modifiers={[
-        //   {
-        //     name: 'preventOverflow',
-        //     enabled: true,
-        //     requiresIfExists: ['offset'],
-        //     options: {
-        //       context: 'popper',
-        //       altAxis: true,
-        //       altBoundary: true,
-        //       tether: true,
-        //       boundary: 'clippingParents',
-        //       rootBoundary: 'viewport',
-        //       padding: 50,
-        //       detectOverflow: true,
-        //     },
-        //   },
-        //]}
-      >
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
-            <div style={{ width: 'auto', height: 'auto', backgroundColor: 'white' }}>
-              {exo == '' ||
-              getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) ==
-                -1 ? (
-                ''
-              ) : (
-                <ListItem>
-                  <FriseChrono
-                    exo={
-                      getExoFromIds(
-                        exo.ownerElement.parentElement.dataset.id,
-                        exo.nodeValue,
-                        exercices,
-                      ).tentatives
-                    }
-                  ></FriseChrono>
-                </ListItem>
-              )}
-              <List sx={{ width: '100%', height: '100%' }}>
-                <ListItem>
-                  <Typography variant="h6">
-                    {exo === '' ? '' : exo.ownerElement.parentElement.dataset.id}
-                  </Typography>
-                </ListItem>
-                <List sx={{ display: 'flex' }}>
-                  <ListItem>
-                    <Typography>
-                      {exo === ''
-                        ? ''
-                        : getExoFromIds(
-                            exo.ownerElement.parentElement.dataset.id,
-                            exo.nodeValue,
-                            exercices,
-                          ).nomExo}
-                    </Typography>
-                  </ListItem>
-                  <ListItem>
-                    <Typography sx={{ p: 1 }}>
-                      {exo === ''
-                        ? ''
-                        : getExoFromIds(
-                            exo.ownerElement.parentElement.dataset.id,
-                            exo.nodeValue,
-                            exercices,
-                          ).difficulte}
-                    </Typography>
-                  </ListItem>
-                </List>
-                <List>
-                  <ListItem>
-                    <Typography variant="h6">Tentatives:</Typography>
-                  </ListItem>
-                  <ListItem sx={{ display: 'inline-block', overflow: 'auto', height: '96px' }}>
-                    {exo === '' ||
-                    getExoFromIds(
-                      exo.ownerElement.parentElement.dataset.id,
-                      exo.nodeValue,
-                      exercices,
-                    ) == -1
-                      ? ''
-                      : getExoFromIds(
-                          exo.ownerElement.parentElement.dataset.id,
-                          exo.nodeValue,
-                          exercices,
-                        ).tentatives.map((tentative) => (
-                          <Box key={tentative.id + 'Box'}>
-                            <ListItem key={tentative.id + 'dateSoumission'}>
-                              {tentative.dateSoumission}
-                            </ListItem>
-                            <ListItem key={tentative.id + 'Logs'}>
-                              <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
-                            </ListItem>
-                            <ListItem key={tentative.id + 'code'}>
-                              {tentative.reponseEtudiant}
-                            </ListItem>
-                          </Box>
-                        ))}
-                  </ListItem>
-                </List>
-              </List>
-            </div>
-          </Fade>
-        )}
-      </Popper>
+      ></PopperDetails>
+      {/* </Box> */}
     </Box>
   );
 };

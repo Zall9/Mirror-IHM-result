@@ -35,15 +35,12 @@ const FriseChrono = (props) => {
   const exo = props.exo;
   const classes = useStyles();
 
-  console.log('exoFrise', exo);
   return (
     <Box sx={{ display: 'flex', flex_wrap: 'wrap' }}>
-      {console.log('frise', exo)}
       {exo.map((tentative) => (
         <Timeline key={tentative.id + 'Timeline'} className={classes.timeline} align="alternate">
           <TimelineItem key={tentative.id + 'TimelineItem'}>
             <TimelineSeparator key={tentative.id + 'TimelineSeparator'}>
-              {console.log('tentative', tentative)}
               {tentative.validationExercice === true ? (
                 <CheckCircleOutline color="primary" className={classes.timelineIcon} />
               ) : (
