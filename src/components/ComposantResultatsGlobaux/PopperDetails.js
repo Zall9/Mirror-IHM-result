@@ -1,16 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Fade, List, ListItem, Popper, Slide, Typography } from '@mui/material';
+import { List, ListItem, Popper, Slide, Typography } from '@mui/material';
 import FriseChrono from './FriseChrono';
 import { Box } from '@mui/system';
 import { getExoFromIds } from './utils/getExoFromIds';
+import CodeMirror from '@uiw/react-codemirror';
+import { StreamLanguage } from '@codemirror/language';
+import { python } from '@codemirror/lang-python';
+import { javascript } from '@codemirror/lang-javascript';
+import { php } from '@codemirror/lang-php';
+import { sql } from '@codemirror/lang-sql';
 const PopperDetails = (props) => {
   const anchorEl = props.anchorEl;
   const open = Boolean(anchorEl);
   const exo = props.exo;
   const handlePopoverClose = props.handlePopoverClose;
   const exercices = props.exercices;
-
+  let langage = '';
+  if (exo.ownerElement != undefined) {
+    langage = getExoFromIds(
+      exo.ownerElement.parentElement.dataset.id,
+      exo.nodeValue,
+      exercices,
+    ).langage;
+  }
+  const exoFromIds = getExoFromIds(exo.idEtu, exo.idExo, exercices);
   return (
     <Popper
       open={open}
@@ -108,9 +122,19 @@ const PopperDetails = (props) => {
                           <ListItem key={tentative.id + 'Logs'}>
                             <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
                           </ListItem>
-                          <ListItem key={tentative.id + 'code'}>
-                            {tentative.reponseEtudiant}
-                          </ListItem>
+                          {langage === 'C' || langage === 'c' ? (langage = 'C-like') : langage}
+                          {langage !== '' && langage !== undefined ? (
+                            <CodeMirror
+                              extensions={[StreamLanguage.define(sql)]}
+                              value={tentative.reponseEtudiant}
+                              key={tentative.id + 'code'}
+                              mode={'text/x-csrc'}
+                            >
+                              {console.log(langage)}
+                            </CodeMirror>
+                          ) : (
+                            ''
+                          )}
                         </Box>
                       ))}
                 </ListItem>

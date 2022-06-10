@@ -14,10 +14,6 @@ const ComposantResultatsGlobaux = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handlePopoverOpen = (event) => {
-    console.log(
-      'evt',
-      event.currentTarget.parentElement.attributes['data-field'].ownerElement.innerText,
-    );
     if (event.currentTarget.parentElement.attributes['data-field'].ownerElement.innerText != '') {
       setExo(event.currentTarget.parentElement.attributes['data-field']);
       setAnchorEl(document.getElementById('container'));
