@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { List, ListItem, Popper, Slide, Typography } from '@mui/material';
+import { IconButton, List, ListItem, Popper, Slide, Typography } from '@mui/material';
 import FriseChrono from './FriseChrono';
 import { Box } from '@mui/system';
 import { getExoFromIds } from './utils/getExoFromIds';
 import CodeTentative from './CodeTentative';
+import CancelIcon from '@mui/icons-material/Cancel';
 const PopperDetails = (props) => {
-  const anchorEl = props.anchorEl;
-  const open = Boolean(anchorEl);
+  const [anchor, setAnchor] = useState(props.anchorEl);
+  const open = Boolean(props.anchorEl);
   const exo = props.exo;
-  const handlePopoverClose = props.handlePopoverClose;
   const exercices = props.exercices;
+  const handlePopoverClose = props.handlePopoverClose;
+  const handlePopoverClose2 = () => {
+    setAnchor(null);
+    handlePopoverClose();
+  };
+  const anchorEl = props.anchorEl;
   let langage = '';
   if (exo.ownerElement != undefined) {
     langage = getExoFromIds(
@@ -19,15 +25,8 @@ const PopperDetails = (props) => {
       exercices,
     ).langage;
   }
-  const exoFromIds = getExoFromIds(exo.idEtu, exo.idExo, exercices);
   return (
-    <Popper
-      open={open}
-      anchorEl={anchorEl}
-      onMouseLeave={handlePopoverClose}
-      transition={true}
-      disablePortal={true}
-    >
+    <Popper open={open} anchorEl={anchorEl} transition={true} disablePortal={true}>
       {({ TransitionProps }) => (
         //<Fade {...TransitionProps} timeout={350}>
         <Slide
@@ -36,7 +35,7 @@ const PopperDetails = (props) => {
           direction={'right'}
           {...TransitionProps}
           in={open}
-          timeout={350}
+          timeout={1750}
         >
           <div
             style={{
@@ -46,6 +45,13 @@ const PopperDetails = (props) => {
               backgroundColor: 'white',
             }}
           >
+            <IconButton
+              onClick={() => {
+                handlePopoverClose2;
+              }}
+            >
+              <CancelIcon onClick={handlePopoverClose2}></CancelIcon>
+            </IconButton>
             {exo == '' ||
             getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) ==
               -1 ? (
@@ -140,9 +146,9 @@ const PopperDetails = (props) => {
 
 PopperDetails.propTypes = {
   anchorEl: PropTypes.object,
+  handlePopoverClose: PropTypes.func,
   open: PropTypes.bool,
   exo: PropTypes.any,
-  handlePopoverClose: PropTypes.func,
   exercices: PropTypes.array,
 };
 export default PopperDetails;

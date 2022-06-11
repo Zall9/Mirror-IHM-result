@@ -19,12 +19,11 @@ const ComposantResultatsGlobaux = () => {
       setAnchorEl(document.getElementById('container'));
     }
   };
-
-  const open = Boolean(anchorEl);
   const handlePopoverClose = () => {
-    console.log('handlePopoverClose', anchorEl);
-    setAnchorEl(null);
+    console.log('handlePopoverCloseComponentRes', anchorEl);
+    setAnchor(null);
   };
+  const open = Boolean(anchorEl);
 
   //Initialisations
   let tabEtu = [];
@@ -118,7 +117,7 @@ const ComposantResultatsGlobaux = () => {
       <Box
         id="container"
         sx={{
-          width: '100%',
+          width: '750vh',
           backgroundColor: '',
           position: 'fixed',
           top: '75vh !important',
@@ -127,9 +126,9 @@ const ComposantResultatsGlobaux = () => {
       ></Box>
       <PopperDetails
         exercices={exercices}
-        handlePopoverClose={handlePopoverClose}
         exo={exo === '' ? '' : exo}
         anchorEl={anchorEl}
+        handlePopoverClose={handlePopoverClose}
       ></PopperDetails>
       {/* </Box> */}
     </Box>
