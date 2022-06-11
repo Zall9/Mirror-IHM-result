@@ -4,12 +4,7 @@ import { List, ListItem, Popper, Slide, Typography } from '@mui/material';
 import FriseChrono from './FriseChrono';
 import { Box } from '@mui/system';
 import { getExoFromIds } from './utils/getExoFromIds';
-import CodeMirror from '@uiw/react-codemirror';
-import { StreamLanguage } from '@codemirror/language';
-import { python } from '@codemirror/lang-python';
-import { javascript } from '@codemirror/lang-javascript';
-import { php } from '@codemirror/lang-php';
-import { sql } from '@codemirror/lang-sql';
+import CodeTentative from './CodeTentative';
 const PopperDetails = (props) => {
   const anchorEl = props.anchorEl;
   const open = Boolean(anchorEl);
@@ -122,16 +117,12 @@ const PopperDetails = (props) => {
                           <ListItem key={tentative.id + 'Logs'}>
                             <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
                           </ListItem>
-                          {langage === 'C' || langage === 'c' ? (langage = 'C-like') : langage}
                           {langage !== '' && langage !== undefined ? (
-                            <CodeMirror
-                              extensions={[StreamLanguage.define(sql)]}
-                              value={tentative.reponseEtudiant}
+                            <CodeTentative
+                              code={tentative.reponseEtudiant}
                               key={tentative.id + 'code'}
-                              mode={'text/x-csrc'}
-                            >
-                              {console.log(langage)}
-                            </CodeMirror>
+                              language={langage}
+                            ></CodeTentative>
                           ) : (
                             ''
                           )}

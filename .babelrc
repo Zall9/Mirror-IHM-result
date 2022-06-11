@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    [
+      "prismjs",
+      {
+        "languages": ["*"],
+        "plugins": ["line-numbers"],
+        "theme": "okaidia",
+        "css": true
+      },
+      "transform-es2015-arrow-functions"
+    ]
+  ]
+}
