@@ -7,15 +7,12 @@ import { getExoFromIds } from './utils/getExoFromIds';
 import CodeTentative from './CodeTentative';
 import CancelIcon from '@mui/icons-material/Cancel';
 const PopperDetails = (props) => {
-  const [anchor, setAnchor] = useState(props.anchorEl);
+  // const [anchor, setAnchor] = useState(props.anchorEl);
   const open = Boolean(props.anchorEl);
   const exo = props.exo;
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;
-  const handlePopoverClose2 = () => {
-    setAnchor(null);
-    handlePopoverClose();
-  };
+
   const anchorEl = props.anchorEl;
   let langage = '';
   if (exo.ownerElement != undefined) {
@@ -45,12 +42,8 @@ const PopperDetails = (props) => {
               backgroundColor: 'white',
             }}
           >
-            <IconButton
-              onClick={() => {
-                handlePopoverClose2;
-              }}
-            >
-              <CancelIcon onClick={handlePopoverClose2}></CancelIcon>
+            <IconButton>
+              <CancelIcon onClick={handlePopoverClose}></CancelIcon>
             </IconButton>
             {exo == '' ||
             getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) ==
