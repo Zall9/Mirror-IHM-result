@@ -12,17 +12,7 @@ import { getExercices } from '@stores/Exercices/exercicesSlice';
  * @returns {number}
  */
 function countRetard(exercices, time) {
-  let count = exercices
-    .map((acc, exercice) => {
-      // tempsMoyen en minute le * 60000 pour passage en millisecond
-      if (acc.tempsMoyen != 0 && time - Date.parse(acc.debut) > acc.tempsMoyen * 2 * 60000) {
-        return 1;
-      } else {
-        return 0;
-      }
-    })
-    .reduce((partialSum, a) => partialSum + a, 0);
-  return count;
+  return idRetardataire(exercices, time).length;
 }
 
 /**
@@ -31,9 +21,12 @@ function countRetard(exercices, time) {
  * @returns {Array(idEtu)}
  */
 function idRetardataire(exercices, time) {
-  let id = exercices.map((acc, exercice) => {
-    if (acc.tempsMoyen != 0 && time - Date.parse(acc.debut) > acc.tempsMoyen * 2 * 60000) {
-      return acc.idEtu;
+  let id = Object.values(exercices).map((exercice) => {
+    if (
+      exercice.tempsMoyen != 0 &&
+      time - Date.parse(exercice.debut) > exercice.tempsMoyen * 2 * 60000
+    ) {
+      return exercice.idEtu;
     }
   });
   return id;
