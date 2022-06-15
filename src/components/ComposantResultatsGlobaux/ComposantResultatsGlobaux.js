@@ -5,30 +5,11 @@ import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { Box, Chip } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
+import ChipGridCells from './ChipGridCells';
 const ComposantResultatsGlobaux = () => {
   let exercices = useSelector(getExercices);
   // let exercices = Object.values(exercicez);
 
-  let ChipMemo = React.memo(function renderChip(props) {
-    return (
-      <Chip
-        {...props}
-        sx={{
-          width: '50%',
-          height: '100%',
-          margin: 'auto',
-          backgroundColor:
-            props.label.value <= '3'
-              ? '#097504'
-              : props.label.value <= 6 && props.label.value > 3
-              ? '#F96D0C'
-              : props.label.value > 6
-              ? '#D10D04'
-              : '#ffffff',
-        }}
-      />
-    );
-  });
   const containerStyle = useMemo(() => {
     let style = {
       width: '750vh',
@@ -39,24 +20,14 @@ const ComposantResultatsGlobaux = () => {
     };
     return style;
   }, []);
-  // const ChipStyle = useMemo(({ params }) => {
-  //   console.log('para', params);
-  //   let style = {
-  //     width: '50%',
-  //     height: '100%',
-  //     margin: 'auto',
-  //     backgroundColor:
-  //       params.value <= 3
-  //         ? '#097504'
-  //         : params.value <= 6 && params.value > 3
-  //         ? '#F96D0C'
-  //         : params.value > 6
-  //         ? '#D10D04'
-  //         : '#ffffff',
-  //   };
-  //   return style;
-  // });
 
+  let tmp_columns = [
+    {
+      field: 'idEtu',
+      headerName: 'id etudiant',
+      width: 120,
+    },
+  ];
   const rows_etu = useMemo(() => {
     let tabEtu = [];
     let exoEtus = [];
@@ -86,13 +57,7 @@ const ComposantResultatsGlobaux = () => {
     }
     return tmp_rows_etu;
   }, [exercices]);
-  let tmp_columns = [
-    {
-      field: 'idEtu',
-      headerName: 'id etudiant',
-      width: 120,
-    },
-  ];
+
   const columns = useMemo(() => {
     for (const exo of Object.values(exercices)) {
       if (!tmp_columns.find((col) => col.field === exo.idExo)) {
@@ -101,26 +66,14 @@ const ComposantResultatsGlobaux = () => {
           headerName: exo.idExo,
           width: 81,
           renderCell: (params) => {
-            console.log('params', params);
+            // console.log('params', params);
             return (
-              <ChipMemo
+              <ChipGridCells
+                exercices={exercices}
                 onMouseEnter={handlePopoverOpen}
                 variant="outlined"
                 size="medium"
                 label={params.value !== undefined ? params.value : ''}
-                sx={{
-                  width: '50%',
-                  height: '100%',
-                  margin: 'auto',
-                  backgroundColor:
-                    params.value <= 3
-                      ? '#097504'
-                      : params.value <= 6 && params.value > 3
-                      ? '#F96D0C'
-                      : params.value > 6
-                      ? '#D10D04'
-                      : '#ffffff',
-                }}
               />
             );
           },
@@ -129,20 +82,7 @@ const ComposantResultatsGlobaux = () => {
     }
     return tmp_columns;
   }, [exercices]);
-  // const DataGridMemo = React.memo(function renderGrid(props) {
-  //   return (
-  //     <DataGrid
-  //       rows={props.rows}
-  //       columns={props.columns}
-  //       autoHeight={true}
-  //       autoWidth={true}
-  //       headerHeight={36}
-  //       density={'compact'}
-  //       columnThreshold={0}
-  //       columnBuffer={0}
-  //     />
-  //   );
-  // });
+
   const PopperDetailsMemo = React.memo(function renderPoppers(props) {
     return (
       <PopperDetails
@@ -183,8 +123,6 @@ const ComposantResultatsGlobaux = () => {
         autoWidth={true}
         headerHeight={36}
         density={'compact'}
-        columnThreshold={0}
-        columnBuffer={0}
       />
       {/* <DataGridMemo rows={rows_etu} columns={columns} /> */}
       <Box id="container" sx={containerStyle}></Box>
