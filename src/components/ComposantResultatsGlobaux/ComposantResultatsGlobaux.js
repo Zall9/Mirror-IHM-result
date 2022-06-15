@@ -39,6 +39,23 @@ const ComposantResultatsGlobaux = () => {
     };
     return style;
   }, []);
+  // const ChipStyle = useMemo(({ params }) => {
+  //   console.log('para', params);
+  //   let style = {
+  //     width: '50%',
+  //     height: '100%',
+  //     margin: 'auto',
+  //     backgroundColor:
+  //       params.value <= 3
+  //         ? '#097504'
+  //         : params.value <= 6 && params.value > 3
+  //         ? '#F96D0C'
+  //         : params.value > 6
+  //         ? '#D10D04'
+  //         : '#ffffff',
+  //   };
+  //   return style;
+  // });
 
   const rows_etu = useMemo(() => {
     let tabEtu = [];
@@ -90,7 +107,7 @@ const ComposantResultatsGlobaux = () => {
                 onMouseEnter={handlePopoverOpen}
                 variant="outlined"
                 size="medium"
-                label={params.value !== undefined ? params.value : 0}
+                label={params.value !== undefined ? params.value : ''}
                 sx={{
                   width: '50%',
                   height: '100%',
@@ -111,7 +128,7 @@ const ComposantResultatsGlobaux = () => {
       }
     }
     return tmp_columns;
-  }, [tmp_columns]);
+  }, [exercices]);
   // const DataGridMemo = React.memo(function renderGrid(props) {
   //   return (
   //     <DataGrid
