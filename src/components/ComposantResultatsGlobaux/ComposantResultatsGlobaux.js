@@ -57,11 +57,7 @@ const ComposantResultatsGlobaux = () => {
     }
     return tmp_rows_etu;
   }, [exercices]);
-  const updateRows = (value, id, field) => {
-    const item = rows.find((item) => item.id === id);
-    item[field] = value;
-    console.log('ziz', rows);
-  };
+
   const columns = useMemo(() => {
     for (const exo of Object.values(exercices)) {
       if (!tmp_columns.find((col) => col.field === exo.idExo)) {
