@@ -8,17 +8,19 @@ const ChipGridCells = (props) => {
   });
   const cellsStyle = useCallback(
     function (params) {
-      let style = {
-        backgroundColor:
-          params <= 3
-            ? '#097504'
-            : params <= 6 && params > 3
-            ? '#F96D0C'
-            : params > 6
-            ? '#D10D04'
-            : '#ffffff',
-      };
-      return style;
+      if (params !== '') {
+        let style = {
+          backgroundColor:
+            params <= 3
+              ? '#097504'
+              : params <= 6 && params > 3
+              ? '#F96D0C'
+              : params > 6
+              ? '#D10D04'
+              : '#ffffff',
+        };
+        return style;
+      }
     },
     [props.exercices],
   );
