@@ -29,61 +29,39 @@ const ComposantResultatsGlobaux = () => {
       width: 120,
     },
   ];
-  // const rows_etu = useMemo(() => {
-  //   let tabEtu = [];
-  //   let exoEtus = [];
-  //   for (const exo of Object.values(exercices)) {
-  //     if (!tabEtu.includes(exo.idEtu)) {
-  //       tabEtu.push(exo.idEtu);
-  //     }
-  //   }
-  //   let tmp_rows_etu = [];
-  //   for (const etu of tabEtu) {
-  //     exoEtus.push({
-  //       id: etu,
-  //       idEtu: etu,
-  //       exos: Object.values(exercices).filter((exo) => exo.idEtu == etu),
-  //     });
-  //   }
-  //   // console.log('exoEtu', exoEtus);
-  //   for (const etu of exoEtus) {
-  //     let row_etu = {
-  //       id: etu.idEtu,
-  //       idEtu: etu.idEtu,
-  //     };
-  //     for (const exo of etu.exos) {
-  //       row_etu[exo.idExo] = exo.tentatives.length;
-  //     }
-  //     tmp_rows_etu.push(row_etu);
-  //   }
-  //   return tmp_rows_etu;
-  // }, [exercices]);
+  const rows_etu = useMemo(() => {
+    let tabEtu = [];
+    let exoEtus = [];
+    for (const exo of Object.values(exercices)) {
+      if (!tabEtu.includes(exo.idEtu)) {
+        tabEtu.push(exo.idEtu);
+      }
+    }
+    let tmp_rows_etu = [];
+    for (const etu of tabEtu) {
+      exoEtus.push({
+        id: etu,
+        idEtu: etu,
+        exos: Object.values(exercices).filter((exo) => exo.idEtu == etu),
+      });
+    }
+    // console.log('exoEtu', exoEtus);
+    for (const etu of exoEtus) {
+      let row_etu = {
+        id: etu.idEtu,
+        idEtu: etu.idEtu,
+      };
+      for (const exo of etu.exos) {
+        row_etu[exo.idExo] = exo.tentatives.length;
+      }
+      tmp_rows_etu.push(row_etu);
+    }
+    return tmp_rows_etu;
+  }, [exercices]);
+
   let tabEtu = [];
   let exoEtus = [];
-  for (const exo of Object.values(exercices)) {
-    if (!tabEtu.includes(exo.idEtu)) {
-      tabEtu.push(exo.idEtu);
-    }
-  }
-  let tmp_rows_etu = [];
-  for (const etu of tabEtu) {
-    exoEtus.push({
-      id: etu,
-      idEtu: etu,
-      exos: Object.values(exercices).filter((exo) => exo.idEtu == etu),
-    });
-  }
-  // console.log('exoEtu', exoEtus);
-  for (const etu of exoEtus) {
-    let row_etu = {
-      id: etu.idEtu,
-      idEtu: etu.idEtu,
-    };
-    for (const exo of etu.exos) {
-      row_etu[exo.idExo] = exo.tentatives.length;
-    }
-    tmp_rows_etu.push(row_etu);
-  }
+
   const columns = useMemo(() => {
     if (sessions.length != 0) {
       console.log('bool', sessions !== []);
@@ -145,7 +123,7 @@ const ComposantResultatsGlobaux = () => {
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
-        rows={tmp_rows_etu}
+        rows={rows_etu}
         columns={columns}
         autoHeight={true}
         autoWidth={true}
