@@ -2,14 +2,15 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
-import { Box, Chip } from '@mui/material';
+import { getSessions } from '@stores/Sessions/sessionSlice';
+import { Box } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCells from './ChipGridCells';
 const ComposantResultatsGlobaux = () => {
   let exercices = useSelector(getExercices);
   // let exercices = Object.values(exercicez);
-
+  let sessions = useSelector(getSessions);
   const containerStyle = useMemo(() => {
     let style = {
       width: '750vh',
@@ -28,42 +29,68 @@ const ComposantResultatsGlobaux = () => {
       width: 120,
     },
   ];
-  const rows_etu = useMemo(() => {
-    let tabEtu = [];
-    let exoEtus = [];
-    for (const exo of Object.values(exercices)) {
-      if (!tabEtu.includes(exo.idEtu)) {
-        tabEtu.push(exo.idEtu);
-      }
+  // const rows_etu = useMemo(() => {
+  //   let tabEtu = [];
+  //   let exoEtus = [];
+  //   for (const exo of Object.values(exercices)) {
+  //     if (!tabEtu.includes(exo.idEtu)) {
+  //       tabEtu.push(exo.idEtu);
+  //     }
+  //   }
+  //   let tmp_rows_etu = [];
+  //   for (const etu of tabEtu) {
+  //     exoEtus.push({
+  //       id: etu,
+  //       idEtu: etu,
+  //       exos: Object.values(exercices).filter((exo) => exo.idEtu == etu),
+  //     });
+  //   }
+  //   // console.log('exoEtu', exoEtus);
+  //   for (const etu of exoEtus) {
+  //     let row_etu = {
+  //       id: etu.idEtu,
+  //       idEtu: etu.idEtu,
+  //     };
+  //     for (const exo of etu.exos) {
+  //       row_etu[exo.idExo] = exo.tentatives.length;
+  //     }
+  //     tmp_rows_etu.push(row_etu);
+  //   }
+  //   return tmp_rows_etu;
+  // }, [exercices]);
+  let tabEtu = [];
+  let exoEtus = [];
+  for (const exo of Object.values(exercices)) {
+    if (!tabEtu.includes(exo.idEtu)) {
+      tabEtu.push(exo.idEtu);
     }
-    let tmp_rows_etu = [];
-    for (const etu of tabEtu) {
-      exoEtus.push({
-        id: etu,
-        idEtu: etu,
-        exos: Object.values(exercices).filter((exo) => exo.idEtu == etu),
-      });
+  }
+  let tmp_rows_etu = [];
+  for (const etu of tabEtu) {
+    exoEtus.push({
+      id: etu,
+      idEtu: etu,
+      exos: Object.values(exercices).filter((exo) => exo.idEtu == etu),
+    });
+  }
+  // console.log('exoEtu', exoEtus);
+  for (const etu of exoEtus) {
+    let row_etu = {
+      id: etu.idEtu,
+      idEtu: etu.idEtu,
+    };
+    for (const exo of etu.exos) {
+      row_etu[exo.idExo] = exo.tentatives.length;
     }
-    // console.log('exoEtu', exoEtus);
-    for (const etu of exoEtus) {
-      let row_etu = {
-        id: etu.idEtu,
-        idEtu: etu.idEtu,
-      };
-      for (const exo of etu.exos) {
-        row_etu[exo.idExo] = exo.tentatives.length;
-      }
-      tmp_rows_etu.push(row_etu);
-    }
-    return tmp_rows_etu;
-  }, [exercices]);
-
+    tmp_rows_etu.push(row_etu);
+  }
   const columns = useMemo(() => {
-    for (const exo of Object.values(exercices)) {
-      if (!tmp_columns.find((col) => col.field === exo.idExo)) {
+    if (sessions.length != 0) {
+      console.log('bool', sessions !== []);
+      for (const exo of sessions[0].exercices) {
         tmp_columns.push({
-          field: exo.idExo,
-          headerName: exo.idExo,
+          field: exo,
+          headerName: exo,
           width: 81,
           renderCell: (params) => {
             // console.log('params', params);
@@ -79,9 +106,10 @@ const ComposantResultatsGlobaux = () => {
           },
         });
       }
+      return tmp_columns;
     }
-    return tmp_columns;
-  }, [exercices]);
+    return [];
+  }, [exercices, sessions]);
 
   const PopperDetailsMemo = React.memo(function renderPoppers(props) {
     return (
@@ -117,7 +145,7 @@ const ComposantResultatsGlobaux = () => {
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
-        rows={rows_etu}
+        rows={tmp_rows_etu}
         columns={columns}
         autoHeight={true}
         autoWidth={true}

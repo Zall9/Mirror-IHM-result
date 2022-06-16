@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navigation from '@components/NavigationBar/NavigationBar';
 import { Box } from '@mui/material';
 import ComposantResultatGlobaux from '@components/ComposantResultatsGlobaux/ComposantResultatsGlobaux';
