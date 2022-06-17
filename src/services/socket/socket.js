@@ -4,20 +4,18 @@ import { addSession } from '@stores/Sessions/sessionSlice';
 import axios from 'axios';
 
 export const initSocketConnection = (dispatch, sessions) => {
-  const socket = io(process.env.REACT_APP_SRVRESULT_URL, {
-    path: process.env.REACT_APP_SRVRESULT_SUBFOLDER,
-  });
+  const socket = io.connect('http://localhost:3001/');
 
   socket.on('exercices', ({ etudiantCommenceExo }) => {
     dispatch(addExercice(etudiantCommenceExo));
-    var sessionExist = sessions.find((session) => session.id === etudiantCommenceExo.idSession);
-    if (!sessionExist) {
-      axios
-        .get(process.env.REACT_APP_SRVEXO_URL + '/sessions/' + etudiantCommenceExo.idSession)
-        .then((res) => {
-          dispatch(addSession(res.data.session));
-        });
-    }
+    // var sessionExist = sessions.find((session) => session.id === etudiantCommenceExo.idSession);
+    // if (!sessionExist) {
+    //   axios
+    //     .get(process.env.REACT_APP_SRVEXO_URL + '/sessions/' + etudiantCommenceExo.idSession)
+    //     .then((res) => {
+    //       dispatch(addSession(res.data.session));
+    //     });
+    // }
   });
 
   socket.on('tentatives', ({ etudiantFaitNouvelleTentative }) => {
