@@ -50,7 +50,6 @@ const ComposantResultatsGlobaux = () => {
 
   const columns = useMemo(() => {
     if (sessions.length != 0) {
-      console.log('sessions', sessions);
       for (const exo of sessions[0].exercices) {
         tmp_columns.push({
           field: '' + exo,
@@ -69,7 +68,6 @@ const ComposantResultatsGlobaux = () => {
           },
         });
       }
-      console.log('tmp_columns', tmp_columns);
       return tmp_columns;
     }
     return [];

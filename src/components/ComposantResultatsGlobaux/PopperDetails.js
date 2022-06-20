@@ -46,15 +46,15 @@ const PopperDetails = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 // 70 = la taille d'une icone + le trait de séparation
-                width: 70 * exerciceAffiche.tentatives.length + 'px',
+                width: 78 * exerciceAffiche.tentatives.length + 'px',
 
                 height: 10 * exerciceAffiche.tentatives.length + 'px',
                 paddingTop: 1 + exerciceAffiche.tentatives.length + 'em',
                 paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
                 paddingLeft:
-                  exerciceAffiche.tentatives.length >= 5
-                    ? 3 - exerciceAffiche.tentatives.length + 'em'
-                    : 6 + exerciceAffiche.tentatives.length + 'em',
+                  exerciceAffiche.tentatives.length > 5
+                    ? 9 - exerciceAffiche.tentatives.length + 'em'
+                    : 9 - exerciceAffiche.tentatives.length + 'em',
               }}
             >
               <FriseChrono exo={exerciceAffiche}></FriseChrono>

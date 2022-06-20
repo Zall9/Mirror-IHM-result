@@ -42,9 +42,20 @@ const FriseChrono = ({ exo }) => {
   const tentatives = exo.tentatives;
   const aides = exo.aides;
   const heureDebut = exo.debut;
-  // let heures_tentatives = exo.tentatives.map((tentative) => {
-  //   return tentative.dateSoumission;
-  // });
+  const tempsMoyen = exo.tempsMoyen;
+  console.log('aides:', aides);
+  const heures_tentatives = exo.tentatives.map((tentative) => {
+    return tentative.dateSoumission;
+  });
+  const heures_aides = exo.aides.map((aide) => {
+    return aide.dateSoumission;
+  });
+  const all_heures = heures_tentatives.concat(heures_aides);
+  //please gopilot sort all_heures by time
+  all_heures.sort((a, b) => {
+    return Date.parse(a) - Date.parse(b);
+  });
+
   return (
     <Box
       sx={{
