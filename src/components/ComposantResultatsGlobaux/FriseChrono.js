@@ -11,7 +11,7 @@ import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import PropTypes from 'prop-types';
 import { dateParser } from './utils/dateParser';
-import { CopyrightTwoTone } from '@mui/icons-material';
+import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 const useStyles = makeStyles({
   timeline: {
     transform: 'rotate(-90deg) translateY(10px)',
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     transform: 'rotate(90deg)',
     textAlign: 'center',
     position: 'relative',
-    right: '1em', //magic number
+    right: '1.5em', //magic number
   },
   timelineIcon: {
     transform: 'rotate(90deg)',
@@ -41,13 +41,16 @@ const useStyles = makeStyles({
 });
 const FriseChrono = ({ exo }) => {
   const classes = useStyles();
-  const tentatives = exo.tentatives;
   const aides = exo.aides;
   const heureDebut = exo.debut;
   const tempsMoyen = exo.tempsMoyen;
-
-  let timeline = [];
-  const heures_tentatives = exo.tentatives.map((tentative) => {
+  const tentatives = exo.tentatives;
+  // const wastedTime = t;
+  let timeline = [
+    { heureDebut: heureDebut, type: 'debut' },
+    { tempsMoyen: tempsMoyen, type: 'moyen' },
+  ];
+  exo.tentatives.map((tentative) => {
     timeline.push({
       date: tentative.dateSoumission,
       type: 'tentative',
@@ -55,20 +58,39 @@ const FriseChrono = ({ exo }) => {
       id: tentative.id,
     });
   });
-  const heures_aides = exo.aides.map((aide) => {
-    console.log('exo', exo);
+  exo.aides.map((aide) => {
     timeline.push({
       date: aide.date,
       type: 'aide',
-      id: aide['_id'],
+      id: aides['_id'],
     });
   });
-  //please sort timeline by date
   timeline.sort((a, b) => {
     return new Date(a.date) - new Date(b.date);
   });
-  console.log('timeline', timeline);
   const content = (item, index) => {
+    if (item.type === 'debut') {
+      return (
+        <TimelineItem key={item.id + 'TimeLineItem' + index}>
+          <TimelineSeparator>
+            <GolfCourseIcon className={classes.timelineIcon} />
+            <TimelineConnector />
+          </TimelineSeparator>
+          <TimelineContent className={classes.timelineContentContainer}>
+            <Paper className={classes.timelineContentImpair}>
+              <Typography>{dateParser(heureDebut)}</Typography>
+            </Paper>
+          </TimelineContent>
+        </TimelineItem>
+      );
+    }
+    if (item.type === 'moyen') {
+      return (
+        <TimelineContent sx={{ paddingTop: '2em' }} className={classes.timelineContentContainer}>
+          <Typography>{dateParser(tempsMoyen)}</Typography>
+        </TimelineContent>
+      );
+    }
     if (item.type === 'tentative') {
       return (
         <TimelineItem key={item.id + 'TimeLineItem' + index}>

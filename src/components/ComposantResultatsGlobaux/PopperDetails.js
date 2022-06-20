@@ -32,12 +32,6 @@ const PopperDetails = (props) => {
       placement={'right'}
       popperOptions={{
         positionFixed: false,
-        modifiers: {
-          preventOverflow: {
-            enabled: true,
-            boundariesElement: 'window', // where "window" is the boundary
-          },
-        },
       }}
     >
       {

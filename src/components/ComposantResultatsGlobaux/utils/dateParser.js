@@ -6,5 +6,6 @@ export const dateParser = (date) => {
   let newDateArray = newDate.split(' ');
   let newDateArray2 = newDateArray[1].split(':');
   let newDateArray3 = newDateArray2[0] + 'h' + newDateArray2[1];
+  console.log(newDateArray3);
   return newDateArray3;
 };
