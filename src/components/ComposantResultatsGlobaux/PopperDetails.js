@@ -6,6 +6,7 @@ import { Box } from '@mui/system';
 import { getExoFromIds } from './utils/getExoFromIds';
 import CodeTentative from './CodeTentative';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { dateParser } from './utils/dateParser';
 const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
   const open = Boolean(props.anchorEl);
@@ -25,11 +26,10 @@ const PopperDetails = (props) => {
   const difficulte = exerciceAffiche.difficulte;
   return (
     <Popper open={open} anchorEl={anchorEl} transition={true} disablePortal={true}>
-      {({ TransitionProps }) => (
+      {
         <div
           style={{
             border: '3px solid black',
-
             backgroundColor: 'white',
           }}
         >
@@ -47,8 +47,14 @@ const PopperDetails = (props) => {
                 alignItems: 'center',
                 // 70 = la taille d'une icone + le trait de séparation
                 width: 70 * exerciceAffiche.tentatives.length + 'px',
-                //24= la taille d'une icone + le trait de séparation'
-                height: 24 * exerciceAffiche.tentatives.length + 'px',
+
+                height: 10 * exerciceAffiche.tentatives.length + 'px',
+                paddingTop: 1 + exerciceAffiche.tentatives.length + 'em',
+                paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
+                paddingLeft:
+                  exerciceAffiche.tentatives.length >= 5
+                    ? 3 - exerciceAffiche.tentatives.length + 'em'
+                    : 6 + exerciceAffiche.tentatives.length + 'em',
               }}
             >
               <FriseChrono exo={exerciceAffiche}></FriseChrono>
@@ -72,13 +78,13 @@ const PopperDetails = (props) => {
               <ListItem>
                 <Typography variant="h6">Tentatives:</Typography>
               </ListItem>
-              <ListItem sx={{ display: 'inline-block', overflow: 'auto', height: '96px' }}>
+              <ListItem sx={{ display: 'inline-block', overflow: 'auto', height: '50vh' }}>
                 {exo === '' || exerciceAffiche == -1
                   ? ''
                   : tentatives.map((tentative) => (
                       <Box key={tentative.id + 'Box'}>
                         <ListItem key={tentative.id + 'dateSoumission'}>
-                          {tentative.dateSoumission}
+                          {dateParser(tentative.dateSoumission)}
                         </ListItem>
                         <ListItem key={tentative.id + 'Logs'}>
                           <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
@@ -98,7 +104,7 @@ const PopperDetails = (props) => {
             </List>
           </List>
         </div>
-      )}
+      }
     </Popper>
   );
 };
