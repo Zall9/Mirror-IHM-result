@@ -9,45 +9,49 @@ import CancelIcon from '@mui/icons-material/Cancel';
 const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
   const open = Boolean(props.anchorEl);
-  const exo = props.exo;
+  let exo = props.exo;
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;
 
   const anchorEl = props.anchorEl;
-  let langage = '';
-  if (exo.ownerElement != undefined) {
-    langage = getExoFromIds(
-      exo.ownerElement.parentElement.dataset.id,
-      exo.nodeValue,
-      exercices,
-    ).langage;
-  }
+  const exerciceAffiche = getExoFromIds(
+    exo.ownerElement.parentElement.dataset.id,
+    exo.nodeValue,
+    exercices,
+  );
+  const nomExo = exerciceAffiche.nomExo;
+  const langage = exerciceAffiche.langage;
+  const tentatives = exerciceAffiche.tentatives;
+  const difficulte = exerciceAffiche.difficulte;
   return (
     <Popper open={open} anchorEl={anchorEl} transition={true} disablePortal={true}>
       {({ TransitionProps }) => (
         <div
           style={{
-            border: '1px solid black',
-            width: 'auto',
-            height: 'auto',
+            border: '3px solid black',
+
             backgroundColor: 'white',
           }}
         >
           <IconButton>
             <CancelIcon onClick={handlePopoverClose}></CancelIcon>
           </IconButton>
-          {exo == '' ||
-          getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices) ==
-            -1 ? (
+          {exo == '' || exerciceAffiche == -1 ? (
             ''
           ) : (
-            <ListItem>
-              <FriseChrono
-                exo={
-                  getExoFromIds(exo.ownerElement.parentElement.dataset.id, exo.nodeValue, exercices)
-                    .tentatives
-                }
-              ></FriseChrono>
+            <ListItem
+              sx={{
+                display: 'flex',
+                flex_wrap: 'nowrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+                // 70 = la taille d'une icone + le trait de séparation
+                width: 70 * exerciceAffiche.tentatives.length + 'px',
+                //24= la taille d'une icone + le trait de séparation'
+                height: 24 * exerciceAffiche.tentatives.length + 'px',
+              }}
+            >
+              <FriseChrono exo={exerciceAffiche}></FriseChrono>
             </ListItem>
           )}
           <List sx={{ width: '100%', height: '100%' }}>
@@ -58,26 +62,10 @@ const PopperDetails = (props) => {
             </ListItem>
             <List sx={{ display: 'flex' }}>
               <ListItem>
-                <Typography>
-                  {exo === ''
-                    ? ''
-                    : getExoFromIds(
-                        exo.ownerElement.parentElement.dataset.id,
-                        exo.nodeValue,
-                        exercices,
-                      ).nomExo}
-                </Typography>
+                <Typography>{exo === '' ? '' : nomExo}</Typography>
               </ListItem>
               <ListItem>
-                <Typography sx={{ p: 1 }}>
-                  {exo === ''
-                    ? ''
-                    : getExoFromIds(
-                        exo.ownerElement.parentElement.dataset.id,
-                        exo.nodeValue,
-                        exercices,
-                      ).difficulte}
-                </Typography>
+                <Typography sx={{ p: 1 }}>{exo === '' ? '' : difficulte}</Typography>
               </ListItem>
             </List>
             <List>
@@ -85,18 +73,9 @@ const PopperDetails = (props) => {
                 <Typography variant="h6">Tentatives:</Typography>
               </ListItem>
               <ListItem sx={{ display: 'inline-block', overflow: 'auto', height: '96px' }}>
-                {exo === '' ||
-                getExoFromIds(
-                  exo.ownerElement.parentElement.dataset.id,
-                  exo.nodeValue,
-                  exercices,
-                ) == -1
+                {exo === '' || exerciceAffiche == -1
                   ? ''
-                  : getExoFromIds(
-                      exo.ownerElement.parentElement.dataset.id,
-                      exo.nodeValue,
-                      exercices,
-                    ).tentatives.map((tentative) => (
+                  : tentatives.map((tentative) => (
                       <Box key={tentative.id + 'Box'}>
                         <ListItem key={tentative.id + 'dateSoumission'}>
                           {tentative.dateSoumission}
