@@ -8,8 +8,10 @@ import { makeStyles } from '@mui/styles';
 import { Box, Paper, Typography } from '@mui/material';
 import Error from '@mui/icons-material/Error';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
+import PanToolIcon from '@mui/icons-material/PanTool';
 import PropTypes from 'prop-types';
 import { dateParser } from './utils/dateParser';
+import { CopyrightTwoTone } from '@mui/icons-material';
 const useStyles = makeStyles({
   timeline: {
     transform: 'rotate(-90deg) translateY(10px)',
@@ -43,54 +45,75 @@ const FriseChrono = ({ exo }) => {
   const aides = exo.aides;
   const heureDebut = exo.debut;
   const tempsMoyen = exo.tempsMoyen;
-  console.log('aides:', aides);
+
+  let timeline = [];
   const heures_tentatives = exo.tentatives.map((tentative) => {
-    return tentative.dateSoumission;
+    timeline.push({
+      date: tentative.dateSoumission,
+      type: 'tentative',
+      validationExercice: tentative.validationExercice,
+      id: tentative.id,
+    });
   });
   const heures_aides = exo.aides.map((aide) => {
-    return aide.dateSoumission;
+    console.log('exo', exo);
+    timeline.push({
+      date: aide.date,
+      type: 'aide',
+      id: aide['_id'],
+    });
   });
-  const all_heures = heures_tentatives.concat(heures_aides);
-  //please gopilot sort all_heures by time
-  all_heures.sort((a, b) => {
-    return Date.parse(a) - Date.parse(b);
+  //please sort timeline by date
+  timeline.sort((a, b) => {
+    return new Date(a.date) - new Date(b.date);
   });
-
+  console.log('timeline', timeline);
+  const content = (item, index) => {
+    if (item.type === 'tentative') {
+      return (
+        <TimelineItem key={item.id + 'TimeLineItem' + index}>
+          <TimelineSeparator>
+            {item.validationExercice == true ? (
+              <CheckCircleOutline className={classes.timelineIcon} key={item.id + 'Icon' + index} />
+            ) : (
+              <Error className={classes.timelineIcon} key={item.id + 'Icon' + index} />
+            )}
+            {item.validationExercice != true ? <TimelineConnector /> : <></>}
+          </TimelineSeparator>
+          <TimelineContent className={classes.timelineContentContainer}>
+            <Paper
+              className={index % 2 ? classes.timelineContentPair : classes.timelineContentImpair}
+            >
+              <Typography>{dateParser(item.date)}</Typography>
+            </Paper>
+          </TimelineContent>
+        </TimelineItem>
+      );
+    }
+    if (item.type === 'aide') {
+      return (
+        <TimelineItem key={item.id + 'TimeLineItem' + index}>
+          <TimelineSeparator>
+            <PanToolIcon className={classes.timelineIcon} key={item.id + 'Icon' + index} />
+            <TimelineConnector />
+          </TimelineSeparator>
+          <TimelineContent className={classes.timelineContentContainer}>
+            <Paper
+              className={index % 2 ? classes.timelineContentPair : classes.timelineContentImpair}
+            >
+              <Typography>{dateParser(item.date)}</Typography>
+            </Paper>
+          </TimelineContent>
+        </TimelineItem>
+      );
+    }
+  };
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        // display: 'flex',
-        // justifyContent: 'center',
-        // // 70 = la taille d'une icone + le trait de séparation
-        // height: 70 * tentatives.length + 'px',
-        // //24= la taille d'une icone + le trait de séparation'
-        // width: 30 * tentatives.length + 'px',
-      }}
-    >
+    <Box>
       <Timeline align="alternate" className={classes.timeline} key={'TimeLine-Tentatives'}>
-        {tentatives.map((tentative, index) => (
-          <TimelineItem key={tentative.id + 'TimeLineItem' + index}>
-            <TimelineSeparator>
-              {tentative.validationExercice == true ? (
-                <CheckCircleOutline
-                  className={classes.timelineIcon}
-                  key={tentative.id + 'Icon' + index}
-                />
-              ) : (
-                <Error className={classes.timelineIcon} key={tentative.id + 'Icon' + index} />
-              )}
-              {tentative.validationExercice != true ? <TimelineConnector /> : <></>}
-            </TimelineSeparator>
-            <TimelineContent className={classes.timelineContentContainer}>
-              <Paper
-                className={index % 2 ? classes.timelineContentPair : classes.timelineContentImpair}
-              >
-                <Typography>{dateParser(tentative.dateSoumission)}</Typography>
-              </Paper>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
+        {timeline.map((timeLineItem, index) => {
+          return content(timeLineItem, index);
+        })}
       </Timeline>
     </Box>
   );

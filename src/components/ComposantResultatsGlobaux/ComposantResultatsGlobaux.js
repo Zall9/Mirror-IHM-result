@@ -11,15 +11,17 @@ import ChipGridCells from './ChipGridCells';
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
-  const containerStyle = useMemo(() => {
+  const containerStyle = () => {
     return {
-      width: '750vh',
       backgroundColor: '',
       position: 'fixed',
-      top: '75vh !important',
-      left: '75vh !important',
+      top: '25px',
+      right: '0',
+      // width: '30vw',
+      // height: '100vh',
+      // border: '3px solid red',
     };
-  }, []);
+  };
 
   let tmp_columns = [
     {
@@ -79,7 +81,7 @@ const ComposantResultatsGlobaux = () => {
         exercices={props.exercices}
         exo={props.exo === '' ? '' : props.exo}
         anchorEl={props.anchorEl}
-        // handlePopoverClose={props.handlePopoverClose}
+        handlePopoverClose={props.handlePopoverClose}
       />
     );
   });
@@ -108,17 +110,18 @@ const ComposantResultatsGlobaux = () => {
         headerHeight={36}
         density={'compact'}
       />
-      <Box id="container" sx={containerStyle}></Box>
-      {anchorEl !== null ? (
-        <PopperDetailsMemo
-          exercices={Object.values(exercices)}
-          exo={exo === '' ? '' : exo}
-          anchorEl={anchorEl}
-          handlePopoverClose={handlePopoverClose}
-        />
-      ) : (
-        ''
-      )}
+      <Box id="container" sx={containerStyle}>
+        {anchorEl !== null ? (
+          <PopperDetailsMemo
+            exercices={Object.values(exercices)}
+            exo={exo === '' ? '' : exo}
+            anchorEl={anchorEl}
+            handlePopoverClose={handlePopoverClose}
+          />
+        ) : (
+          ''
+        )}
+      </Box>
     </Box>
   );
   PopperDetailsMemo.propTypes = {

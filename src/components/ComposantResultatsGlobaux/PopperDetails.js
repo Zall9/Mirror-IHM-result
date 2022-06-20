@@ -25,7 +25,21 @@ const PopperDetails = (props) => {
   const tentatives = exerciceAffiche.tentatives;
   const difficulte = exerciceAffiche.difficulte;
   return (
-    <Popper open={open} anchorEl={anchorEl} transition={true} disablePortal={true}>
+    <Popper
+      open={open}
+      anchorEl={anchorEl}
+      disablePortal={false}
+      placement={'right'}
+      popperOptions={{
+        positionFixed: false,
+        modifiers: {
+          preventOverflow: {
+            enabled: true,
+            boundariesElement: 'window', // where "window" is the boundary
+          },
+        },
+      }}
+    >
       {
         <div
           style={{
@@ -50,11 +64,12 @@ const PopperDetails = (props) => {
 
                 height: 10 * exerciceAffiche.tentatives.length + 'px',
                 paddingTop: 1 + exerciceAffiche.tentatives.length + 'em',
-                paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
-                paddingLeft:
-                  exerciceAffiche.tentatives.length > 5
-                    ? 9 - exerciceAffiche.tentatives.length + 'em'
-                    : 9 - exerciceAffiche.tentatives.length + 'em',
+
+                // paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
+                // paddingLeft:
+                //   exerciceAffiche.tentatives.length > 5
+                //     ? 9 - exerciceAffiche.tentatives.length + 'em'
+                //     : 9 - exerciceAffiche.tentatives.length + 'em',
               }}
             >
               <FriseChrono exo={exerciceAffiche}></FriseChrono>
