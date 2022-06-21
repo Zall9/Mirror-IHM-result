@@ -40,6 +40,7 @@ const PopperDetails = (props) => {
             border: '3px solid black',
             backgroundColor: 'white',
             width: 'max-content',
+            position: 'relative',
           }}
         >
           <IconButton onClick={handlePopoverClose}>
@@ -54,19 +55,14 @@ const PopperDetails = (props) => {
                 flex_wrap: 'nowrap',
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: '0',
-                margin: '0',
-
-                // 70 = la taille d'une icone + le trait de séparation
-                width: 95 * exerciceAffiche.tentatives.length + 'px',
-                height: 18 * exerciceAffiche.tentatives.length + 'px',
-                paddingTop: 1 + exerciceAffiche.tentatives.length + 'em',
                 margin: '0 auto',
-                paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
-                paddingLeft:
-                  exerciceAffiche.tentatives.length >= 5
-                    ? 9 - exerciceAffiche.tentatives.length + 'em'
-                    : exerciceAffiche.tentatives.length + 'em',
+                top: '0',
+
+                width: 90 * tentatives.length + 70,
+                height: '5vh',
+                // paddingTop: 1 + exerciceAffiche.tentatives.length + 'em',
+                // paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
+                // paddingLeft: 9 - exerciceAffiche.tentatives.length + 'em',
               }}
             >
               <FriseChrono exo={exerciceAffiche}></FriseChrono>

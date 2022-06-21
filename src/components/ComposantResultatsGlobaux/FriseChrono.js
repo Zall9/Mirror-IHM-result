@@ -51,7 +51,9 @@ const FriseChrono = ({ exo }) => {
   const tempsMoyen = exo.tempsMoyen;
   const tentatives = exo.tentatives;
   console.log('moyen', tempsMoyen);
+  console.log('Hdebut', heureDebut);
 
+  // console.log('date', new Date(new Date(heureDebut).getTime() + tempsMoyen * 1000).toISOString());
   let timeline = [
     {
       heureDebut: heureDebut,
@@ -104,7 +106,7 @@ const FriseChrono = ({ exo }) => {
       <TimelineItem key={item.id + 'TimeLineItem' + index}>
         <TimelineSeparator>
           {item.icon(item, index)}
-          <TimelineConnector />
+          {index === timeline.length - 1 ? '' : <TimelineConnector />}
         </TimelineSeparator>
         <TimelineContent className={classes.timelineContentContainer}>
           <Paper
@@ -119,7 +121,7 @@ const FriseChrono = ({ exo }) => {
     );
   };
   return (
-    <Box>
+    <Box sx={{}}>
       <Timeline align="alternate" className={classes.timeline} key={'TimeLine-Tentatives'}>
         {timeline.map((timeLineItem, index) => {
           return content(timeLineItem, index);

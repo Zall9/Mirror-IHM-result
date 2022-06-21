@@ -11,6 +11,7 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
+  console.log(sessions);
   const containerStyle = () => {
     return {
       backgroundColor: '',

@@ -3,10 +3,11 @@ import { addExercice, addTentative } from '@stores/Exercices/exercicesSlice';
 import { addSession } from '@stores/Sessions/sessionSlice';
 import axios from 'axios';
 
-export const initSocketConnection = (dispatch, sessions) => {
-  const socket = io.connect('http://localhost:3001/');
-
+export const initSocketConnection = (dispatch) => {
+  const socket = io(process.env.REACT_APP_SRVRESULT_URL);
+  // const socket = io('localhost:3011');
   socket.on('exercices', ({ etudiantCommenceExo }) => {
+    console.log('socket:Etudiant Commence', etudiantCommenceExo);
     dispatch(addExercice(etudiantCommenceExo));
     // var sessionExist = sessions.find((session) => session.id === etudiantCommenceExo.idSession);
     // if (!sessionExist) {

@@ -28,14 +28,10 @@ const initSessions = (dispatch) => {
 
 export default function App() {
   const dispatch = useDispatch();
-  const sessions = useSelector(getSessions);
-  const exo = useSelector(getExercices);
 
-  useEffect(() => {
-    initExercices(dispatch);
-    initSocketConnection(dispatch, sessions);
-    initSessions(dispatch);
-  }, []);
+  initExercices(dispatch);
+  initSocketConnection(dispatch);
+  initSessions(dispatch);
 
   return (
     <div>

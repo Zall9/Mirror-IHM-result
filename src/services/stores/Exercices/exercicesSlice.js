@@ -15,6 +15,8 @@ export const exercicesSlice = createSlice({
       state.exercices[respExercice.payload.id] = respExercice.payload;
     },
     addTentative: (state, respTentative) => {
+      console.log('logAddTentative', respTentative.payload);
+      console.log('logAddTentative', state);
       let exercice = state.exercices[respTentative.payload.id];
       // delete infos en double
       if (exercice) {
