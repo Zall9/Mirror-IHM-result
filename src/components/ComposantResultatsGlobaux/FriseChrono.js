@@ -10,12 +10,16 @@ import Error from '@mui/icons-material/Error';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import PropTypes from 'prop-types';
-import { dateParser } from './utils/dateParser';
+import { dateParser, calculateTime } from './utils/dateParser';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+
+//@TODO: LE TEMPS MOYEN DOIT ETRE DE LA FORME DATEDEBUT+TPSMOYEN
 const useStyles = makeStyles({
   timeline: {
-    transform: 'rotate(-90deg) translateY(10px)',
+    transform: 'rotate(-90deg) ',
     width: 'auto',
+    height: 'auto',
   },
   timelineContentContainer: {
     textAlign: 'left',
@@ -33,6 +37,7 @@ const useStyles = makeStyles({
     transform: 'rotate(90deg)',
     textAlign: 'center',
     position: 'relative',
+
     right: '1.5em', //magic number
   },
   timelineIcon: {
@@ -45,17 +50,38 @@ const FriseChrono = ({ exo }) => {
   const heureDebut = exo.debut;
   const tempsMoyen = exo.tempsMoyen;
   const tentatives = exo.tentatives;
-  // const wastedTime = t;
+  console.log('moyen', tempsMoyen);
+
   let timeline = [
-    { heureDebut: heureDebut, type: 'debut' },
-    { tempsMoyen: tempsMoyen, type: 'moyen' },
+    {
+      heureDebut: heureDebut,
+      type: 'debut',
+      date: heureDebut,
+      icon: () => <GolfCourseIcon className={classes.timelineIcon} />,
+    },
+    {
+      tempsMoyen: tempsMoyen,
+      type: 'moyen',
+      date: new Date(new Date(heureDebut).getTime() + tempsMoyen * 1000).toISOString(),
+      icon: () => <AccessTimeFilledIcon className={classes.timelineIcon} />,
+    },
   ];
+
   exo.tentatives.map((tentative) => {
     timeline.push({
       date: tentative.dateSoumission,
       type: 'tentative',
       validationExercice: tentative.validationExercice,
       id: tentative.id,
+      icon: (item, index) =>
+        item.validationExercice == true ? (
+          <CheckCircleOutline className={classes.timelineIcon} key={item.id + 'Icon' + index} />
+        ) : (
+          <Error className={classes.timelineIcon} key={item.id + 'Icon' + index} />
+        ),
+      // {
+      //   item.validationExercice != true ? <TimelineConnector /> : <></>;
+      // }
     });
   });
   exo.aides.map((aide) => {
@@ -63,72 +89,34 @@ const FriseChrono = ({ exo }) => {
       date: aide.date,
       type: 'aide',
       id: aides['_id'],
+      icon: () => <PanToolIcon className={classes.timelineIcon} />,
     });
   });
   timeline.sort((a, b) => {
     return new Date(a.date) - new Date(b.date);
   });
+  if (timeline[timeline.length - 1].type === 'moyen') {
+    timeline.pop();
+  }
+  console.log('timeline', timeline);
   const content = (item, index) => {
-    if (item.type === 'debut') {
-      return (
-        <TimelineItem key={item.id + 'TimeLineItem' + index}>
-          <TimelineSeparator>
-            <GolfCourseIcon className={classes.timelineIcon} />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent className={classes.timelineContentContainer}>
-            <Paper className={classes.timelineContentImpair}>
-              <Typography>{dateParser(heureDebut)}</Typography>
-            </Paper>
-          </TimelineContent>
-        </TimelineItem>
-      );
-    }
-    if (item.type === 'moyen') {
-      return (
-        <TimelineContent sx={{ paddingTop: '2em' }} className={classes.timelineContentContainer}>
-          <Typography>{dateParser(tempsMoyen)}</Typography>
+    return (
+      <TimelineItem key={item.id + 'TimeLineItem' + index}>
+        <TimelineSeparator>
+          {item.icon(item, index)}
+          <TimelineConnector />
+        </TimelineSeparator>
+        <TimelineContent className={classes.timelineContentContainer}>
+          <Paper
+            className={index % 2 ? classes.timelineContentPair : classes.timelineContentImpair}
+          >
+            <Typography>
+              {index === 0 ? dateParser(heureDebut) : calculateTime(heureDebut, item.date)}
+            </Typography>
+          </Paper>
         </TimelineContent>
-      );
-    }
-    if (item.type === 'tentative') {
-      return (
-        <TimelineItem key={item.id + 'TimeLineItem' + index}>
-          <TimelineSeparator>
-            {item.validationExercice == true ? (
-              <CheckCircleOutline className={classes.timelineIcon} key={item.id + 'Icon' + index} />
-            ) : (
-              <Error className={classes.timelineIcon} key={item.id + 'Icon' + index} />
-            )}
-            {item.validationExercice != true ? <TimelineConnector /> : <></>}
-          </TimelineSeparator>
-          <TimelineContent className={classes.timelineContentContainer}>
-            <Paper
-              className={index % 2 ? classes.timelineContentPair : classes.timelineContentImpair}
-            >
-              <Typography>{dateParser(item.date)}</Typography>
-            </Paper>
-          </TimelineContent>
-        </TimelineItem>
-      );
-    }
-    if (item.type === 'aide') {
-      return (
-        <TimelineItem key={item.id + 'TimeLineItem' + index}>
-          <TimelineSeparator>
-            <PanToolIcon className={classes.timelineIcon} key={item.id + 'Icon' + index} />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent className={classes.timelineContentContainer}>
-            <Paper
-              className={index % 2 ? classes.timelineContentPair : classes.timelineContentImpair}
-            >
-              <Typography>{dateParser(item.date)}</Typography>
-            </Paper>
-          </TimelineContent>
-        </TimelineItem>
-      );
-    }
+      </TimelineItem>
+    );
   };
   return (
     <Box>

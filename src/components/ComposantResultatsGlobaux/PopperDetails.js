@@ -39,10 +39,11 @@ const PopperDetails = (props) => {
           style={{
             border: '3px solid black',
             backgroundColor: 'white',
+            width: 'max-content',
           }}
         >
-          <IconButton>
-            <CancelIcon onClick={handlePopoverClose}></CancelIcon>
+          <IconButton onClick={handlePopoverClose}>
+            <CancelIcon></CancelIcon>
           </IconButton>
           {exo == '' || exerciceAffiche == -1 ? (
             ''
@@ -53,23 +54,25 @@ const PopperDetails = (props) => {
                 flex_wrap: 'nowrap',
                 justifyContent: 'center',
                 alignItems: 'center',
+                padding: '0',
+                margin: '0',
+
                 // 70 = la taille d'une icone + le trait de séparation
-                width: 78 * exerciceAffiche.tentatives.length + 'px',
-
-                height: 10 * exerciceAffiche.tentatives.length + 'px',
+                width: 95 * exerciceAffiche.tentatives.length + 'px',
+                height: 18 * exerciceAffiche.tentatives.length + 'px',
                 paddingTop: 1 + exerciceAffiche.tentatives.length + 'em',
-
-                // paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
-                // paddingLeft:
-                //   exerciceAffiche.tentatives.length > 5
-                //     ? 9 - exerciceAffiche.tentatives.length + 'em'
-                //     : 9 - exerciceAffiche.tentatives.length + 'em',
+                margin: '0 auto',
+                paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
+                paddingLeft:
+                  exerciceAffiche.tentatives.length >= 5
+                    ? 9 - exerciceAffiche.tentatives.length + 'em'
+                    : exerciceAffiche.tentatives.length + 'em',
               }}
             >
               <FriseChrono exo={exerciceAffiche}></FriseChrono>
             </ListItem>
           )}
-          <List sx={{ width: '100%', height: '100%' }}>
+          <ul sx={{ width: '100%', height: '100%' }}>
             <ListItem>
               <Typography variant="h6">
                 {exo === '' ? '' : exo.ownerElement.parentElement.dataset.id}
@@ -87,7 +90,7 @@ const PopperDetails = (props) => {
               <ListItem>
                 <Typography variant="h6">Tentatives:</Typography>
               </ListItem>
-              <ListItem sx={{ display: 'inline-block', overflow: 'auto', height: '50vh' }}>
+              <List sx={{ display: 'inline-block', overflow: 'auto', height: '50vh' }}>
                 {exo === '' || exerciceAffiche == -1
                   ? ''
                   : tentatives.map((tentative) => (
@@ -109,9 +112,9 @@ const PopperDetails = (props) => {
                         )}
                       </Box>
                     ))}
-              </ListItem>
+              </List>
             </List>
-          </List>
+          </ul>
         </div>
       }
     </Popper>

@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCells from './ChipGridCells';
-
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
@@ -17,9 +17,6 @@ const ComposantResultatsGlobaux = () => {
       position: 'fixed',
       top: '25px',
       right: '0',
-      // width: '30vw',
-      // height: '100vh',
-      // border: '3px solid red',
     };
   };
 
