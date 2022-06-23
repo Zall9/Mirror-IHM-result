@@ -30,8 +30,10 @@ const initSessions = (dispatch) => {
 export default function App() {
   const dispatch = useDispatch();
 
-  initSessions(dispatch);
-  initExercices(dispatch);
+  useEffect(() => {
+    initExercices(dispatch);
+    initSessions(dispatch);
+  }, []);
 
   return (
     <div>

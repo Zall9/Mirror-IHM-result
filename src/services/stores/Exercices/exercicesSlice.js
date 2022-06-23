@@ -15,7 +15,7 @@ export const exercicesSlice = createSlice({
       state.exercices[respExercice.payload.id] = respExercice.payload;
     },
     addTentative: (state, respTentative) => {
-      let exercice = state.exercices[respTentative.payload.id];
+      let exercice = state.exercices[respTentative.payload.idExoEtu];
       console.log(state);
       // delete infos en double
       console.log('AddTentative !', exercice);
@@ -31,7 +31,7 @@ export const exercicesSlice = createSlice({
     },
     addAide: (state, respAide) => {
       if (state.exercices.length > 0) {
-        let exercice = state.exercices[respAide.payload.idExo];
+        let exercice = state.exercices[respAide.payload.idExoEtu];
 
         if (exercice) {
           // Si l'aide existe déjà, on la met à jour
