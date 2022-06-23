@@ -50,8 +50,6 @@ const FriseChrono = ({ exo }) => {
   const heureDebut = exo.debut;
   const tempsMoyen = exo.tempsMoyen;
   const tentatives = exo.tentatives;
-  console.log('moyen', tempsMoyen);
-  console.log('Hdebut', heureDebut);
 
   // console.log('date', new Date(new Date(heureDebut).getTime() + tempsMoyen * 1000).toISOString());
   let timeline = [
@@ -100,7 +98,6 @@ const FriseChrono = ({ exo }) => {
   if (timeline[timeline.length - 1].type === 'moyen') {
     timeline.pop();
   }
-  console.log('timeline', timeline);
   const content = (item, index) => {
     return (
       <TimelineItem key={item.id + 'TimeLineItem' + index}>

@@ -23,7 +23,6 @@ function getTimeProportion(exo) {
  */
 const BoiteRectangulaireEtudiant = (props) => {
   const exo = props.etudiantExo;
-  console.log(exo);
   const color = getColor(
     exo,
     '#FFFF56',

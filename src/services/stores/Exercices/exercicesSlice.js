@@ -15,10 +15,11 @@ export const exercicesSlice = createSlice({
       state.exercices[respExercice.payload.id] = respExercice.payload;
     },
     addTentative: (state, respTentative) => {
-      console.log('logAddTentative', respTentative.payload);
-      console.log('logAddTentative', state);
       let exercice = state.exercices[respTentative.payload.id];
+      console.log(state);
       // delete infos en double
+      console.log('AddTentative !', exercice);
+      console.log('Payload AddTentative', respTentative.payload);
       if (exercice) {
         exercice.tentatives.push(respTentative.payload);
         if (respTentative.payload.validationExercice) {

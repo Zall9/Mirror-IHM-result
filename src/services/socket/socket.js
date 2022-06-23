@@ -20,11 +20,11 @@ export const initSocketConnection = (dispatch) => {
   });
 
   socket.on('tentatives', ({ etudiantFaitNouvelleTentative }) => {
+    console.log('socket:Etudiant Fait une nouvelle tentative', etudiantFaitNouvelleTentative);
     dispatch(addTentative(etudiantFaitNouvelleTentative));
   });
 
   socket.on('aides', ({ etudiantDemandeAide }) => {
-    console.log(etudiantDemandeAide);
     dispatch(addAide(etudiantDemandeAide));
   });
 };

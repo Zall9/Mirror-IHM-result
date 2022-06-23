@@ -11,7 +11,7 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
-  console.log(sessions);
+  console.log('sess', sessions);
   const containerStyle = () => {
     return {
       backgroundColor: '',
@@ -95,9 +95,11 @@ const ComposantResultatsGlobaux = () => {
     }
   };
   const handlePopoverClose = () => {
+    console.log('FIRE CLOSE');
     setAnchorEl(null);
   };
-
+  console.log('rows', rows);
+  console.log('columns', columns);
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid

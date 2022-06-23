@@ -23,15 +23,15 @@ const initExercices = (dispatch) => {
 const initSessions = (dispatch) => {
   axios.get(process.env.REACT_APP_SRVEXO_URL + '/sessions').then((res) => {
     dispatch(setSession(res.data.sessions));
+    initSocketConnection(dispatch);
   });
 };
 
 export default function App() {
   const dispatch = useDispatch();
 
-  initExercices(dispatch);
-  initSocketConnection(dispatch);
   initSessions(dispatch);
+  initExercices(dispatch);
 
   return (
     <div>

@@ -3,9 +3,9 @@ import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 const ChipGridCells = (props) => {
-  const ChipMemo = React.memo(function renderChip(props) {
+  const ChipMemo = function renderChip(props) {
     return <Chip {...props} sx={cellsStyle(props.label)} />;
-  });
+  };
   const cellsStyle = useCallback(
     function (params) {
       if (params !== '') {
