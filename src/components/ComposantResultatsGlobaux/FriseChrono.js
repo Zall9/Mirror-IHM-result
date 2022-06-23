@@ -42,6 +42,9 @@ const useStyles = makeStyles({
   },
   timelineIcon: {
     transform: 'rotate(90deg)',
+    hover: {
+      cursor: 'pointer',
+    },
   },
 });
 const FriseChrono = ({ exo }) => {
@@ -77,7 +80,9 @@ const FriseChrono = ({ exo }) => {
         item.validationExercice == true ? (
           <CheckCircleOutline className={classes.timelineIcon} key={item.id + 'Icon' + index} />
         ) : (
-          <Error className={classes.timelineIcon} key={item.id + 'Icon' + index} />
+          <Error className={classes.timelineIcon} key={item.id + 'Icon' + index} id={item.id}>
+            {console.log(item.id)}
+          </Error>
         ),
       // {
       //   item.validationExercice != true ? <TimelineConnector /> : <></>;
@@ -100,7 +105,13 @@ const FriseChrono = ({ exo }) => {
   }
   const content = (item, index) => {
     return (
-      <TimelineItem key={item.id + 'TimeLineItem' + index}>
+      <TimelineItem
+        key={item.id + 'TimeLineItem' + index}
+        onClick={() => {
+          console.log('clicked' + item.id);
+          document.getElementById(item.id + 'code').scrollIntoView({ behavior: 'smooth' });
+        }}
+      >
         <TimelineSeparator>
           {item.icon(item, index)}
           {index === timeline.length - 1 ? '' : <TimelineConnector />}

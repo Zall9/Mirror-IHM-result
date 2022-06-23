@@ -60,8 +60,8 @@ const ComposantResultatsGlobaux = () => {
               <ChipGridCells
                 exercices={exercices}
                 onMouseEnter={handlePopoverOpen}
-                variant="outlined"
-                size="small"
+                variant="filled"
+                size="medium"
                 label={params.value !== undefined ? '' + params.value : ''}
               />
             );
@@ -88,6 +88,9 @@ const ComposantResultatsGlobaux = () => {
   const [exo, setExo] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
 
+  let counter = 0;
+  let myInterval = null;
+
   const handlePopoverOpen = (event) => {
     if (event.currentTarget.parentElement.attributes['data-field'].ownerElement.innerText != '') {
       setExo(event.currentTarget.parentElement.attributes['data-field']);
@@ -95,7 +98,6 @@ const ComposantResultatsGlobaux = () => {
     }
   };
   const handlePopoverClose = () => {
-    console.log('FIRE CLOSE');
     setAnchorEl(null);
   };
   console.log('rows', rows);

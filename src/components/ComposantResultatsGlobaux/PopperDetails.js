@@ -53,6 +53,7 @@ const PopperDetails = (props) => {
               position: 'relative',
             }}
           >
+            {console.log('langage', langage)}
             <IconButton onClick={handlePopoverClose}>
               <CancelIcon></CancelIcon>
             </IconButton>
@@ -108,11 +109,13 @@ const PopperDetails = (props) => {
                             <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
                           </ListItem>
                           {langage !== '' && langage !== undefined ? (
-                            <CodeTentative
-                              code={tentative.reponseEtudiant}
-                              key={tentative.id + 'code'}
-                              language={langage}
-                            ></CodeTentative>
+                            <div id={tentative.id + 'code'}>
+                              <CodeTentative
+                                code={tentative.reponseEtudiant}
+                                key={tentative.id + 'code'}
+                                language={langage}
+                              />
+                            </div>
                           ) : (
                             ''
                           )}
