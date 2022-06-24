@@ -36,7 +36,6 @@ const PopperDetails = (props) => {
     <ClickAwayListener onClickAway={handlePopoverClose}>
       <Popper
         open={open}
-        onClickAway={handlePopoverClose}
         anchorEl={anchorEl}
         disablePortal={false}
         placement={'right'}

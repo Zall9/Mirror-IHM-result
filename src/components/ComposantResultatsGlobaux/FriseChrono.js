@@ -14,7 +14,6 @@ import { dateParser, calculateTime } from './utils/dateParser';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 
-//@TODO: LE TEMPS MOYEN DOIT ETRE DE LA FORME DATEDEBUT+TPSMOYEN
 const useStyles = makeStyles({
   timeline: {
     transform: 'rotate(-90deg) ',
@@ -84,9 +83,6 @@ const FriseChrono = ({ exo }) => {
             {console.log(item.id)}
           </Error>
         ),
-      // {
-      //   item.validationExercice != true ? <TimelineConnector /> : <></>;
-      // }
     });
   });
   exo.aides.map((aide) => {
@@ -117,12 +113,13 @@ const FriseChrono = ({ exo }) => {
           {index === timeline.length - 1 ? '' : <TimelineConnector />}
         </TimelineSeparator>
         <TimelineContent className={classes.timelineContentContainer}>
-          <Paper
-            className={index % 2 ? classes.timelineContentPair : classes.timelineContentImpair}
-          >
+          <Paper elevation={0} className={classes.timelineContentPair}>
             <Typography>
-              {index === 0 ? dateParser(heureDebut) : calculateTime(heureDebut, item.date)}
+              {index === 0 ? <Typography>Début</Typography> : calculateTime(heureDebut, item.date)}
             </Typography>
+          </Paper>
+          <Paper elevation={0} className={classes.timelineContentImpair}>
+            <Typography>{index === 0 ? dateParser(heureDebut) : dateParser(item.date)}</Typography>
           </Paper>
         </TimelineContent>
       </TimelineItem>

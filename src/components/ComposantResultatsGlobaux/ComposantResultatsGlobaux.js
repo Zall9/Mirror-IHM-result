@@ -59,7 +59,8 @@ const ComposantResultatsGlobaux = () => {
             return (
               <ChipGridCells
                 exercices={exercices}
-                onMouseEnter={handlePopoverOpen}
+                // onMouseEnter={handlePopoverOpen}
+                onClick={handlePopoverOpen}
                 variant="filled"
                 size="medium"
                 label={params.value !== undefined ? '' + params.value : ''}
