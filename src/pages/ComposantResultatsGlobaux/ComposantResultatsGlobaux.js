@@ -5,7 +5,6 @@ import ComposantResultatGlobaux from '@components/ComposantResultatsGlobaux/Comp
 const ComposantResultatsGlobaux = () => {
   return (
     <Box>
-      <Navigation />
       <ComposantResultatGlobaux />
     </Box>
   );
