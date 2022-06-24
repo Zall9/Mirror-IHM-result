@@ -22,7 +22,6 @@ import 'prismjs/components/prism-c';
 import 'prismjs/components/prism-kotlin';
 import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-xml-doc';
-import 'prismjs/components/prism-xml';
 import 'prismjs/components/prism-go';
 import 'prismjs/components/prism-cshtml';
 import 'prismjs/components/prism-css';
