@@ -15,7 +15,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import useRowStyles from './style';
 
-function Row(props) {
+const Row = (props) => {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
@@ -33,14 +33,14 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell component="th" scope="row" align="center">
           {row.exo}
         </TableCell>
-        <TableCell align="right">{row.nomExo}</TableCell>
-        <TableCell align="right">{row.nbTenta}</TableCell>
-        <TableCell align="right">{row.temps}</TableCell>
-        <TableCell align="right">{row.difficulte}</TableCell>
-        <TableCell align="right">{row.themes}</TableCell>
+        <TableCell align="center">{row.nomExo}</TableCell>
+        <TableCell align="center">{row.nbTenta}</TableCell>
+        <TableCell align="center">{row.temps}</TableCell>
+        <TableCell align="center">{row.difficulte}</TableCell>
+        <TableCell align="center">{row.themes}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -75,7 +75,7 @@ function Row(props) {
       </TableRow>
     </React.Fragment>
   );
-}
+};
 
 Row.propTypes = {
   row: PropTypes.shape({

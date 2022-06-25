@@ -1,4 +1,4 @@
-export function triEtudiants(listeEtudiantsExos, methode) {
+export function triEtudiants(listeEtudiantsExos, methode, reverseTri, exoValides) {
   switch (methode) {
     case 'alphabetique':
       listeEtudiantsExos.sort(triIdAlphabetique);
@@ -16,6 +16,17 @@ export function triEtudiants(listeEtudiantsExos, methode) {
       listeEtudiantsExos.sort(triParDifficulte);
       break;
   }
+  if (reverseTri == 'true') listeEtudiantsExos = listeEtudiantsExos.reverse();
+  if (exoValides != 'all') {
+    const tmpList = [];
+    const estValide = exoValides === 'valides';
+    for (const etu of listeEtudiantsExos) {
+      const tmpNewListExo = etu.listeExos.filter((exo) => estValide === exo.estFini);
+      if (tmpNewListExo.length != 0) tmpList.push({ idEtu: etu.idEtu, listeExos: tmpNewListExo });
+    }
+    listeEtudiantsExos = tmpList;
+  }
+  return listeEtudiantsExos;
 }
 /**
  * Fonction qUI compare le nombre d'exercices effectués par deux élèves

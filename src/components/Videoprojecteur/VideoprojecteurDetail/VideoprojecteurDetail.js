@@ -3,6 +3,10 @@ import { DataGrid } from '@mui/x-data-grid';
 
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { useNavigate } from 'react-router-dom';
+
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import IconButton from '@mui/material/IconButton';
 
 const VideoprojecteurDetail = () => {
   const columns = [
@@ -44,8 +48,20 @@ const VideoprojecteurDetail = () => {
   }
   const rows = globalExo;
 
+  let navigate = useNavigate();
+  const redirectionResultat = () => {
+    navigate('/visuresultatexercice');
+  };
+
   return (
     <div style={{ height: 400, width: '100%' }}>
+      <IconButton
+        onClick={redirectionResultat}
+        title="Passer à la vue graph"
+        sx={{ align: 'right' }}
+      >
+        <EqualizerIcon />
+      </IconButton>
       <DataGrid
         rows={rows}
         columns={columns}

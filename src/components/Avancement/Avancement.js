@@ -3,8 +3,12 @@ import { DataGrid } from '@mui/x-data-grid';
 import ExportResultat from '../ExportResultat/ExportResultat';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { useNavigate } from 'react-router-dom';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import IconButton from '@mui/material/IconButton';
+import { etudiantParser } from '../Utilitaires/Etudiant/etudiantParser';
 
-const AvancementComponent = () => {
+const Avancement = () => {
   const columns = [
     { field: 'id', headerName: 'id Etudiant', width: 150 },
     { field: 'nbExoValid', headerName: 'nb exo valide', type: 'number', width: 130 },
@@ -21,9 +25,14 @@ const AvancementComponent = () => {
   let etudiants = [];
   for (const exo of exercices) {
     if (!etudiants.includes(exo.idEtu)) {
-      etudiants.push(exo.idEtu);
+      etudiants.push(etudiantParser(exo.idEtu));
     }
   }
+
+  let navigate = useNavigate();
+  const redirectionResultat = () => {
+    navigate('/visuresultatetudiant');
+  };
 
   // faire un tableau id etudiant
   let avancement = [];
@@ -32,7 +41,9 @@ const AvancementComponent = () => {
 
   for (const etudiant of etudiants) {
     let tempsExo, nomExercice, themesExercice, difficulteExercice, nombreTentatives;
-    const exoEnCours = exercices.filter((exo) => exo.idEtu == etudiant && exo.estFini == false);
+    const exoEnCours = exercices.filter(
+      (exo) => etudiantParser(exo.idEtu) == etudiant && exo.estFini == false,
+    );
     if (exoEnCours.length == 0) {
       // cas ou un étudiant n'a pas d'exercice en cours
       tempsExo = 0;
@@ -51,7 +62,9 @@ const AvancementComponent = () => {
 
     avancement.push({
       id: etudiant,
-      nbExoValid: exercices.filter((exo) => exo.idEtu == etudiant && exo.estFini == true).length,
+      nbExoValid: exercices.filter(
+        (exo) => etudiantParser(exo.idEtu) == etudiant && exo.estFini == true,
+      ).length,
       tpsExo: tempsExo,
       nbTentatives: nombreTentatives,
       nomExo: nomExercice,
@@ -62,31 +75,30 @@ const AvancementComponent = () => {
   const rows = avancement;
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-      />
-      <ExportResultat />
+    <div>
+      <IconButton
+        onClick={redirectionResultat}
+        title="Passer à la vue graph"
+        sx={{ align: 'right' }}
+      >
+        <EqualizerIcon />
+      </IconButton>
+
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+        />
+        <ExportResultat />
+      </div>
     </div>
   );
 };
 
 ////////////////////////// FONCTIONS ANNEXES //////////////////////////////////////////////
-function collectEtudiantIds(exercices) {
-  const etus = new Set();
-  return exercices.filter((item) => {
-    let k = key(item);
-    return etus.has(k.idEtu) ? false : etus.add(k.idEtu);
-  });
-}
-
-function tempsSoumissionToString(temps) {
-  return temps;
-}
 filtreResultat;
 function stringDateToTimestamp(stringDate) {
   return Date.parse(stringDate).valueOf();
@@ -94,10 +106,10 @@ function stringDateToTimestamp(stringDate) {
 
 // filtre les résultats d'un étudiant
 function filtreResultat(exercice, idEtu) {
-  if (exercice.idEtu == idEtu) {
+  if (etudiantParser(exercice.idEtu) == idEtu) {
     return true;
   }
   return false;
 }
 
-export default AvancementComponent;
+export default Avancement;

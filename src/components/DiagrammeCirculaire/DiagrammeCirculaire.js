@@ -33,6 +33,7 @@ const DiagrammeCirculaire = (props) => {
     data: datas,
     options: {
       responsive: true,
+
       plugins: {
         tooltip: {
           enabled: booleanIsInteractive,
@@ -41,6 +42,9 @@ const DiagrammeCirculaire = (props) => {
           display: true,
           text: titre,
           position: 'bottom',
+        },
+        legend: {
+          display: false,
         },
       },
       elements: { center: optionsElementCentral },
@@ -90,6 +94,7 @@ DiagrammeCirculaire.propTypes = {
   booleanIsInteractive: PropTypes.bool.isRequired,
   taille: PropTypes.number.isRequired,
   optionsElementCentral: PropTypes.object,
+  displayLegend: PropTypes.bool,
 };
 
 const initPluginElementCentral = () => {

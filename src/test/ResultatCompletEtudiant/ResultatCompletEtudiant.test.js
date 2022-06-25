@@ -5,6 +5,8 @@ import { mockReactRedux } from 'mock-react-redux';
 import ResultatCompletEtudiant from '@components/ResultatCompletEtudiant/ResultatCompletEtudiant';
 import { getExercices } from '../../services/stores/Exercices/exercicesSlice';
 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 const donnees = [
   {
     idExo: '507f1f77bcf86cd799439011',
@@ -63,7 +65,15 @@ it('test du component RowResultatComplet.js avec données', async () => {
   mockReactRedux().give(getExercices, donnees);
   // render du component
   await act(async () => {
-    render(<ResultatCompletEtudiant idEtu={donnees[0].idEtu} />, container);
+    render(
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ResultatCompletEtudiant idEtu={donnees[0].idEtu} />} />
+        </Routes>
+      </BrowserRouter>,
+
+      container,
+    );
   });
 
   // On récupère le composant mocké
