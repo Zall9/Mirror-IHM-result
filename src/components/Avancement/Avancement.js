@@ -90,7 +90,9 @@ const Avancement = () => {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          checkboxSelection
+          disableSelectionOnClick={true}
+          isRowSelectable={false}
+          initialState={{ columns, rows }}
         />
         <ExportResultat />
       </div>
