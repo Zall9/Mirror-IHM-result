@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
-import {
-  ClickAwayListener,
-  IconButton,
-  List,
-  ListItem,
-  Popper,
-  Slide,
-  Typography,
-} from '@mui/material';
+import { ClickAwayListener, IconButton, List, ListItem, Popper, Typography } from '@mui/material';
 import FriseChrono from './FriseChrono';
 import { Box } from '@mui/system';
 import { getExoFromIds } from './utils/getExoFromIds';
@@ -23,15 +16,40 @@ const PopperDetails = (props) => {
   const handlePopoverClose = props.handlePopoverClose;
 
   const anchorEl = props.anchorEl;
-  const exerciceAffiche = getExoFromIds(
-    exo.ownerElement.parentElement.dataset.id,
-    exo.nodeValue,
-    exercices,
-  );
+  const exerciceAffiche = getExoFromIds(exo.id, exo.field, exercices);
   const nomExo = exerciceAffiche.nomExo;
   const langage = exerciceAffiche.langage;
   const tentatives = exerciceAffiche.tentatives;
   const difficulte = exerciceAffiche.difficulte;
+  const [clicked, setClicked] = useState('');
+
+  //   const Fade = styled.div`
+  //     display: inline-block;
+  //     visibility: ${() => (clicked ? 'hidden' : 'visible')};
+  //     animation: ${() => (clicked ? fadeOut : fadeIn)} 1s linear;
+  //     transition: visibility 1s linear;
+  //   `;
+  //   const fadeIn = keyframes`
+  //   from {
+  //     opacity: 0;
+  //     background-color: rgba(0, 0, 0, 0.5);
+  //   }
+  //   to {
+  //     opacity: 1;
+  //     background-color: rgba(171, 161, 161, 0.5);
+  //   }
+  // `;
+  //   const fadeOut = keyframes`
+  //   from {
+  //     opacity: 1;
+  //     background-color: rgba(171, 161, 161, 0.5);
+  //   }
+  //   to {
+  //     opacity: 0;
+  //     background-color: rgba(0, 0, 0, 0.5);
+  //   }
+  // `;
+
   return (
     <ClickAwayListener onClickAway={handlePopoverClose}>
       <Popper
@@ -52,7 +70,6 @@ const PopperDetails = (props) => {
               position: 'relative',
             }}
           >
-            {console.log('langage', langage)}
             <IconButton onClick={handlePopoverClose}>
               <CancelIcon></CancelIcon>
             </IconButton>
@@ -75,14 +92,16 @@ const PopperDetails = (props) => {
                   // paddingLeft: 9 - exerciceAffiche.tentatives.length + 'em',
                 }}
               >
-                <FriseChrono exo={exerciceAffiche}></FriseChrono>
+                <FriseChrono
+                  exo={exerciceAffiche}
+                  clicked={clicked}
+                  setClicked={setClicked}
+                ></FriseChrono>
               </ListItem>
             )}
             <ul sx={{ width: '100%', height: '100%' }}>
               <ListItem>
-                <Typography variant="h6">
-                  {exo === '' ? '' : exo.ownerElement.parentElement.dataset.id}
-                </Typography>
+                <Typography variant="h6">{exo === '' ? '' : exo.id}</Typography>
               </ListItem>
               <List sx={{ display: 'flex' }}>
                 <ListItem>
@@ -96,11 +115,14 @@ const PopperDetails = (props) => {
                 <ListItem>
                   <Typography variant="h6">Tentatives:</Typography>
                 </ListItem>
-                <List sx={{ display: 'inline-block', overflow: 'auto', height: '50vh' }}>
+                <List
+                  sx={{ display: 'inline-block', overflow: 'auto', height: '50vh', width: '95%' }}
+                >
                   {exo === '' || exerciceAffiche == -1
                     ? ''
                     : tentatives.map((tentative) => (
                         <Box key={tentative.id + 'Box'}>
+                          {console.log(tentative.id + 'code')}
                           <ListItem key={tentative.id + 'dateSoumission'}>
                             {dateParser(tentative.dateSoumission)}
                           </ListItem>

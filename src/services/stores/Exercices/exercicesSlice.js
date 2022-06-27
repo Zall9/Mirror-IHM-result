@@ -16,7 +16,6 @@ export const exercicesSlice = createSlice({
     },
     addTentative: (state, respTentative) => {
       let exercice = state.exercices[respTentative.payload.idExoEtu];
-      console.log(state);
       // delete infos en double
       console.log('AddTentative !', exercice);
       console.log('Payload AddTentative', respTentative.payload);
@@ -30,24 +29,21 @@ export const exercicesSlice = createSlice({
       }
     },
     addAide: (state, respAide) => {
-      if (state.exercices.length > 0) {
-        let exercice = state.exercices[respAide.payload.idExoEtu];
-
-        if (exercice) {
-          // Si l'aide existe déjà, on la met à jour
-          let exist = false;
-          exercice.aides = exercice.aides.map((aide) => {
-            if (aide.id == respAide.payload.id) {
-              exist = true;
-              return respAide.payload;
-            } else {
-              return aide;
-            }
-          });
-          if (!exist) exercice.aides.push(respAide.payload);
-        } else {
-          throw Error('Exercice not found');
-        }
+      let exercice = state.exercices[respAide.payload.idExoEtu];
+      if (exercice) {
+        // Si l'aide existe déjà, on la met à jour
+        let exist = false;
+        exercice.aides = exercice.aides.map((aide) => {
+          if (aide.id == respAide.payload.id) {
+            exist = true;
+            return respAide.payload;
+          } else {
+            return aide;
+          }
+        });
+        if (!exist) exercice.aides.push(respAide.payload);
+      } else {
+        throw Error('Exercice not found');
       }
     },
   },

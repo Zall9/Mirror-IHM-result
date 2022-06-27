@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import { addExercice, addTentative } from '@stores/Exercices/exercicesSlice';
+import { addExercice, addTentative, addAide } from '@stores/Exercices/exercicesSlice';
 import { addSession } from '@stores/Sessions/sessionSlice';
 import axios from 'axios';
 

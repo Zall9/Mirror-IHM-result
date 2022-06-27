@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCells from './ChipGridCells';
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
@@ -52,15 +52,14 @@ const ComposantResultatsGlobaux = () => {
     if (sessions.length != 0) {
       for (const exo of sessions[0].exercices) {
         tmp_columns.push({
-          field: '' + exo,
-          headerName: '' + exo,
+          field: '' + exo.id,
+          headerName: '' + exo.nom,
           width: 81,
           renderCell: (params) => {
             return (
               <ChipGridCells
                 exercices={exercices}
-                // onMouseEnter={handlePopoverOpen}
-                onClick={handlePopoverOpen}
+                // onClick={handlePopoverOpen}
                 variant="filled"
                 size="medium"
                 label={params.value !== undefined ? '' + params.value : ''}
@@ -86,21 +85,12 @@ const ComposantResultatsGlobaux = () => {
   });
 
   //Handlers
-  const [exo, setExo] = useState('');
+  let exo = useRef('');
   const [anchorEl, setAnchorEl] = useState(null);
-
-  let counter = 0;
-  let myInterval = null;
-
-  const handlePopoverOpen = (event) => {
-    if (event.currentTarget.parentElement.attributes['data-field'].ownerElement.innerText != '') {
-      setExo(event.currentTarget.parentElement.attributes['data-field']);
-      setAnchorEl(document.getElementById('container'));
-    }
-  };
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
+  console.log('myref', exo);
   console.log('rows', rows);
   console.log('columns', columns);
   return (
@@ -112,12 +102,20 @@ const ComposantResultatsGlobaux = () => {
         autoWidth={true}
         headerHeight={36}
         density={'compact'}
+        onCellClick={(params, event) => {
+          console.log('params', params);
+          console.log('event', event);
+          if (params.formattedValue != '') {
+            exo.current = params;
+            setAnchorEl(document.getElementById('container'));
+          }
+        }}
       />
       <Box id="container" sx={containerStyle}>
         {anchorEl !== null ? (
           <PopperDetailsMemo
             exercices={Object.values(exercices)}
-            exo={exo === '' ? '' : exo}
+            exo={exo.current === '' ? '' : exo.current}
             anchorEl={anchorEl}
             handlePopoverClose={handlePopoverClose}
           />

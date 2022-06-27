@@ -5,7 +5,7 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import { makeStyles } from '@mui/styles';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Divider, Paper, Typography } from '@mui/material';
 import Error from '@mui/icons-material/Error';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import PanToolIcon from '@mui/icons-material/PanTool';
@@ -46,13 +46,14 @@ const useStyles = makeStyles({
     },
   },
 });
-const FriseChrono = ({ exo }) => {
+const FriseChrono = ({ exo, clicked, setClicked }) => {
   const classes = useStyles();
   const aides = exo.aides;
   const heureDebut = exo.debut;
   const tempsMoyen = exo.tempsMoyen;
   const tentatives = exo.tentatives;
-
+  const Clicked = clicked;
+  const SetClicked = setClicked;
   // console.log('date', new Date(new Date(heureDebut).getTime() + tempsMoyen * 1000).toISOString());
   let timeline = [
     {
@@ -79,9 +80,11 @@ const FriseChrono = ({ exo }) => {
         item.validationExercice == true ? (
           <CheckCircleOutline className={classes.timelineIcon} key={item.id + 'Icon' + index} />
         ) : (
-          <Error className={classes.timelineIcon} key={item.id + 'Icon' + index} id={item.id}>
-            {console.log(item.id)}
-          </Error>
+          <Error
+            className={classes.timelineIcon}
+            key={item.id + 'Icon' + index}
+            id={item.id}
+          ></Error>
         ),
     });
   });
@@ -104,8 +107,10 @@ const FriseChrono = ({ exo }) => {
       <TimelineItem
         key={item.id + 'TimeLineItem' + index}
         onClick={() => {
-          console.log('clicked' + item.id);
-          document.getElementById(item.id + 'code').scrollIntoView({ behavior: 'smooth' });
+          let d = document.getElementById(item.id + 'code');
+          SetClicked(d.id);
+          d.scrollIntoView({ behavior: 'smooth' });
+          // d.appendChild();
         }}
       >
         <TimelineSeparator>
@@ -126,7 +131,7 @@ const FriseChrono = ({ exo }) => {
     );
   };
   return (
-    <Box sx={{}}>
+    <Box>
       <Timeline align="alternate" className={classes.timeline} key={'TimeLine-Tentatives'}>
         {timeline.map((timeLineItem, index) => {
           return content(timeLineItem, index);
@@ -138,5 +143,7 @@ const FriseChrono = ({ exo }) => {
 
 FriseChrono.propTypes = {
   exo: PropTypes.any,
+  clicked: PropTypes.any,
+  setClicked: PropTypes.any,
 };
 export default FriseChrono;

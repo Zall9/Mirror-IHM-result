@@ -49,6 +49,7 @@
     "react-syntax-highlighter": "^15.4.5",
     "react-test-renderer": "^17.0.2",
     "socket.io-client": "^4.4.1",
+    "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
