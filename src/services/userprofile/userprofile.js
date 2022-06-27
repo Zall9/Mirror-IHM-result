@@ -4,12 +4,8 @@ import axios from 'axios';
 // Sinon, il renvoie l'url vers la page de connexion
 export async function redirectToUserprofileLogin() {
   console.log('Querying connect url from ' + process.env.REACT_APP_SRVRESULT_URL + '/oauth');
-  axios
-    .get(process.env.REACT_APP_SRVRESULT_URL + '/oauth')
-    .then((res) => {
-      console.log('Response from server ', res);
-    })
-    .catch((err) => {
-      console.log('Error from server ', err);
-    });
+  const res = await axios.get(process.env.REACT_APP_SRVRESULT_URL + '/oauth');
+  if (res.data.url) {
+    window.location.replace(res.data.url);
+  }
 }

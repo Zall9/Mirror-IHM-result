@@ -15,10 +15,7 @@ const Login = async () => {
   await redirectToUserprofileLogin();
 
   return (
-    <Typography>
-      Veuillez vous connecter <Link href={url}>ici</Link> si vous n&apos;êtes pas directement
-      redirigé
-    </Typography>
+    <Typography>Vous n&apos;avez pas été redirigé, notre navigateur est-il trop vieux ?</Typography>
   );
 };
 

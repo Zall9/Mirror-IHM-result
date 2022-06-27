@@ -10,7 +10,10 @@ const AuthLayout = ({ redirect }) => {
 
   const enabled = process.env.REACT_APP_OAUTH_ENABLED === 'true';
 
-  return enabled && auth.isAuthenticated ? <Outlet /> : <Navigate to={redirect} replace />;
+  if (!enabled) return <Outlet />;
+  if (auth.isAuthenticated) return <Outlet />;
+
+  return <Navigate to={redirect} replace />;
 };
 
 // Extend props from component Route

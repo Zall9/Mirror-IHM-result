@@ -1,21 +1,22 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
+import { getAuth } from '@stores/Auth/authSlice';
 import { Typography } from '@mui/material';
+import { setToken, setAuthenticated } from '@stores/Auth/authSlice';
 
 const LoginCallback = () => {
   const auth = useSelector(getAuth);
   const dispatch = useDispatch();
 
-  const querystring = new URLSearchParams();
-
-  const accessToken = querystring.get('access_token');
+  const [searchParams, _] = useSearchParams();
+  const accessToken = searchParams.get('access_token');
 
   if (process.env.REACT_APP_OAUTH_ENABLED !== 'true' || auth.isAuthenticated) {
     return <Navigate to="/" />;
   }
 
-  if (token) {
+  if (accessToken) {
     dispatch(setToken(accessToken));
     dispatch(setAuthenticated(true));
     return <Navigate to="/" />;
