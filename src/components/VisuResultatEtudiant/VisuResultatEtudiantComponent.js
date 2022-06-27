@@ -136,7 +136,7 @@ const VisuResultatEtudiantComponent = () => {
   // tableau contenant tous les étudiants
   let ListeEtudiants = [];
 
-  exercices.map((exo) => {
+  Object.values(exercices).map((exo) => {
     if (
       (exo.idSession == choixSession || choixSession == 'all') &&
       (exo.idSeance == seance || seance == 'all')

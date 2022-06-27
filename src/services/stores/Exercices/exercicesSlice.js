@@ -3,69 +3,59 @@ import { createSlice } from '@reduxjs/toolkit';
 export const exercicesSlice = createSlice({
   name: 'exercices',
   initialState: {
-    data: [],
+    exercices: {},
   },
   reducers: {
     setExercices: (state, respExercices) => {
-      state.data = respExercices.payload;
+      respExercices.payload.forEach((exercice) => {
+        state.exercices[exercice.id] = exercice;
+      });
     },
     addExercice: (state, respExercice) => {
-      state.data.push(respExercice.payload);
+      state.exercices[respExercice.payload.id] = respExercice.payload;
     },
     addTentative: (state, respTentative) => {
-      if (state.data.length > 0) {
-        let exercice = state.data.find(
-          (exo) =>
-            exo.idExo === respTentative.payload.idExo &&
-            exo.idEtu === respTentative.payload.idEtu &&
-            exo.idSession === respTentative.payload.idSession,
-        );
+      let exercice = state.exercices[respTentative.payload.idExoEtu];
+      console.log(state);
+      // delete infos en double
+      console.log('AddTentative !', exercice);
+      console.log('Payload AddTentative', respTentative.payload);
+      if (exercice) {
+        exercice.tentatives.push(respTentative.payload);
+        if (respTentative.payload.validationExercice) {
+          exercice.estFini = true;
+        }
+      } else {
+        throw Error('Exercice not found');
+      }
+    },
+    addAide: (state, respAide) => {
+      if (state.exercices.length > 0) {
+        let exercice = state.exercices[respAide.payload.idExoEtu];
 
-        // delete infos en double
         if (exercice) {
-          delete respTentative.payload.idEtu;
-          delete respTentative.payload.idExo;
-          delete respTentative.payload.idSession;
-          exercice.tentatives.push(respTentative.payload);
-          if (respTentative.payload.validationExercice) {
-            exercice.estFini = true;
-          }
+          // Si l'aide existe déjà, on la met à jour
+          let exist = false;
+          exercice.aides = exercice.aides.map((aide) => {
+            if (aide.id == respAide.payload.id) {
+              exist = true;
+              return respAide.payload;
+            } else {
+              return aide;
+            }
+          });
+          if (!exist) exercice.aides.push(respAide.payload);
         } else {
           throw Error('Exercice not found');
         }
       }
     },
-    addAide: (state, respAide) => {
-      let exercice = state.data.find(
-        (exo) =>
-          exo.idExo === respAide.payload.idExo &&
-          exo.idEtu === respAide.payload.idEtu &&
-          exo.idSession === respAide.payload.idSession,
-      );
-
-      if (exercice) {
-        delete respAide.payload.idEtu;
-        delete respAide.payload.idExo;
-        delete respAide.payload.idSession;
-        delete respAide.payload.idSeance;
-
-        // Si l'aide existe déjà, on la met à jour
-        let exist = false;
-        exercice.aides = exercice.aides.map((aide) => {
-          if (aide.id == respAide.payload.id) {
-            exist = true;
-            return respAide.payload;
-          } else {
-            return aide;
-          }
-        });
-        if (!exist) exercice.aides.push(respAide.payload);
-      }
-    },
   },
 });
 
-export const getExercices = (state) => state.exercices.data;
+export const getExercices = (state) => {
+  return state.exercices.exercices;
+};
 // Action creators are generated for each case reducer function
 export const { setExercices, addExercice, addTentative, addAide } = exercicesSlice.actions;
 
