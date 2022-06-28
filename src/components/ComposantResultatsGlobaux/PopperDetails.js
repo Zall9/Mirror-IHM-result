@@ -1,7 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
-import { ClickAwayListener, IconButton, List, ListItem, Popper, Typography } from '@mui/material';
+import {
+  ClickAwayListener,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  Popper,
+  Typography,
+} from '@mui/material';
 import FriseChrono from './FriseChrono';
 import { Box } from '@mui/system';
 import { getExoFromIds } from './utils/getExoFromIds';
@@ -66,8 +74,9 @@ const PopperDetails = (props) => {
             style={{
               border: '3px solid black',
               backgroundColor: 'white',
-              width: 'max-content',
+              width: '25vw',
               position: 'relative',
+              overflow: 'scroll',
             }}
           >
             <IconButton onClick={handlePopoverClose}>
@@ -84,8 +93,7 @@ const PopperDetails = (props) => {
                   alignItems: 'center',
                   margin: '0 auto',
                   top: '0',
-
-                  width: 90 * tentatives.length + 70,
+                  width: 90 * tentatives.length + 100,
                   height: '5vh',
                   // paddingTop: 1 + exerciceAffiche.tentatives.length + 'em',
                   // paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
@@ -122,24 +130,34 @@ const PopperDetails = (props) => {
                     ? ''
                     : tentatives.map((tentative) => (
                         <Box key={tentative.id + 'Box'}>
-                          {console.log(tentative.id + 'code')}
-                          <ListItem key={tentative.id + 'dateSoumission'}>
-                            {dateParser(tentative.dateSoumission)}
-                          </ListItem>
-                          <ListItem key={tentative.id + 'Logs'}>
-                            <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
-                          </ListItem>
-                          {langage !== '' && langage !== undefined ? (
-                            <div id={tentative.id + 'code'}>
-                              <CodeTentative
-                                code={tentative.reponseEtudiant}
-                                key={tentative.id + 'code'}
-                                language={langage}
-                              />
-                            </div>
-                          ) : (
-                            ''
-                          )}
+                          <div
+                            style={
+                              clicked == tentative.id + 'code'
+                                ? { backgroundColor: 'rgba(166, 161, 161,0.5)' }
+                                : { backgroundColor: 'white' }
+                            }
+                          >
+                            <ListItem key={tentative.id + 'dateSoumission'}>
+                              {dateParser(tentative.dateSoumission)}
+                            </ListItem>
+                            <ListItem key={tentative.id + 'Logs'}>
+                              <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
+                            </ListItem>
+                            {langage !== '' && langage !== undefined ? (
+                              <div id={tentative.id + 'code'}>
+                                <CodeTentative
+                                  code={tentative.reponseEtudiant}
+                                  key={tentative.id + 'code'}
+                                  language={langage}
+                                />
+                                {clicked == tentative.id + 'code' ? (
+                                  <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
+                                ) : null}
+                              </div>
+                            ) : (
+                              ''
+                            )}
+                          </div>
                         </Box>
                       ))}
                 </List>
