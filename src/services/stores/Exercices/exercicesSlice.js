@@ -25,25 +25,20 @@ export const exercicesSlice = createSlice({
           exercice.estFini = true;
         }
       } else {
-        throw Error('Exercice not found');
+        throw Error('Exercice not found for Tentative!');
       }
     },
     addAide: (state, respAide) => {
       let exercice = state.exercices[respAide.payload.idExoEtu];
+      console.log('AddAide !', exercice);
+      console.log('Payload AddAide', respAide.payload);
       if (exercice) {
-        // Si l'aide existe déjà, on la met à jour
-        let exist = false;
-        exercice.aides = exercice.aides.map((aide) => {
-          if (aide.id == respAide.payload.id) {
-            exist = true;
-            return respAide.payload;
-          } else {
-            return aide;
-          }
-        });
-        if (!exist) exercice.aides.push(respAide.payload);
+        exercice.aides.push(respAide.payload);
+        if (respAide.payload.resolue) {
+          exercice.aides.find((aide) => aide.id === respAide.payload.id).resolue = true;
+        }
       } else {
-        throw Error('Exercice not found for help');
+        throw Error('Exercice not found for HelpRequest!');
       }
     },
   },

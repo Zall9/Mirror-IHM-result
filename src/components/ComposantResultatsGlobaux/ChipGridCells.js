@@ -49,7 +49,6 @@ const ChipGridCells = (props) => {
 ChipGridCells.propTypes = {
   label: PropTypes.string.isRequired,
   exercices: PropTypes.object.isRequired,
-  exo: PropTypes.object.isRequired,
 };
 
 export default ChipGridCells;
