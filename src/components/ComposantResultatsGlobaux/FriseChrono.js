@@ -52,7 +52,6 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
   const heureDebut = exo.debut;
   const tempsMoyen = exo.tempsMoyen;
   const tentatives = exo.tentatives;
-  const Clicked = clicked;
   const SetClicked = setClicked;
   // console.log('date', new Date(new Date(heureDebut).getTime() + tempsMoyen * 1000).toISOString());
   let timeline = [

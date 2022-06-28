@@ -43,7 +43,7 @@ export const exercicesSlice = createSlice({
         });
         if (!exist) exercice.aides.push(respAide.payload);
       } else {
-        throw Error('Exercice not found');
+        throw Error('Exercice not found for help');
       }
     },
   },
@@ -52,6 +52,7 @@ export const exercicesSlice = createSlice({
 export const getExercices = (state) => {
   return state.exercices.exercices;
 };
+
 // Action creators are generated for each case reducer function
 export const { setExercices, addExercice, addTentative, addAide } = exercicesSlice.actions;
 
