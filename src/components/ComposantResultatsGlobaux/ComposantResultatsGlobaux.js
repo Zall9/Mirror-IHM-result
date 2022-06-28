@@ -160,4 +160,4 @@ const ComposantResultatsGlobaux = () => {
     backgroundColor: PropTypes.any,
   };
 };
-export default ComposantResultatsGlobaux;
+export default React.memo(ComposantResultatsGlobaux);
