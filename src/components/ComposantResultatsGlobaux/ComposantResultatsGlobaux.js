@@ -11,13 +11,14 @@ import ChipGridCells from './ChipGridCells';
 const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
-  console.log('sess', sessions);
+  // console.log('sess', sessions);
   const containerStyle = () => {
     return {
       backgroundColor: '',
       position: 'fixed',
-      top: '25px',
+      top: '1px',
       right: '0',
+      width: '3vh',
     };
   };
 
@@ -51,19 +52,30 @@ const ComposantResultatsGlobaux = () => {
   const columns = useMemo(() => {
     if (sessions.length != 0) {
       for (const exo of sessions[0].exercices) {
+        // console.log('exo', exo);
         tmp_columns.push({
           field: '' + exo.id,
           headerName: '' + exo.nom,
-          width: 81,
+          width: 120,
           renderCell: (params) => {
             return (
               <ChipGridCells
-                exercices={exercices}
-                // onClick={handlePopoverOpen}
+                exercices={Object.values(exercices)
+                  .filter((e) => e.idExo === exo.id)
+                  .find(
+                    (e) =>
+                      params.field == exo.id &&
+                      e.idEtu === params.row.idEtu &&
+                      exo.aides.length > 0,
+                  )}
+                // onClick={(e) => {
+                //   e.stopPropagation();
+                // }}
+                params={params}
                 variant="filled"
                 size="medium"
                 label={params.value !== undefined ? '' + params.value : ''}
-              />
+              ></ChipGridCells>
             );
           },
         });
@@ -85,14 +97,18 @@ const ComposantResultatsGlobaux = () => {
   });
 
   //Handlers
-  let exo = useRef('');
+  let exoRef = useRef('');
+
   const [anchorEl, setAnchorEl] = useState(null);
+  //replace useState anchorEL and setAnchorEl with useReducer
+  //@TODO : anchorEL to implement without useState
+
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
-  console.log('myref', exo);
-  console.log('rows', rows);
-  console.log('columns', columns);
+  // console.log('myref', exoRef);
+  // console.log('rows', rows);
+  // console.log('columns', columns);
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
@@ -103,10 +119,10 @@ const ComposantResultatsGlobaux = () => {
         headerHeight={36}
         density={'compact'}
         onCellClick={(params, event) => {
-          console.log('params', params);
-          console.log('event', event);
+          // console.log('params', params);
+          // console.log('event', event);
           if (params.formattedValue != '') {
-            exo.current = params;
+            exoRef.current = params;
             setAnchorEl(document.getElementById('container'));
           }
         }}
@@ -115,7 +131,7 @@ const ComposantResultatsGlobaux = () => {
         {anchorEl !== null ? (
           <PopperDetailsMemo
             exercices={Object.values(exercices)}
-            exo={exo.current === '' ? '' : exo.current}
+            exo={exoRef.current === '' ? '' : exoRef.current}
             anchorEl={anchorEl}
             handlePopoverClose={handlePopoverClose}
           />
