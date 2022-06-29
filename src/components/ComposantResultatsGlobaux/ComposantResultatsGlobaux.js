@@ -75,7 +75,7 @@ const ComposantResultatsGlobaux = () => {
                 variant="filled"
                 size="medium"
                 label={params.value !== undefined ? '' + params.value : ''}
-              ></ChipGridCells>
+              />
             );
           },
         });

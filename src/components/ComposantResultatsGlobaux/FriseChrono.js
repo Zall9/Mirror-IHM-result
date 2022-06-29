@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import { dateParser, calculateTime } from './utils/dateParser';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import { colorGradient } from './utils/colorGradient';
 
 const useStyles = makeStyles({
   timeline: {
@@ -77,12 +78,17 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
       id: tentative.id,
       icon: (item, index) =>
         item.validationExercice == true ? (
-          <CheckCircleOutline className={classes.timelineIcon} key={item.id + 'Icon' + index} />
+          <CheckCircleOutline
+            className={classes.timelineIcon}
+            key={item.id + 'Icon' + index}
+            sx={{ color: colorGradient(index) }}
+          />
         ) : (
           <Error
             className={classes.timelineIcon}
             key={item.id + 'Icon' + index}
             id={item.id}
+            sx={{ color: colorGradient(index) }}
           ></Error>
         ),
     });

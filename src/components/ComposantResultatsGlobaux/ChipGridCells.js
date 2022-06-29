@@ -2,7 +2,7 @@ import { Chip } from '@mui/material';
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import PanToolIcon from '@mui/icons-material/PanTool';
-
+import { colorGradient } from './utils/colorGradient';
 const ChipGridCells = (props) => {
   let resolue = false;
   if (props.exercices !== undefined) {
@@ -17,14 +17,7 @@ const ChipGridCells = (props) => {
     function (params) {
       if (params !== '') {
         let style = {
-          backgroundColor:
-            params <= 3
-              ? '#097504'
-              : params <= 6 && params > 3
-              ? '#F96D0C'
-              : params > 6
-              ? '#D10D04'
-              : '#ffffff',
+          backgroundColor: colorGradient(params),
         };
         return style;
       }
@@ -34,8 +27,6 @@ const ChipGridCells = (props) => {
   return (
     <>
       <ChipMemo {...props} sx={cellsStyle(props.label)}></ChipMemo>
-
-      {}
       {props.exercices !== undefined &&
       props.exercices.estFini != true &&
       resolue == false &&
