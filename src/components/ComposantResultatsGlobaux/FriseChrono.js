@@ -41,10 +41,10 @@ const useStyles = makeStyles({
     right: '1.5em', //magic number
   },
   timelineIcon: {
-    transform: 'rotate(90deg)',
-    hover: {
+    '&:hover': {
       cursor: 'pointer',
     },
+    transform: 'rotate(90deg)',
   },
 });
 const FriseChrono = ({ exo, clicked, setClicked }) => {
