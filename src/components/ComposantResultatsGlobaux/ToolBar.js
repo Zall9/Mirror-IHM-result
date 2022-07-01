@@ -9,7 +9,7 @@ import {
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import React, { useEffect } from 'react';
+import React from 'react';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import MenuDeroulantSession from '../MenuDeroulantSession/MenuDeroulantSession';
 
@@ -21,18 +21,31 @@ const ToolBar = ({
   _setSelectedSession,
   _selectedSeance,
   _setSelectedSeance,
+  _SeanceRef,
+  _SetSeanceRef,
 }) => {
-  let listeIdSeance = [];
+  let listeNomSeances = [];
+  let listeIdSeances = [];
   _sessions.forEach((session) => {
     if (_selectedSession === session.id) {
-      listeIdSeance = session.seances.map((seance) => {
+      listeNomSeances = session.seances.map((seance) => {
+        listeIdSeances.push(seance.id);
         return seance.groupe + ' - ' + seance.encadrant;
       });
     }
   });
-  console.log(_selectedSession, '_selectedSession');
-  console.log('sessions', _sessions);
-  console.log(listeIdSeance, '__idseances');
+  console.log('selectedSeance', _selectedSeance);
+  _sessions.forEach((session) => {
+    if (_selectedSession === session.id) {
+      session.seances.forEach((seance) => {
+        if (_selectedSeance === seance.groupe + ' - ' + seance.encadrant) {
+          _SetSeanceRef(seance.id);
+        }
+      });
+    }
+  });
+  console.log('listeIdSeances', listeIdSeances);
+  console.log('listeNomSeances', listeNomSeances);
 
   const sessionStorageNameSession = 'idSes';
   const sessionStorageSeance = 'idSeance';
@@ -50,8 +63,7 @@ const ToolBar = ({
   );
   _setSelectedSession(choixSession);
   _setSelectedSeance(seance);
-  // console.log('_selected', _selected);
-  // console.log('selection', selection);
+
   return (
     <GridToolbarContainer>
       <GridToolbarColumnsButton />
@@ -74,7 +86,7 @@ const ToolBar = ({
         nomArticle="Nom de session"
       />
       <MenuDeroulant
-        listeId={listeIdSeance}
+        listeId={listeNomSeances}
         choix={seance}
         setState={setSeance}
         storageName={sessionStorageSeance}

@@ -13,6 +13,7 @@ const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
   let exoRef = useRef('');
+  const [SeanceRef, SetSeanceRef] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selected, setSelected] = useState('tous');
   const [selectedSession, setSelectedSession] = useState('');
@@ -31,26 +32,21 @@ const ComposantResultatsGlobaux = () => {
   };
   //Initialisations
   let CURRENTSESSION = sessions.find((s) => s.id === selectedSession);
+  // let CURRENTSEANCES = CURRENTSESSION.seances;
+  // console.log('CURRENTSEANCES', CURRENTSEANCES);
+  console.log('CURRENTSESSION', CURRENTSESSION);
   // MEMOIZED Datas
+  console.log('Ref', SeanceRef);
   const rows = useMemo(() => {
     const rows_etu = [];
     Object.values(exercices).forEach((exercice) => {
       let ok = false;
-      if (selected === 'tous') {
-        rows_etu.forEach((row_etu) => {
-          if (row_etu.idEtu === exercice.idEtu) {
-            ok = true;
-            row_etu[exercice.idExo] = exercice.tentatives.length;
-          }
-        });
-        if (!ok) {
-          let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
-          row_etu[exercice.idExo] = exercice.tentatives.length;
-          rows_etu.push(row_etu);
-        }
-      }
-      if (selected === 'finis') {
-        if (exercice.estFini) {
+      console.log('selectedSeance', selectedSeance);
+      //seance.groupe + ' - ' + seance.encadrant
+      console.log(exercice.idSeance, '==', SeanceRef);
+      if (exercice.idSeance === SeanceRef) {
+        console.log('exercice', exercice);
+        if (selected === 'tous') {
           rows_etu.forEach((row_etu) => {
             if (row_etu.idEtu === exercice.idEtu) {
               ok = true;
@@ -63,26 +59,41 @@ const ComposantResultatsGlobaux = () => {
             rows_etu.push(row_etu);
           }
         }
-      }
-      if (selected === 'en cours') {
-        if (!exercice.estFini) {
-          rows_etu.forEach((row_etu) => {
-            if (row_etu.idEtu === exercice.idEtu) {
-              ok = true;
+        if (selected === 'finis') {
+          if (exercice.estFini) {
+            rows_etu.forEach((row_etu) => {
+              if (row_etu.idEtu === exercice.idEtu) {
+                ok = true;
+                row_etu[exercice.idExo] = exercice.tentatives.length;
+              }
+            });
+            if (!ok) {
+              let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
               row_etu[exercice.idExo] = exercice.tentatives.length;
+              rows_etu.push(row_etu);
             }
-          });
-          if (!ok) {
-            let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
-            row_etu[exercice.idExo] = exercice.tentatives.length;
-            rows_etu.push(row_etu);
+          }
+        }
+        if (selected === 'en cours') {
+          if (!exercice.estFini) {
+            rows_etu.forEach((row_etu) => {
+              if (row_etu.idEtu === exercice.idEtu) {
+                ok = true;
+                row_etu[exercice.idExo] = exercice.tentatives.length;
+              }
+            });
+            if (!ok) {
+              let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
+              row_etu[exercice.idExo] = exercice.tentatives.length;
+              rows_etu.push(row_etu);
+            }
           }
         }
       }
     });
     console.log(rows_etu, 'rows_etu');
     return rows_etu;
-  }, [exercices, selected]);
+  }, [exercices, selected, selectedSeance, SeanceRef]);
   let tmp_columns = [
     {
       field: 'idEtu',
@@ -234,7 +245,7 @@ const ComposantResultatsGlobaux = () => {
       return tmp_columns;
     }
     return [];
-  }, [exercices, sessions, CURRENTSESSION]);
+  }, [exercices, sessions, CURRENTSESSION, selectedSeance, SeanceRef]);
   //MEMOIZED COMPONENTS
   const PopperDetailsMemo = React.memo(function renderPoppers(props) {
     return (
@@ -272,6 +283,8 @@ const ComposantResultatsGlobaux = () => {
             _setSelectedSession: setSelectedSession,
             _selectedSeance: selectedSeance,
             _setSelectedSeance: setSelectedSeance,
+            _SeanceRef: SeanceRef,
+            _SetSeanceRef: SetSeanceRef,
           },
         }}
         initialState={{
