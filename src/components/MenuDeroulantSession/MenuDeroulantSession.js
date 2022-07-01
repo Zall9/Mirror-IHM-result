@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
-import { useSelector } from 'react-redux';
 
 const MenuDeroulantSession = ({ sessions, choixSession, setSession, storageName, nomArticle }) => {
-  const nomSessions = sessions.map((session) => session.nom).concat('all');
+  const nomSessions = sessions.map((session) => session.nom).concat('aucune');
 
-  const idVersNom = (id) => sessions?.find((session) => session.id === id)?.nom ?? 'all';
-  const nomVersId = (nom) => sessions?.find((session) => session.nom === nom)?.id ?? 'all';
+  const idVersNom = (id) => sessions?.find((session) => session.id === id)?.nom ?? 'aucune';
+  const nomVersId = (nom) => sessions?.find((session) => session.nom === nom)?.id ?? 'aucune';
 
   const choixNomSession = idVersNom(choixSession);
 

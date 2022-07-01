@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import ToolBar from './ToolBar';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
@@ -7,11 +8,18 @@ import { Box } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCells from './ChipGridCells';
-
 const ComposantResultatsGlobaux = () => {
+  // HOOKS & STATES
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
+  let exoRef = useRef('');
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selected, setSelected] = useState('tous');
+  const [selectedSession, setSelectedSession] = useState('');
+  const [selectedSeance, setSelectedSeance] = useState('');
   // console.log('sess', sessions);
+
+  //STYLES
   const containerStyle = () => {
     return {
       backgroundColor: '',
@@ -21,7 +29,60 @@ const ComposantResultatsGlobaux = () => {
       width: '3vh',
     };
   };
-
+  //Initialisations
+  let CURRENTSESSION = sessions.find((s) => s.id === selectedSession);
+  // MEMOIZED Datas
+  const rows = useMemo(() => {
+    const rows_etu = [];
+    Object.values(exercices).forEach((exercice) => {
+      let ok = false;
+      if (selected === 'tous') {
+        rows_etu.forEach((row_etu) => {
+          if (row_etu.idEtu === exercice.idEtu) {
+            ok = true;
+            row_etu[exercice.idExo] = exercice.tentatives.length;
+          }
+        });
+        if (!ok) {
+          let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
+          row_etu[exercice.idExo] = exercice.tentatives.length;
+          rows_etu.push(row_etu);
+        }
+      }
+      if (selected === 'finis') {
+        if (exercice.estFini) {
+          rows_etu.forEach((row_etu) => {
+            if (row_etu.idEtu === exercice.idEtu) {
+              ok = true;
+              row_etu[exercice.idExo] = exercice.tentatives.length;
+            }
+          });
+          if (!ok) {
+            let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
+            row_etu[exercice.idExo] = exercice.tentatives.length;
+            rows_etu.push(row_etu);
+          }
+        }
+      }
+      if (selected === 'en cours') {
+        if (!exercice.estFini) {
+          rows_etu.forEach((row_etu) => {
+            if (row_etu.idEtu === exercice.idEtu) {
+              ok = true;
+              row_etu[exercice.idExo] = exercice.tentatives.length;
+            }
+          });
+          if (!ok) {
+            let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
+            row_etu[exercice.idExo] = exercice.tentatives.length;
+            rows_etu.push(row_etu);
+          }
+        }
+      }
+    });
+    console.log(rows_etu, 'rows_etu');
+    return rows_etu;
+  }, [exercices, selected]);
   let tmp_columns = [
     {
       field: 'idEtu',
@@ -29,62 +90,152 @@ const ComposantResultatsGlobaux = () => {
       width: 120,
     },
   ];
-
-  const rows = useMemo(() => {
-    const rows_etu = [];
-    Object.values(exercices).forEach((exercice) => {
-      let ok = false;
-      rows_etu.forEach((row_etu) => {
-        if (row_etu.idEtu === exercice.idEtu) {
-          ok = true;
-          row_etu[exercice.idExo] = exercice.tentatives.length;
-        }
-      });
-      if (!ok) {
-        let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
-        row_etu[exercice.idExo] = exercice.tentatives.length;
-        rows_etu.push(row_etu);
-      }
-    });
-    return rows_etu;
-  }, [exercices]);
-
+  let columns_en_cours = [
+    {
+      field: 'idEtu',
+      headerName: 'id etudiant',
+      width: 120,
+    },
+  ];
+  let columns_finis = [
+    {
+      field: 'idEtu',
+      headerName: 'id etudiant',
+      width: 120,
+    },
+  ];
   const columns = useMemo(() => {
-    if (sessions.length != 0) {
-      for (const exo of sessions[0].exercices) {
+    if (CURRENTSESSION !== undefined && CURRENTSESSION.exercices !== undefined) {
+      for (const exo of CURRENTSESSION.exercices) {
         // console.log('exo', exo);
-        tmp_columns.push({
-          field: '' + exo.id,
-          headerName: '' + exo.nom,
-          width: 120,
-          renderCell: (params) => {
-            return (
-              <ChipGridCells
-                exercices={Object.values(exercices)
-                  .filter((e) => e.idExo === exo.id)
-                  .find(
-                    (e) =>
-                      params.field == exo.id &&
-                      e.idEtu === params.row.idEtu &&
-                      exo.aides.length > 0,
-                  )}
-                // onClick={(e) => {
-                //   e.stopPropagation();
-                // }}
-                params={params}
-                variant="filled"
-                size="medium"
-                label={params.value !== undefined ? '' + params.value : ''}
-              />
-            );
-          },
-        });
+        if (selected === 'tous') {
+          tmp_columns.push({
+            field: '' + exo.id,
+            headerName: '' + exo.nom,
+            width: 120,
+            renderCell: (params) => {
+              return (
+                <ChipGridCells
+                  exercices={Object.values(exercices)
+                    .filter((e) => e.idExo === exo.id)
+                    .find(
+                      (e) =>
+                        params.field == exo.id &&
+                        e.idEtu === params.row.idEtu &&
+                        exo.aides.length > 0,
+                    )}
+                  params={params}
+                  variant="filled"
+                  size="medium"
+                  label={params.value !== undefined ? '' + params.value : ''}
+                />
+              );
+            },
+          });
+        }
+        if (selected === 'en cours') {
+          columns_en_cours.push({
+            field: '' + exo.id,
+            headerName: '' + exo.nom,
+            width: 120,
+            renderCell: (params) => {
+              return (
+                <ChipGridCells
+                  exercices={Object.values(exercices)
+                    .filter((e) => e.idExo === exo.id)
+                    .find(
+                      (e) =>
+                        params.field == exo.id &&
+                        e.idEtu === params.row.idEtu &&
+                        exo.estFini == false &&
+                        exo.aides.length > 0,
+                    )}
+                  params={params}
+                  variant="filled"
+                  size="medium"
+                  label={params.value !== undefined ? '' + params.value : ''}
+                />
+              );
+            },
+          });
+          return columns_en_cours;
+        }
+        if (selected === 'finis') {
+          columns_finis.push({
+            field: '' + exo.id,
+            headerName: '' + exo.nom,
+            width: 120,
+            renderCell: (params) => {
+              return (
+                <ChipGridCells
+                  exercices={Object.values(exercices)
+                    .filter((e) => e.idExo === exo.id)
+                    .find(
+                      (e) =>
+                        params.field == exo.id &&
+                        e.idEtu === params.row.idEtu &&
+                        exo.estFini == true &&
+                        exo.aides.length > 0,
+                    )}
+                  params={params}
+                  variant="filled"
+                  size="medium"
+                  label={params.value !== undefined ? '' + params.value : ''}
+                />
+              );
+            },
+          });
+          return columns_finis;
+        }
       }
+      // columns_finis = Object.values(exercices)
+      //   .filter((_exo) => _exo.estFini === true)
+      //   .map((exo) => {
+      //     return {
+      //       field: '' + exo.id,
+      //       headerName: '' + exo.nom,
+      //       width: 120,
+      //       renderCell: (params) => {
+      //         return (
+      //           <ChipGridCells
+      //             exercices={Object.values(exercices)}
+      //             params={params}
+      //             variant="filled"
+      //             size="medium"
+      //             label={params.value !== undefined ? '' + params.value : ''}
+      //           />
+      //         );
+      //       },
+      //     };
+      //   });
+      // columns_en_cours = Object.values(exercices)
+      //   .filter((_exo) => _exo.estFini === false)
+      //   .map((exo) => {
+      //     return {
+      //       field: '' + exo.id,
+      //       headerName: '' + exo.nom,
+      //       width: 120,
+      //       renderCell: (params) => {
+      //         return (
+      //           <ChipGridCells
+      //             exercices={Object.values(exercices)}
+      //             params={params}
+      //             variant="filled"
+      //             size="medium"
+      //             label={params.value !== undefined ? '' + params.value : ''}
+      //           />
+      //         );
+      //       },
+      //     };
+      //   });
+
+      console.log(tmp_columns, 'TMP', columns_en_cours, 'CURRENT', columns_finis, 'ENDED');
+
       return tmp_columns;
     }
     return [];
-  }, [exercices, sessions]);
-
+  }, [exercices, sessions, CURRENTSESSION]);
+  //MEMOIZED COMPONENTS
   const PopperDetailsMemo = React.memo(function renderPoppers(props) {
     return (
       <PopperDetails
@@ -96,24 +247,42 @@ const ComposantResultatsGlobaux = () => {
     );
   });
 
-  //Handlers
-  let exoRef = useRef('');
-
-  const [anchorEl, setAnchorEl] = useState(null);
   //replace useState anchorEL and setAnchorEl with useReducer
   //@TODO : anchorEL to implement without useState
-
+  // HANDLERS
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
   // console.log('myref', exoRef);
   // console.log('rows', rows);
-  // console.log('columns', columns);
+  console.log('columns', columns);
+
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
-        rows={rows}
-        columns={columns}
+        components={{
+          Toolbar: ToolBar,
+        }}
+        componentsProps={{
+          toolbar: {
+            _setSelected: setSelected,
+            _selected: selected,
+            _sessions: sessions,
+            _selectedSession: selectedSession,
+            _setSelectedSession: setSelectedSession,
+            _selectedSeance: selectedSeance,
+            _setSelectedSeance: setSelectedSeance,
+          },
+        }}
+        initialState={{
+          columns: {
+            columnVisibilityModel: {
+              idEtu: true,
+            },
+          },
+        }}
+        rows={selectedSession !== '' ? rows : []}
+        columns={selectedSession !== '' ? columns : []}
         autoHeight={true}
         autoWidth={true}
         headerHeight={36}
