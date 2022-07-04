@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
 import {
   ClickAwayListener,
@@ -16,10 +15,25 @@ import { getExoFromIds } from './utils/getExoFromIds';
 import CodeTentative from './CodeTentative';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { dateParser } from './utils/dateParser';
+import axios from 'axios';
+
 const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
+  const [consigne, setConsigne] = useState('');
   const open = Boolean(props.anchorEl);
   let exo = props.exo;
+  console.log('props', props);
+  console.log('axios', process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exo.field);
+  axios
+    .get(process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exo.field)
+    .then((res) => {
+      console.log('_res', res.data.exercice.enonce);
+      setConsigne(res.data.exercice.enonce);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  console.log('consigne', consigne);
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;
 
@@ -76,38 +90,19 @@ const PopperDetails = (props) => {
               backgroundColor: 'white',
               width: '25vw',
               position: 'relative',
-              overflow: 'scroll',
             }}
           >
             <IconButton onClick={handlePopoverClose}>
               <CancelIcon></CancelIcon>
             </IconButton>
-            {exo == '' || exerciceAffiche == -1 ? (
-              ''
-            ) : (
-              <ListItem
-                sx={{
-                  display: 'flex',
-                  flex_wrap: 'nowrap',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  margin: '0 auto',
-                  top: '0',
-                  width: 90 * tentatives.length + 100,
-                  height: '5vh',
-                  // paddingTop: 1 + exerciceAffiche.tentatives.length + 'em',
-                  // paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
-                  // paddingLeft: 9 - exerciceAffiche.tentatives.length + 'em',
-                }}
-              >
-                <FriseChrono
-                  exo={exerciceAffiche}
-                  clicked={clicked}
-                  setClicked={setClicked}
-                ></FriseChrono>
-              </ListItem>
-            )}
-            <ul sx={{ width: '100%', height: '100%' }}>
+
+            <Box
+              sx={{
+                width: '100%',
+                height: '100%',
+                justifyContent: 'center',
+              }}
+            >
               <ListItem>
                 <Typography variant="h6">{exo === '' ? '' : exo.id}</Typography>
               </ListItem>
@@ -119,50 +114,80 @@ const PopperDetails = (props) => {
                   <Typography sx={{ p: 1 }}>{exo === '' ? '' : difficulte}</Typography>
                 </ListItem>
               </List>
+              <ListItem>
+                <Typography>{exo === '' ? '' : consigne}</Typography>
+              </ListItem>
+              {exo == '' || exerciceAffiche == -1 ? (
+                ''
+              ) : (
+                <div
+                  style={{
+                    overflowY: 'hidden',
+                    overflowX: 'scroll',
+                    height: '100px',
+                    '&::-webkit-scrollbar': { width: 0, backgroundColor: '#ff' },
+                    '::-webkit-scrollbar-thumb': {
+                      backgroundColor: '#989090',
+                      borderRadius: '12px',
+                      border: '3px double #ffffff',
+                    },
+                  }}
+                >
+                  <FriseChrono
+                    exo={exerciceAffiche}
+                    clicked={clicked}
+                    setClicked={setClicked}
+                  ></FriseChrono>
+                </div>
+              )}
               <List>
-                <ListItem>
-                  <Typography variant="h6">Tentatives:</Typography>
-                </ListItem>
                 <List
-                  sx={{ display: 'inline-block', overflow: 'auto', height: '50vh', width: '95%' }}
+                  sx={{
+                    display: 'inline-block',
+                    overflow: 'auto',
+                    height: '50vh',
+                    border: '1.5px solid black',
+                    marginLeft: '1em',
+                  }}
                 >
                   {exo === '' || exerciceAffiche == -1
                     ? ''
                     : tentatives.map((tentative) => (
-                        <Box key={tentative.id + 'Box'}>
-                          <div
-                            style={
-                              clicked == tentative.id + 'code'
-                                ? { backgroundColor: 'rgba(166, 161, 161,0.5)' }
-                                : { backgroundColor: 'white' }
-                            }
-                          >
-                            <ListItem key={tentative.id + 'dateSoumission'}>
-                              {dateParser(tentative.dateSoumission)}
-                            </ListItem>
-                            <ListItem key={tentative.id + 'Logs'}>
-                              <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
-                            </ListItem>
-                            {langage !== '' && langage !== undefined ? (
-                              <div id={tentative.id + 'code'}>
-                                <CodeTentative
-                                  code={tentative.reponseEtudiant}
-                                  key={tentative.id + 'code'}
-                                  language={langage}
-                                />
-                                {clicked == tentative.id + 'code' ? (
-                                  <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
-                                ) : null}
-                              </div>
-                            ) : (
-                              ''
-                            )}
-                          </div>
-                        </Box>
+                        <div
+                          key={tentative.id}
+                          style={
+                            clicked == tentative.id + 'code'
+                              ? { backgroundColor: 'rgba(166, 161, 161,0.5)' }
+                              : { backgroundColor: 'white' }
+                          }
+                        >
+                          <ListItem key={tentative.id + 'dateSoumission'}>
+                            <Typography>{dateParser(tentative.dateSoumission)}</Typography>
+                            <Typography>{':'}&nbsp;</Typography>
+                            <Typography key={tentative.id + 'Logs'}>
+                              {tentative.logErreurs}
+                            </Typography>
+                          </ListItem>
+
+                          {langage !== '' && langage !== undefined ? (
+                            <div id={tentative.id + 'code'}>
+                              <CodeTentative
+                                code={tentative.reponseEtudiant}
+                                key={tentative.id + 'code'}
+                                language={langage}
+                              />
+                              {clicked == tentative.id + 'code' ? (
+                                <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
+                              ) : null}
+                            </div>
+                          ) : (
+                            ''
+                          )}
+                        </div>
                       ))}
                 </List>
               </List>
-            </ul>
+            </Box>
           </div>
         }
       </Popper>

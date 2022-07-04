@@ -26,7 +26,7 @@ const ChipGridCells = (props) => {
   );
   return (
     <>
-      <ChipMemo {...props} sx={cellsStyle(props.label)}></ChipMemo>
+      {props.label !== '' ? <ChipMemo {...props} sx={cellsStyle(props.label)}></ChipMemo> : <></>}
       {props.exercices !== undefined &&
       props.exercices.estFini != true &&
       resolue == false &&

@@ -18,7 +18,6 @@ const ComposantResultatsGlobaux = () => {
   const [selected, setSelected] = useState('tous');
   const [selectedSession, setSelectedSession] = useState('');
   const [selectedSeance, setSelectedSeance] = useState('');
-  // console.log('sess', sessions);
 
   //STYLES
   const containerStyle = () => {
@@ -98,21 +97,18 @@ const ComposantResultatsGlobaux = () => {
     {
       field: 'idEtu',
       headerName: 'id etudiant',
-      width: 120,
     },
   ];
   let columns_en_cours = [
     {
       field: 'idEtu',
       headerName: 'id etudiant',
-      width: 120,
     },
   ];
   let columns_finis = [
     {
       field: 'idEtu',
       headerName: 'id etudiant',
-      width: 120,
     },
   ];
   const columns = useMemo(() => {
@@ -123,7 +119,7 @@ const ComposantResultatsGlobaux = () => {
           tmp_columns.push({
             field: '' + exo.id,
             headerName: '' + exo.nom,
-            width: 120,
+
             renderCell: (params) => {
               return (
                 <ChipGridCells
@@ -148,7 +144,7 @@ const ComposantResultatsGlobaux = () => {
           columns_en_cours.push({
             field: '' + exo.id,
             headerName: '' + exo.nom,
-            width: 120,
+
             renderCell: (params) => {
               return (
                 <ChipGridCells
@@ -175,7 +171,7 @@ const ComposantResultatsGlobaux = () => {
           columns_finis.push({
             field: '' + exo.id,
             headerName: '' + exo.nom,
-            width: 120,
+
             renderCell: (params) => {
               return (
                 <ChipGridCells
@@ -205,7 +201,7 @@ const ComposantResultatsGlobaux = () => {
       //     return {
       //       field: '' + exo.id,
       //       headerName: '' + exo.nom,
-      //       width: 120,
+      //
       //       renderCell: (params) => {
       //         return (
       //           <ChipGridCells
@@ -225,7 +221,7 @@ const ComposantResultatsGlobaux = () => {
       //     return {
       //       field: '' + exo.id,
       //       headerName: '' + exo.nom,
-      //       width: 120,
+      //
       //       renderCell: (params) => {
       //         return (
       //           <ChipGridCells
@@ -271,11 +267,12 @@ const ComposantResultatsGlobaux = () => {
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
+        sx={{ display: 'flex', flexDirection: 'column-reverse' }}
         components={{
-          Toolbar: ToolBar,
+          Footer: ToolBar,
         }}
         componentsProps={{
-          toolbar: {
+          footer: {
             _setSelected: setSelected,
             _selected: selected,
             _sessions: sessions,
@@ -301,8 +298,6 @@ const ComposantResultatsGlobaux = () => {
         headerHeight={36}
         density={'compact'}
         onCellClick={(params, event) => {
-          // console.log('params', params);
-          // console.log('event', event);
           if (params.formattedValue != '') {
             exoRef.current = params;
             setAnchorEl(document.getElementById('container'));

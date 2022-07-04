@@ -17,9 +17,10 @@ import { colorGradient } from './utils/colorGradient';
 
 const useStyles = makeStyles({
   timeline: {
+    height: '75px',
+    width: '50px',
     transform: 'rotate(-90deg) ',
-    width: 'auto',
-    height: 'auto',
+    marginLeft: '5px',
   },
   timelineContentContainer: {
     textAlign: 'left',
@@ -37,8 +38,8 @@ const useStyles = makeStyles({
     transform: 'rotate(90deg)',
     textAlign: 'center',
     position: 'relative',
-
     right: '1.5em', //magic number
+    top: '', //magic number
   },
   timelineIcon: {
     '&:hover': {
@@ -47,6 +48,14 @@ const useStyles = makeStyles({
     transform: 'rotate(90deg)',
   },
 });
+/**
+ * @param {object} props: {exercice, callback setClicked}
+ *
+ * prend un objet d'exercice comme paramètre et renvoie un composant de chronologie qui affiche
+ * l'heure de début de l'exercice, le temps moyen nécessaire pour terminer l'exercice et les heures
+ * auxquelles l'élève a demandé de l'aide et validé l'exercice.
+ * @returns Un composant
+ */
 const FriseChrono = ({ exo, clicked, setClicked }) => {
   const classes = useStyles();
   const aides = exo.aides;
@@ -136,13 +145,13 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
     );
   };
   return (
-    <Box>
+    <>
       <Timeline align="alternate" className={classes.timeline} key={'TimeLine-Tentatives'}>
         {timeline.map((timeLineItem, index) => {
           return content(timeLineItem, index);
         })}
       </Timeline>
-    </Box>
+    </>
   );
 };
 
