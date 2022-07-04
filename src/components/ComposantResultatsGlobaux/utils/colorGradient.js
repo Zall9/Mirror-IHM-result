@@ -9,7 +9,9 @@ export const colorGradient = (nbTentatives) => {
   // console.log('colorGradient param', nbTentatives);
   const rainbow = new Rainbow();
   rainbow.setNumberRange(-1, ~~nbTentatives + 1);
-  rainbow.setSpectrum('white', '#00ff00', 'orange', 'red');
+  rainbow.setSpectrum('white', 'green', 'yellow', 'red');
+  //apres tps moyen #ffdb00
+  //avant #80c000
   let selected = '';
   for (let i = 0; i < nbTentatives; i++) {
     let hexColour = rainbow.colorAt(i);
