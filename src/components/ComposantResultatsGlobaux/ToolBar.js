@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { IconButton, Toolbar, Typography } from '@mui/material';
 import {
+  GridFooter,
   GridToolbarColumnsButton,
   GridToolbarContainer,
-  GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
 } from '@mui/x-data-grid';
@@ -68,7 +68,6 @@ const ToolBar = ({
     <GridToolbarContainer>
       <GridToolbarColumnsButton />
       <GridToolbarFilterButton />
-      <GridToolbarDensitySelector />
       <GridToolbarExport />
       <IconButton
         onClick={() => {
@@ -83,7 +82,7 @@ const ToolBar = ({
         choixSession={choixSession}
         setSession={setSession}
         storageName={sessionStorageNameSession}
-        nomArticle="Nom de session"
+        nomArticle="Session"
       />
       <MenuDeroulant
         listeId={listeNomSeances}
@@ -92,6 +91,7 @@ const ToolBar = ({
         storageName={sessionStorageSeance}
         nomArticle="Seance"
       />
+      <GridFooter />
     </GridToolbarContainer>
   );
 };
