@@ -280,7 +280,13 @@ const ComposantResultatsGlobaux = () => {
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
+        rowHeight={25}
         sx={{ display: 'flex', flexDirection: 'column-reverse' }}
+        localeText={{
+          toolbarFilters: 'FILTRER',
+          toolbarExport: 'EXPORTER',
+          toolbarColumns: 'COLONNES',
+        }}
         components={{
           Footer: ToolBar,
         }}
