@@ -51,7 +51,7 @@ const ToolBar = ({
 
   const sessionStorageNameSession = 'idSes';
   const sessionStorageSeance = 'idSeance';
-  const selection = ['en cours', 'finis', 'tous'];
+  const selection = ['en cours', 'finis', 'tous', 'aides'];
   //STATES
   const [choixSession, setSession] = React.useState(
     sessionStorage.getItem(sessionStorageNameSession)

@@ -89,6 +89,22 @@ const ComposantResultatsGlobaux = () => {
             }
           }
         }
+        if (selected === 'aides') {
+          console.log('myexo', exercice);
+          if (exercice.aides.length > 0 && !exercice.estFini) {
+            rows_etu.forEach((row_etu) => {
+              if (row_etu.idEtu === exercice.idEtu) {
+                ok = true;
+                row_etu[exercice.idExo] = exercice.tentatives.length;
+              }
+            });
+            if (!ok) {
+              let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
+              row_etu[exercice.idExo] = exercice.tentatives.length;
+              rows_etu.push(row_etu);
+            }
+          }
+        }
       }
     });
     console.log(rows_etu, 'rows_etu');
@@ -112,10 +128,42 @@ const ComposantResultatsGlobaux = () => {
       headerName: 'id etudiant',
     },
   ];
+  let columns_aides = [
+    {
+      field: 'idEtu',
+      headerName: 'id etudiant',
+    },
+  ];
   const columns = useMemo(() => {
     if (CURRENTSESSION !== undefined && CURRENTSESSION.exercices !== undefined) {
       for (const exo of CURRENTSESSION.exercices) {
         // console.log('exo', exo);
+        if (selected === 'aides') {
+          columns_aides.push({
+            field: exo.id,
+            headerName: exo.nom,
+            renderCell: (params) => {
+              return (
+                <ChipGridCells
+                  exercices={Object.values(exercices)
+                    .filter((e) => e.idExo === exo.id)
+                    .find(
+                      (e) =>
+                        params.field == exo.id &&
+                        e.idEtu === params.row.idEtu &&
+                        exo.aides.length > 0,
+                      // exo.aides.length > 0,
+                    )}
+                  params={params}
+                  variant="filled"
+                  size="medium"
+                  label={params.value !== undefined ? '' + params.value : ''}
+                />
+              );
+            },
+          });
+          return columns_aides;
+        }
         if (selected === 'tous') {
           tmp_columns.push({
             field: '' + exo.id,
@@ -196,48 +244,6 @@ const ComposantResultatsGlobaux = () => {
           return columns_finis;
         }
       }
-      // columns_finis = Object.values(exercices)
-      //   .filter((_exo) => _exo.estFini === true)
-      //   .map((exo) => {
-      //     return {
-      //       field: '' + exo.id,
-      //       headerName: '' + exo.nom,
-      //
-      //       renderCell: (params) => {
-      //         return (
-      //           <ChipGridCells
-      //             exercices={Object.values(exercices)}
-      //             params={params}
-      //             variant="filled"
-      //             size="medium"
-      //             label={params.value !== undefined ? '' + params.value : ''}
-      //           />
-      //         );
-      //       },
-      //     };
-      //   });
-      // columns_en_cours = Object.values(exercices)
-      //   .filter((_exo) => _exo.estFini === false)
-      //   .map((exo) => {
-      //     return {
-      //       field: '' + exo.id,
-      //       headerName: '' + exo.nom,
-      //
-      //       renderCell: (params) => {
-      //         return (
-      //           <ChipGridCells
-      //             exercices={Object.values(exercices)}
-      //             params={params}
-      //             variant="filled"
-      //             size="medium"
-      //             label={params.value !== undefined ? '' + params.value : ''}
-      //           />
-      //         );
-      //       },
-      //     };
-      //   });
-
-      console.log(tmp_columns, 'TMP', columns_en_cours, 'CURRENT', columns_finis, 'ENDED');
 
       return tmp_columns;
     }
