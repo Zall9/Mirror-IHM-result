@@ -141,6 +141,9 @@ const ComposantResultatsGlobaux = () => {
         if (selected === 'aides') {
           columns_aides.push({
             field: exo.id,
+            align: 'center',
+            flex: 1,
+            maxWidth: 75,
             headerName: exo.nom,
             renderCell: (params) => {
               return (
@@ -168,6 +171,9 @@ const ComposantResultatsGlobaux = () => {
           tmp_columns.push({
             field: '' + exo.id,
             headerName: '' + exo.nom,
+            align: 'center',
+            flex: 1,
+            maxWidth: 75,
 
             renderCell: (params) => {
               return (
@@ -193,6 +199,9 @@ const ComposantResultatsGlobaux = () => {
           columns_en_cours.push({
             field: '' + exo.id,
             headerName: '' + exo.nom,
+            align: 'center',
+            flex: 1,
+            maxWidth: 75,
 
             renderCell: (params) => {
               return (
@@ -220,6 +229,9 @@ const ComposantResultatsGlobaux = () => {
           columns_finis.push({
             field: '' + exo.id,
             headerName: '' + exo.nom,
+            align: 'center',
+            flex: 1,
+            maxWidth: 75,
 
             renderCell: (params) => {
               return (

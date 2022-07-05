@@ -39,7 +39,7 @@ const useStyles = makeStyles({
     textAlign: 'center',
     position: 'relative',
     right: '1.5em', //magic number
-    top: '', //magic number
+    bottom: '2.5ch', //magic number
   },
   timelineIcon: {
     '&:hover': {
@@ -98,7 +98,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
             key={item.id + 'Icon' + index}
             id={item.id}
             sx={{ color: colorGradient(index) }}
-          ></Error>
+          />
         ),
     });
   });
