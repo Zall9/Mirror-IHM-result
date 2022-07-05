@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Box, IconButton, Toolbar, Typography } from '@mui/material';
 import {
+  GridCsvExportMenuItem,
   GridFooter,
   GridPrintExportMenuItem,
   GridToolbarColumnsButton,
@@ -85,6 +86,7 @@ const ToolBar = ({
       {/* les options d'exports sont ci-dessous */}
       <GridToolbarExportContainer sx={{ color: buttonColor }}>
         <GridPrintExportMenuItem />
+        <GridCsvExportMenuItem />
         <JsonExportMenuItem />
       </GridToolbarExportContainer>
       <IconButton
