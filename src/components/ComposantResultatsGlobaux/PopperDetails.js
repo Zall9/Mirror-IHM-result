@@ -20,12 +20,12 @@ import axios from 'axios';
 const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
   const [consigne, setConsigne] = useState('');
+  const [exoState, setExoState] = useState(props.exo);
   const open = Boolean(props.anchorEl);
-  let exo = props.exo;
-  console.log('props', props);
-  console.log('axios', process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exo.field);
+
+  console.log('axios', process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exoState.field);
   axios
-    .get(process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exo.field)
+    .get(process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exoState.field)
     .then((res) => {
       console.log('_res', res.data.exercice.enonce);
       setConsigne(res.data.exercice.enonce);
@@ -38,39 +38,12 @@ const PopperDetails = (props) => {
   const handlePopoverClose = props.handlePopoverClose;
 
   const anchorEl = props.anchorEl;
-  const exerciceAffiche = getExoFromIds(exo.id, exo.field, exercices);
+  const exerciceAffiche = getExoFromIds(exoState.id, exoState.field, exercices);
   const nomExo = exerciceAffiche.nomExo;
   const langage = exerciceAffiche.langage;
   const tentatives = exerciceAffiche.tentatives;
   const difficulte = exerciceAffiche.difficulte;
   const [clicked, setClicked] = useState('');
-
-  //   const Fade = styled.div`
-  //     display: inline-block;
-  //     visibility: ${() => (clicked ? 'hidden' : 'visible')};
-  //     animation: ${() => (clicked ? fadeOut : fadeIn)} 1s linear;
-  //     transition: visibility 1s linear;
-  //   `;
-  //   const fadeIn = keyframes`
-  //   from {
-  //     opacity: 0;
-  //     background-color: rgba(0, 0, 0, 0.5);
-  //   }
-  //   to {
-  //     opacity: 1;
-  //     background-color: rgba(171, 161, 161, 0.5);
-  //   }
-  // `;
-  //   const fadeOut = keyframes`
-  //   from {
-  //     opacity: 1;
-  //     background-color: rgba(171, 161, 161, 0.5);
-  //   }
-  //   to {
-  //     opacity: 0;
-  //     background-color: rgba(0, 0, 0, 0.5);
-  //   }
-  // `;
 
   return (
     <ClickAwayListener onClickAway={handlePopoverClose}>
@@ -104,20 +77,20 @@ const PopperDetails = (props) => {
               }}
             >
               <ListItem>
-                <Typography variant="h6">{exo === '' ? '' : exo.id}</Typography>
+                <Typography variant="h6">{exoState === '' ? '' : exoState.id}</Typography>
               </ListItem>
               <List sx={{ display: 'flex' }}>
                 <ListItem>
-                  <Typography>{exo === '' ? '' : nomExo}</Typography>
+                  <Typography>{exoState === '' ? '' : nomExo}</Typography>
                 </ListItem>
                 <ListItem>
-                  <Typography sx={{ p: 1 }}>{exo === '' ? '' : difficulte}</Typography>
+                  <Typography sx={{ p: 1 }}>{exoState === '' ? '' : difficulte}</Typography>
                 </ListItem>
               </List>
               <ListItem>
-                <Typography>{exo === '' ? '' : consigne}</Typography>
+                <Typography>{exoState === '' ? '' : consigne}</Typography>
               </ListItem>
-              {exo == '' || exerciceAffiche == -1 ? (
+              {exoState == '' || exerciceAffiche == -1 ? (
                 ''
               ) : (
                 <div
@@ -125,8 +98,8 @@ const PopperDetails = (props) => {
                     overflowY: 'hidden',
                     overflowX: 'scroll',
                     height: '100px',
-                    '&::-webkit-scrollbar': { width: 0, backgroundColor: '#ff' },
-                    '::-webkit-scrollbar-thumb': {
+                    '&::WebkitScrollbar': { width: 0, backgroundColor: '#ff' },
+                    '::WebkitScrollbarThumb': {
                       backgroundColor: '#989090',
                       borderRadius: '12px',
                       border: '3px double #ffffff',
@@ -150,7 +123,7 @@ const PopperDetails = (props) => {
                     marginLeft: '1em',
                   }}
                 >
-                  {exo === '' || exerciceAffiche == -1
+                  {exoState === '' || exerciceAffiche == -1
                     ? ''
                     : tentatives.map((tentative) => (
                         <div

@@ -13,8 +13,9 @@ const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
   let exoRef = useRef('');
+
   const [SeanceRef, SetSeanceRef] = useState('');
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState('');
   const [selected, setSelected] = useState('tous');
   const [selectedSession, setSelectedSession] = useState('');
   const [selectedSeance, setSelectedSeance] = useState('');
@@ -257,11 +258,23 @@ const ComposantResultatsGlobaux = () => {
   //replace useState anchorEL and setAnchorEl with useReducer
   //@TODO : anchorEL to implement without useState
   // HANDLERS
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
+
+  const handlePopoverClick = (params, event) => {
+    console.log('paramsCLICK', event);
+    if (event !== undefined) {
+      exoRef.current = params;
+      setAnchorEl(document.getElementById('container'));
+    } else {
+      console.log('else', params);
+      if (params.defaultMuiPrevented == false && params.target.nodeName !== 'HTML') {
+        console.log('else', 'true !');
+        setAnchorEl(null);
+        setAnchorEl(document.getElementById('container'));
+      } else {
+        setAnchorEl(null);
+      }
+    }
   };
-  // console.log('myref', exoRef);
-  // console.log('rows', rows);
   console.log('columns', columns);
 
   return (
@@ -297,12 +310,7 @@ const ComposantResultatsGlobaux = () => {
         autoWidth={true}
         headerHeight={36}
         density={'compact'}
-        onCellClick={(params, event) => {
-          if (params.formattedValue != '') {
-            exoRef.current = params;
-            setAnchorEl(document.getElementById('container'));
-          }
-        }}
+        onCellClick={handlePopoverClick}
       />
       <Box id="container" sx={containerStyle}>
         {anchorEl !== null ? (
@@ -310,7 +318,7 @@ const ComposantResultatsGlobaux = () => {
             exercices={Object.values(exercices)}
             exo={exoRef.current === '' ? '' : exoRef.current}
             anchorEl={anchorEl}
-            handlePopoverClose={handlePopoverClose}
+            handlePopoverClose={handlePopoverClick}
           />
         ) : (
           ''
