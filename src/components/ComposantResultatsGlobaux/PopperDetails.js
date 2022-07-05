@@ -98,12 +98,6 @@ const PopperDetails = (props) => {
                     overflowY: 'hidden',
                     overflowX: 'scroll',
                     height: '100px',
-                    '&::WebkitScrollbar': { width: 0, backgroundColor: '#ff' },
-                    '::WebkitScrollbarThumb': {
-                      backgroundColor: '#989090',
-                      borderRadius: '12px',
-                      border: '3px double #ffffff',
-                    },
                   }}
                 >
                   <FriseChrono
@@ -120,7 +114,8 @@ const PopperDetails = (props) => {
                     overflow: 'auto',
                     height: '50vh',
                     border: '1.5px solid black',
-                    marginLeft: '1em',
+                    marginLeft: '0',
+                    width: '99%',
                   }}
                 >
                   {exoState === '' || exerciceAffiche == -1
