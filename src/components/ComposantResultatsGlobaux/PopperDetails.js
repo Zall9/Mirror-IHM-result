@@ -110,10 +110,8 @@ const PopperDetails = (props) => {
                   sx={{
                     display: 'inline-block',
                     overflow: 'auto',
-                    height: '50vh',
-                    border: '1.5px solid black',
-                    marginLeft: '0',
-                    width: '99%',
+                    height: 'auto',
+                    width: '99.9%',
                   }}
                 >
                   {exoState === '' || exerciceAffiche == -1 ? (
@@ -129,7 +127,6 @@ const PopperDetails = (props) => {
                               {tentative.logErreurs}
                             </Typography>
                           </ListItem>
-
                           {langage !== '' && langage !== undefined ? (
                             <div id={tentative.id + '-code'}>
                               <CodeTentative

@@ -25,18 +25,17 @@ const ComposantResultatsGlobaux = () => {
     return {
       backgroundColor: '',
       position: 'fixed',
-      top: '1px',
+      top: '1vh',
+      bottom: '1vh',
       right: '0',
       width: '3vh',
     };
   };
   //Initialisations
   let CURRENTSESSION = sessions.find((s) => s.id === selectedSession);
-  // let CURRENTSEANCES = CURRENTSESSION.seances;
-  // console.log('CURRENTSEANCES', CURRENTSEANCES);
-  console.log('CURRENTSESSION', CURRENTSESSION);
+
   // MEMOIZED Datas
-  console.log('Ref', SeanceRef);
+
   const rows = useMemo(() => {
     const rows_etu = [];
     Object.values(exercices).forEach((exercice) => {
@@ -159,7 +158,7 @@ const ComposantResultatsGlobaux = () => {
                     )}
                   params={params}
                   variant="filled"
-                  size="medium"
+                  size="small"
                   label={params.value !== undefined ? '' + params.value : ''}
                 />
               );
@@ -188,7 +187,7 @@ const ComposantResultatsGlobaux = () => {
                     )}
                   params={params}
                   variant="filled"
-                  size="medium"
+                  size="small"
                   label={params.value !== undefined ? '' + params.value : ''}
                 />
               );
@@ -217,7 +216,7 @@ const ComposantResultatsGlobaux = () => {
                     )}
                   params={params}
                   variant="filled"
-                  size="medium"
+                  size="small"
                   label={params.value !== undefined ? '' + params.value : ''}
                 />
               );
@@ -246,7 +245,7 @@ const ComposantResultatsGlobaux = () => {
                     )}
                   params={params}
                   variant="filled"
-                  size="medium"
+                  size="small"
                   label={params.value !== undefined ? '' + params.value : ''}
                 />
               );
@@ -297,7 +296,8 @@ const ComposantResultatsGlobaux = () => {
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
-        // rowHeight={25}
+        disableColumnMenu={true}
+        rowHeight={36}
         sx={{ display: 'flex', flexDirection: 'column-reverse' }}
         localeText={{
           toolbarFilters: 'FILTRER',
