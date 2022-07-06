@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import { makeStyles } from '@mui/styles';
-import { Box, Divider, Paper, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import Error from '@mui/icons-material/Error';
+import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import PropTypes from 'prop-types';
@@ -14,7 +15,7 @@ import { dateParser, calculateTime } from './utils/dateParser';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { colorGradient } from './utils/colorGradient';
-
+import CheckIcon from '@mui/icons-material/Check';
 const useStyles = makeStyles({
   timeline: {
     height: '75px',
@@ -85,15 +86,30 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
       type: 'tentative',
       validationExercice: tentative.validationExercice,
       id: tentative.id,
-      icon: (item, index) =>
-        item.validationExercice == true ? (
+      icon: (item, index, _clicked) =>
+        !_clicked ? (
+          item.validationExercice == true ? (
+            <CheckIcon
+              className={classes.timelineIcon}
+              key={item.id + 'Icon' + index}
+              sx={{ color: colorGradient(index) }}
+            />
+          ) : (
+            <Error
+              className={classes.timelineIcon}
+              key={item.id + 'Icon' + index}
+              id={item.id}
+              sx={{ color: colorGradient(index) }}
+            />
+          )
+        ) : item.validationExercice == true ? (
           <CheckCircleOutline
             className={classes.timelineIcon}
             key={item.id + 'Icon' + index}
             sx={{ color: colorGradient(index) }}
           />
         ) : (
-          <Error
+          <ErrorTwoToneIcon
             className={classes.timelineIcon}
             key={item.id + 'Icon' + index}
             id={item.id}
@@ -113,6 +129,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
   timeline.sort((a, b) => {
     return new Date(a.date) - new Date(b.date);
   });
+  //si l'element apres la validation est le temps moyen on l'enlève
   if (timeline[timeline.length - 1].type === 'moyen') {
     timeline.pop();
   }
@@ -121,12 +138,12 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
     return (
       <TimelineItem
         key={item.id + 'TimeLineItem' + index}
-        onClick={(event) => {
+        onClick={(event, params) => {
           SetClicked(item.id);
         }}
       >
         <TimelineSeparator>
-          {item.icon(item, index)}
+          {item.icon(item, index, clicked === item.id)}
           {index === timeline.length - 1 ? '' : <TimelineConnector />}
         </TimelineSeparator>
         <TimelineContent className={classes.timelineContentContainer}>
@@ -146,7 +163,8 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
     <>
       <Timeline align="alternate" className={classes.timeline} key={'TimeLine-Tentatives'}>
         {timeline.map((timeLineItem, index) => {
-          return content(timeLineItem, index);
+          console.log('timeLineItemBool', 'TL ID:', timeLineItem.id, 'CLCKED ID', clicked);
+          return content(timeLineItem, index, clicked === timeLineItem.id);
         })}
       </Timeline>
     </>
