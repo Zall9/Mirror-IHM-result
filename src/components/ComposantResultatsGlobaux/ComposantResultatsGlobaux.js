@@ -232,7 +232,6 @@ const ComposantResultatsGlobaux = () => {
             align: 'center',
             flex: 1,
             maxWidth: 75,
-
             renderCell: (params) => {
               return (
                 <ChipGridCells
@@ -298,7 +297,7 @@ const ComposantResultatsGlobaux = () => {
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
-        rowHeight={25}
+        // rowHeight={25}
         sx={{ display: 'flex', flexDirection: 'column-reverse' }}
         localeText={{
           toolbarFilters: 'FILTRER',
@@ -345,7 +344,7 @@ const ComposantResultatsGlobaux = () => {
             handlePopoverClose={handlePopoverClick}
           />
         ) : (
-          ''
+          <></>
         )}
       </Box>
     </Box>

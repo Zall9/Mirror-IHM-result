@@ -33,7 +33,6 @@ const exportBlob = (blob, filename) => {
   a.href = url;
   a.download = filename;
   a.click();
-
   setTimeout(() => {
     URL.revokeObjectURL(url);
   });
@@ -51,9 +50,7 @@ const JsonExportMenuItem = (props) => {
         const blob = new Blob([jsonString], {
           type: 'text/json',
         });
-
         exportBlob(blob, 'DataGrid_demo.json');
-
         // Hide the export menu after the export
         hideMenu?.();
       }}
