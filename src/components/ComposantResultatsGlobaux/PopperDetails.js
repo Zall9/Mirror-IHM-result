@@ -21,13 +21,14 @@ const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
   const [consigne, setConsigne] = useState('');
   const [exoState, setExoState] = useState(props.exo);
+  const clickedRef = useRef('');
+  const [clicked, setClicked] = useState('');
   const open = Boolean(props.anchorEl);
 
   console.log('axios', process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exoState.field);
   axios
     .get(process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exoState.field)
     .then((res) => {
-      console.log('_res', res.data.exercice.enonce);
       setConsigne(res.data.exercice.enonce);
     })
     .catch((err) => {
@@ -36,14 +37,12 @@ const PopperDetails = (props) => {
   console.log('consigne', consigne);
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;
-
   const anchorEl = props.anchorEl;
   const exerciceAffiche = getExoFromIds(exoState.id, exoState.field, exercices);
   const nomExo = exerciceAffiche.nomExo;
   const langage = exerciceAffiche.langage;
   const tentatives = exerciceAffiche.tentatives;
   const difficulte = exerciceAffiche.difficulte;
-  const [clicked, setClicked] = useState('');
 
   return (
     <ClickAwayListener onClickAway={handlePopoverClose}>
@@ -68,7 +67,6 @@ const PopperDetails = (props) => {
             <IconButton onClick={handlePopoverClose}>
               <CancelIcon></CancelIcon>
             </IconButton>
-
             <Box
               sx={{
                 width: '100%',
@@ -118,17 +116,12 @@ const PopperDetails = (props) => {
                     width: '99%',
                   }}
                 >
-                  {exoState === '' || exerciceAffiche == -1
-                    ? ''
-                    : tentatives.map((tentative) => (
-                        <div
-                          key={tentative.id}
-                          style={
-                            clicked == tentative.id + 'code'
-                              ? { backgroundColor: 'rgba(166, 161, 161,0.5)' }
-                              : { backgroundColor: 'white' }
-                          }
-                        >
+                  {exoState === '' || exerciceAffiche == -1 ? (
+                    <></>
+                  ) : (
+                    tentatives.map((tentative) =>
+                      tentative.id == clicked ? (
+                        <div id={tentative.id} key={tentative.id}>
                           <ListItem key={tentative.id + 'dateSoumission'}>
                             <Typography>{dateParser(tentative.dateSoumission)}</Typography>
                             <Typography>{':'}&nbsp;</Typography>
@@ -138,21 +131,25 @@ const PopperDetails = (props) => {
                           </ListItem>
 
                           {langage !== '' && langage !== undefined ? (
-                            <div id={tentative.id + 'code'}>
+                            <div id={tentative.id + '-code'}>
                               <CodeTentative
                                 code={tentative.reponseEtudiant}
-                                key={tentative.id + 'code'}
+                                key={tentative.id + '-code'}
                                 language={langage}
                               />
-                              {clicked == tentative.id + 'code' ? (
+                              {clicked == tentative.id + '-code' ? (
                                 <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
                               ) : null}
                             </div>
                           ) : (
-                            ''
+                            <></>
                           )}
                         </div>
-                      ))}
+                      ) : (
+                        <></>
+                      ),
+                    )
+                  )}
                 </List>
               </List>
             </Box>

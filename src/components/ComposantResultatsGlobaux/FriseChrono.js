@@ -117,14 +117,12 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
     timeline.pop();
   }
   const content = (item, index) => {
+    console.log('item', item);
     return (
       <TimelineItem
         key={item.id + 'TimeLineItem' + index}
-        onClick={() => {
-          let d = document.getElementById(item.id + 'code');
-          SetClicked(d.id);
-          d.scrollIntoView({ behavior: 'smooth' });
-          // d.appendChild();
+        onClick={(event) => {
+          SetClicked(item.id);
         }}
       >
         <TimelineSeparator>
