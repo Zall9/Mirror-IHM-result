@@ -36,7 +36,6 @@ const ToolBar = ({
       });
     }
   });
-  console.log('selectedSeance', _selectedSeance);
   _sessions.forEach((session) => {
     if (_selectedSession === session.id) {
       session.seances.forEach((seance) => {
@@ -46,8 +45,6 @@ const ToolBar = ({
       });
     }
   });
-  console.log('listeIdSeances', listeIdSeances);
-  console.log('listeNomSeances', listeNomSeances);
 
   const sessionStorageNameSession = 'idSes';
   const sessionStorageSeance = 'idSeance';

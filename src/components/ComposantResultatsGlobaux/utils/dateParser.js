@@ -38,3 +38,22 @@ export const calculateTime = (date1, date2) => {
 const _dateToTimestamp = (date) => {
   return new Date(date).getTime();
 };
+
+/**
+ * prend une date de début, un nombre de minutes et une date de dernière soumission, et renvoie vrai si la
+ * dernière date est comprise dans le nombre de minutes de la date de début + le temps moyen
+ * @param dateStart - la date à laquelle l'utilisateur a commencé l'exo
+ * @param tempsMoyen - le temps moyen de l'exo
+ * @param lastDate - la dernière date à laquelle l'utilisateur a soumis l'exo
+ * @returns Une valeur booléenne.
+ */
+export const calculateTimeBetween = (dateStart, tempsMoyen, lastDate) => {
+  console.log('DATE3', tempsMoyen);
+  const dateLimit = new Date(dateStart);
+  dateLimit.setMinutes(dateLimit.getMinutes() + tempsMoyen);
+  const dateLimitTimestamp = _dateToTimestamp(dateLimit);
+  const actualDateTimestamp = _dateToTimestamp(lastDate);
+  const diff = dateLimitTimestamp - actualDateTimestamp;
+  console.log('DIFF', diff);
+  return diff >= 0;
+};

@@ -41,11 +41,8 @@ const ComposantResultatsGlobaux = () => {
     const rows_etu = [];
     Object.values(exercices).forEach((exercice) => {
       let ok = false;
-      console.log('selectedSeance', selectedSeance);
       //seance.groupe + ' - ' + seance.encadrant
-      console.log(exercice.idSeance, '==', SeanceRef);
       if (exercice.idSeance === SeanceRef) {
-        console.log('exercice', exercice);
         if (selected === 'tous') {
           rows_etu.forEach((row_etu) => {
             if (row_etu.idEtu === exercice.idEtu) {

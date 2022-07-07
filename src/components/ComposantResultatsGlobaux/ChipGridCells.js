@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import { colorGradient } from './utils/colorGradient';
+import { calculateTimeBetween } from './utils/dateParser';
 const ChipGridCells = (props) => {
   let resolue = false;
   if (props.exercices !== undefined) {
@@ -10,27 +11,34 @@ const ChipGridCells = (props) => {
       resolue = element.resolue;
     });
   }
+
   const ChipMemo = function renderChip(props) {
-    return <Chip {...props} sx={cellsStyle(props.label)} />;
+    return <Chip {...props} sx={cellsStyle(props)} />;
   };
+  const myVar = calculateTimeBetween(
+    props?.exercices?.dateDebut,
+    props?.exercices?.tempsMoyen,
+    props?.exercices?.tentatives[props.exercices?.tentatives.length - 1]?.dateSoumission,
+  );
   const cellsStyle = useCallback(
     function (params) {
-      if (params !== '') {
+      if (params.label !== '') {
+        console.log('params', params, 'myVar', myVar);
         let style = {
-          backgroundColor: colorGradient(params),
+          backgroundColor: colorGradient(params.label, myVar),
         };
         return style;
       }
     },
-    [props.label],
+    [props, myVar],
   );
   return (
     <>
       {props.label !== '' ? <ChipMemo {...props} sx={cellsStyle(props.label)}></ChipMemo> : <></>}
-      {props.exercices !== undefined &&
-      props.exercices.estFini != true &&
+      {props?.exercices !== undefined &&
+      props?.exercices.estFini != true &&
       resolue == false &&
-      props.exercices.aides.length > 0 ? (
+      props?.exercices.aides.length > 0 ? (
         <PanToolIcon></PanToolIcon>
       ) : null}
     </>
@@ -42,4 +50,4 @@ ChipGridCells.propTypes = {
   exercices: PropTypes.object.isRequired,
 };
 
-export default ChipGridCells;
+export default React.memo(ChipGridCells);

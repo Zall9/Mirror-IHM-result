@@ -11,7 +11,7 @@ import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import PropTypes from 'prop-types';
-import { dateParser, calculateTime } from './utils/dateParser';
+import { dateParser, calculateTime, calculateTimeBetween } from './utils/dateParser';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { colorGradient } from './utils/colorGradient';
@@ -64,7 +64,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
   const tempsMoyen = exo.tempsMoyen;
   const tentatives = exo.tentatives;
   const SetClicked = setClicked;
-  // console.log('date', new Date(new Date(heureDebut).getTime() + tempsMoyen * 1000).toISOString());
+  console.log('EXO', exo);
   let timeline = [
     {
       heureDebut: heureDebut,
@@ -92,28 +92,64 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
             <CheckIcon
               className={classes.timelineIcon}
               key={item.id + 'Icon' + index}
-              sx={{ color: colorGradient(index) }}
+              sx={{
+                color: colorGradient(
+                  index,
+                  calculateTimeBetween(
+                    exo.debut,
+                    exo.tempsMoyen,
+                    exo.tentatives[exo.tentatives.length - 1],
+                  ),
+                ),
+              }}
             />
           ) : (
             <Error
               className={classes.timelineIcon}
               key={item.id + 'Icon' + index}
               id={item.id}
-              sx={{ color: colorGradient(index) }}
+              sx={{
+                color: colorGradient(
+                  index,
+                  calculateTimeBetween(
+                    exo.debut,
+                    exo.tempsMoyen,
+                    exo.tentatives[exo.tentatives.length - 1],
+                  ),
+                ),
+              }}
             />
           )
         ) : item.validationExercice == true ? (
           <CheckCircleOutline
             className={classes.timelineIcon}
             key={item.id + 'Icon' + index}
-            sx={{ color: colorGradient(index) }}
+            sx={{
+              color: colorGradient(
+                index,
+                calculateTimeBetween(
+                  exo.debut,
+                  exo.tempsMoyen,
+                  exo.tentatives[exo.tentatives.length - 1],
+                ),
+              ),
+            }}
           />
         ) : (
           <ErrorTwoToneIcon
             className={classes.timelineIcon}
             key={item.id + 'Icon' + index}
             id={item.id}
-            sx={{ color: colorGradient(index) }}
+            sx={{
+              color: colorGradient(
+                index,
+                calculateTimeBetween(
+                  exo.debut,
+                  exo.tempsMoyen,
+                  exo.tentatives[exo.tentatives.length - 1],
+                ),
+              ),
+            }}
           />
         ),
     });
@@ -134,7 +170,6 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
     timeline.pop();
   }
   const content = (item, index) => {
-    console.log('item', item);
     return (
       <TimelineItem
         key={item.id + 'TimeLineItem' + index}
@@ -163,7 +198,6 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
     <>
       <Timeline align="alternate" className={classes.timeline} key={'TimeLine-Tentatives'}>
         {timeline.map((timeLineItem, index) => {
-          console.log('timeLineItemBool', 'TL ID:', timeLineItem.id, 'CLCKED ID', clicked);
           return content(timeLineItem, index, clicked === timeLineItem.id);
         })}
       </Timeline>
@@ -176,4 +210,4 @@ FriseChrono.propTypes = {
   clicked: PropTypes.any,
   setClicked: PropTypes.any,
 };
-export default FriseChrono;
+export default React.memo(FriseChrono);

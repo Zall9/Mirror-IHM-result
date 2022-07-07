@@ -25,7 +25,6 @@ const PopperDetails = (props) => {
   useEffect(() => {
     setConsigne(props.session?.exercices.filter((exo) => exo.id == exoState.field)[0]?.enonce);
   }, []);
-  console.log('consigne', consigne);
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;
   const anchorEl = props.anchorEl;
@@ -165,4 +164,4 @@ PopperDetails.propTypes = {
   exercices: PropTypes.array,
   session: PropTypes.object,
 };
-export default PopperDetails;
+export default React.memo(PopperDetails);
