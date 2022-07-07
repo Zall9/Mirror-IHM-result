@@ -44,6 +44,31 @@ const PopperDetails = (props) => {
   const tentatives = exerciceAffiche.tentatives;
   const difficulte = exerciceAffiche.difficulte;
 
+  const renderTentatives = (tentative, langage) => {
+    return (
+      <div id={tentative.id} key={tentative.id}>
+        <ListItem key={tentative.id + 'dateSoumission'}>
+          <Typography>{dateParser(tentative.dateSoumission)}</Typography>
+          <Typography>{':'}&nbsp;</Typography>
+          <Typography key={tentative.id + 'Logs'}>{tentative.logErreurs}</Typography>
+        </ListItem>
+        {langage !== '' && langage !== undefined ? (
+          <div id={tentative.id + '-code'}>
+            <CodeTentative
+              code={tentative.reponseEtudiant}
+              key={tentative.id + '-code'}
+              language={langage}
+            />
+            {clicked == tentative.id + '-code' ? (
+              <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
+            ) : null}
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    );
+  };
   return (
     <ClickAwayListener onClickAway={handlePopoverClose}>
       <Popper
@@ -117,33 +142,17 @@ const PopperDetails = (props) => {
                   {exoState === '' || exerciceAffiche == -1 ? (
                     <></>
                   ) : (
-                    tentatives.map((tentative) =>
-                      tentative.id == clicked ? (
-                        <div id={tentative.id} key={tentative.id}>
-                          <ListItem key={tentative.id + 'dateSoumission'}>
-                            <Typography>{dateParser(tentative.dateSoumission)}</Typography>
-                            <Typography>{':'}&nbsp;</Typography>
-                            <Typography key={tentative.id + 'Logs'}>
-                              {tentative.logErreurs}
-                            </Typography>
-                          </ListItem>
-                          {langage !== '' && langage !== undefined ? (
-                            <div id={tentative.id + '-code'}>
-                              <CodeTentative
-                                code={tentative.reponseEtudiant}
-                                key={tentative.id + '-code'}
-                                language={langage}
-                              />
-                              {clicked == tentative.id + '-code' ? (
-                                <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
-                              ) : null}
-                            </div>
+                    tentatives.map((tentative, index) =>
+                      tentative.id == clicked && tentatives.length - 1 > index ? (
+                        renderTentatives(tentative, langage)
+                      ) : (
+                        <>
+                          {index === tentatives.length - 1 ? (
+                            renderTentatives(tentative, langage)
                           ) : (
                             <></>
                           )}
-                        </div>
-                      ) : (
-                        <></>
+                        </>
                       ),
                     )
                   )}
