@@ -12,7 +12,8 @@ const ComposantResultatsGlobaux = () => {
   // HOOKS & STATES
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
-  let exoRef = useRef('');
+  console.log('sessions', sessions);
+  let exoRef = useRef({});
 
   const [SeanceRef, SetSeanceRef] = useState('');
   const [anchorEl, setAnchorEl] = useState('');
@@ -264,6 +265,7 @@ const ComposantResultatsGlobaux = () => {
     return (
       <PopperDetails
         exercices={props.exercices}
+        session={CURRENTSESSION}
         exo={props.exo === '' ? '' : props.exo}
         anchorEl={props.anchorEl}
         handlePopoverClose={props.handlePopoverClose}
@@ -273,6 +275,7 @@ const ComposantResultatsGlobaux = () => {
 
   //replace useState anchorEL and setAnchorEl with useReducer
   //@TODO : anchorEL to implement without useState
+
   // HANDLERS
 
   const handlePopoverClick = (params, event) => {
@@ -292,7 +295,7 @@ const ComposantResultatsGlobaux = () => {
     }
   };
   console.log('columns', columns);
-
+  console.log('CURRENT', CURRENTSESSION);
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
@@ -339,7 +342,8 @@ const ComposantResultatsGlobaux = () => {
         {anchorEl !== null ? (
           <PopperDetailsMemo
             exercices={Object.values(exercices)}
-            exo={exoRef.current === '' ? '' : exoRef.current}
+            session={CURRENTSESSION}
+            exo={exoRef.current}
             anchorEl={anchorEl}
             handlePopoverClose={handlePopoverClick}
           />

@@ -15,25 +15,16 @@ import { getExoFromIds } from './utils/getExoFromIds';
 import CodeTentative from './CodeTentative';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { dateParser } from './utils/dateParser';
-import axios from 'axios';
 
 const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
   const [consigne, setConsigne] = useState('');
   const [exoState, setExoState] = useState(props.exo);
-  const clickedRef = useRef('');
   const [clicked, setClicked] = useState('');
   const open = Boolean(props.anchorEl);
-
-  console.log('axios', process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exoState.field);
-  axios
-    .get(process.env.REACT_APP_SRVEXO_URL + '/exercices/' + exoState.field)
-    .then((res) => {
-      setConsigne(res.data.exercice.enonce);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  useEffect(() => {
+    setConsigne(props.session?.exercices.filter((exo) => exo.id == exoState.field)[0]?.enonce);
+  }, []);
   console.log('consigne', consigne);
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;
@@ -114,7 +105,7 @@ const PopperDetails = (props) => {
                 <Typography>{exoState === '' ? '' : consigne}</Typography>
               </ListItem>
               {exoState == '' || exerciceAffiche == -1 ? (
-                ''
+                <></>
               ) : (
                 <div
                   style={{
@@ -172,5 +163,6 @@ PopperDetails.propTypes = {
   open: PropTypes.bool,
   exo: PropTypes.any,
   exercices: PropTypes.array,
+  session: PropTypes.object,
 };
 export default PopperDetails;
