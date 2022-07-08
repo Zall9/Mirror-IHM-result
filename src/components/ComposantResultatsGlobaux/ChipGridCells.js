@@ -6,6 +6,7 @@ import { colorGradient } from './utils/colorGradient';
 import { calculateTimeBetween } from './utils/dateParser';
 const ChipGridCells = (props) => {
   let resolue = false;
+  console.log('props', props);
   if (props.exercices !== undefined) {
     props.exercices.aides.forEach((element) => {
       resolue = element.resolue;
@@ -15,22 +16,22 @@ const ChipGridCells = (props) => {
   const ChipMemo = function renderChip(props) {
     return <Chip {...props} sx={cellsStyle(props)} />;
   };
-  const myVar = calculateTimeBetween(
-    props?.exercices?.dateDebut,
+  var boolean = calculateTimeBetween(
+    props?.exercices?.debut,
     props?.exercices?.tempsMoyen,
     props?.exercices?.tentatives[props.exercices?.tentatives.length - 1]?.dateSoumission,
   );
   const cellsStyle = useCallback(
     function (params) {
       if (params.label !== '') {
-        console.log('params', params, 'myVar', myVar);
+        console.log('params', params, 'boolean', boolean);
         let style = {
-          backgroundColor: colorGradient(params.label, myVar),
+          backgroundColor: colorGradient(params.label, boolean),
         };
         return style;
       }
     },
-    [props, myVar],
+    [props, boolean],
   );
   return (
     <>

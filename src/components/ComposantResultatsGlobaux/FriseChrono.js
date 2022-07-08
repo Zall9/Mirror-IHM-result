@@ -98,7 +98,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                   calculateTimeBetween(
                     exo.debut,
                     exo.tempsMoyen,
-                    exo.tentatives[exo.tentatives.length - 1],
+                    exo.tentatives[index - 1]?.dateSoumission,
                   ),
                 ),
               }}
@@ -114,7 +114,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                   calculateTimeBetween(
                     exo.debut,
                     exo.tempsMoyen,
-                    exo.tentatives[exo.tentatives.length - 1],
+                    exo.tentatives[index - 1]?.dateSoumission,
                   ),
                 ),
               }}
@@ -130,7 +130,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                 calculateTimeBetween(
                   exo.debut,
                   exo.tempsMoyen,
-                  exo.tentatives[exo.tentatives.length - 1],
+                  exo.tentatives[index - 1]?.dateSoumission,
                 ),
               ),
             }}
@@ -146,7 +146,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                 calculateTimeBetween(
                   exo.debut,
                   exo.tempsMoyen,
-                  exo.tentatives[exo.tentatives.length - 1],
+                  exo.tentatives[index - 1]?.dateSoumission,
                 ),
               ),
             }}

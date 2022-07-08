@@ -43,17 +43,20 @@ const _dateToTimestamp = (date) => {
  * prend une date de début, un nombre de minutes et une date de dernière soumission, et renvoie vrai si la
  * dernière date est comprise dans le nombre de minutes de la date de début + le temps moyen
  * @param dateStart - la date à laquelle l'utilisateur a commencé l'exo
- * @param tempsMoyen - le temps moyen de l'exo
+ * @param tempsMoyen - le temps moyen de l'exo en secondes
  * @param lastDate - la dernière date à laquelle l'utilisateur a soumis l'exo
  * @returns Une valeur booléenne.
  */
 export const calculateTimeBetween = (dateStart, tempsMoyen, lastDate) => {
-  console.log('DATE3', tempsMoyen);
-  const dateLimit = new Date(dateStart);
-  dateLimit.setMinutes(dateLimit.getMinutes() + tempsMoyen);
-  const dateLimitTimestamp = _dateToTimestamp(dateLimit);
-  const actualDateTimestamp = _dateToTimestamp(lastDate);
-  const diff = dateLimitTimestamp - actualDateTimestamp;
-  console.log('DIFF', diff);
-  return diff >= 0;
+  if (dateStart !== undefined && tempsMoyen !== undefined && lastDate !== undefined) {
+    console.log('dateStart', dateStart);
+    console.log('tempsMoyen', tempsMoyen);
+    console.log('lastDate', lastDate);
+    const DATE1 = _dateToTimestamp(dateStart);
+    const DATE2 = _dateToTimestamp(lastDate);
+    let tmp = DATE1 + tempsMoyen * 1000;
+    console.log('tmp', tmp);
+    return tmp >= DATE2;
+  }
+  return 0;
 };
