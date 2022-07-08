@@ -27,9 +27,9 @@ const _makeRainbow = (interval, colors) => {
 export const colorGradient = (nbTentatives, boolean) => {
   if (nbTentatives > 0) {
     if (boolean) {
-      return _makeRainbow(nbTentatives, ['80c000', 'c8ff00', 'ffdd00']);
+      return _makeRainbow(nbTentatives, ['#00ff11', '80c000', 'yellow']);
     } else {
-      return _makeRainbow(nbTentatives, ['yellow', 'ffdb00', 'red']);
+      return _makeRainbow(nbTentatives, ['yellow', 'orange', 'red']);
     }
   }
   return 'white';

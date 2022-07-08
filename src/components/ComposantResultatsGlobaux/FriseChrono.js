@@ -62,7 +62,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
   const aides = exo.aides;
   const heureDebut = exo.debut;
   const tempsMoyen = exo.tempsMoyen;
-  const tentatives = exo.tentatives;
+  // const tentatives = exo.tentatives; CURRENTLY UNUSED
   const SetClicked = setClicked;
   console.log('EXO', exo);
   let timeline = [

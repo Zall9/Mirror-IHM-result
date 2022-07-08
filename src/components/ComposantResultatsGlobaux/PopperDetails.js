@@ -19,16 +19,19 @@ import { dateParser } from './utils/dateParser';
 const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
   const [consigne, setConsigne] = useState('');
-  const [exoState, setExoState] = useState(props.exo);
+  // const [exoRef, setExoState] = useState(props.exo);
+  const exoRef = useRef(props.exo);
   const [clicked, setClicked] = useState('');
-  const open = Boolean(props.anchorEl);
+  const [open, setOpen] = useState(Boolean(props.anchorEl));
   useEffect(() => {
-    setConsigne(props.session?.exercices.filter((exo) => exo.id == exoState.field)[0]?.enonce);
+    setConsigne(
+      props.session?.exercices.filter((exo) => exo.id == exoRef.current.field)[0]?.enonce,
+    );
   }, []);
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;
   const anchorEl = props.anchorEl;
-  const exerciceAffiche = getExoFromIds(exoState.id, exoState.field, exercices);
+  const exerciceAffiche = getExoFromIds(exoRef.current.id, exoRef.current.field, exercices);
   const nomExo = exerciceAffiche.nomExo;
   const langage = exerciceAffiche.langage;
   const tentatives = exerciceAffiche.tentatives;
@@ -64,7 +67,7 @@ const PopperDetails = (props) => {
       <Popper
         open={open}
         anchorEl={anchorEl}
-        disablePortal={false}
+        disablePortal={true}
         placement={'right'}
         popperOptions={{
           positionFixed: false,
@@ -90,20 +93,22 @@ const PopperDetails = (props) => {
               }}
             >
               <ListItem>
-                <Typography variant="h6">{exoState === '' ? '' : exoState.id}</Typography>
+                <Typography variant="h6">
+                  {exoRef.current === '' ? '' : exoRef.current.id}
+                </Typography>
               </ListItem>
               <List sx={{ display: 'flex' }}>
                 <ListItem>
-                  <Typography>{exoState === '' ? '' : nomExo}</Typography>
+                  <Typography>{exoRef.current === '' ? '' : nomExo}</Typography>
                 </ListItem>
                 <ListItem>
-                  <Typography sx={{ p: 1 }}>{exoState === '' ? '' : difficulte}</Typography>
+                  <Typography sx={{ p: 1 }}>{exoRef.current === '' ? '' : difficulte}</Typography>
                 </ListItem>
               </List>
               <ListItem>
-                <Typography>{exoState === '' ? '' : consigne}</Typography>
+                <Typography>{exoRef.current === '' ? '' : consigne}</Typography>
               </ListItem>
-              {exoState == '' || exerciceAffiche == -1 ? (
+              {exoRef.current == '' || exerciceAffiche == -1 ? (
                 <></>
               ) : (
                 <div
@@ -129,7 +134,7 @@ const PopperDetails = (props) => {
                     width: '99.9%',
                   }}
                 >
-                  {exoState === '' || exerciceAffiche == -1 ? (
+                  {exoRef.current === '' || exerciceAffiche == -1 ? (
                     <></>
                   ) : (
                     tentatives.map((tentative, index) =>

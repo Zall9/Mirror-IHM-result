@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import ToolBar from './ToolBar';
 import { useSelector } from 'react-redux';
@@ -14,92 +14,64 @@ const ComposantResultatsGlobaux = () => {
   const sessions = useSelector(getSessions);
   console.log('sessions', sessions);
   let exoRef = useRef({});
-
   const [SeanceRef, SetSeanceRef] = useState('');
-  const [anchorEl, setAnchorEl] = useState('');
+  const [anchorEl, setAnchorEl] = useState();
   const [selected, setSelected] = useState('tous');
   const [selectedSession, setSelectedSession] = useState('');
   const [selectedSeance, setSelectedSeance] = useState('');
 
   //STYLES
-  const containerStyle = () => {
-    return {
-      backgroundColor: '',
-      position: 'fixed',
-      top: '1vh',
-      bottom: '1vh',
-      right: '0',
-      width: '3vh',
-    };
+  const containerStyle = {
+    backgroundColor: '',
+    position: 'fixed',
+    top: '1vh',
+    bottom: '1vh',
+    right: '0',
+    width: '3vh',
   };
+
   //Initialisations
   let CURRENTSESSION = sessions.find((s) => s.id === selectedSession);
 
   // MEMOIZED Datas
 
+  const generateRows = useCallback(
+    (rows_etu, exercice, ok) => {
+      rows_etu.forEach((row_etu) => {
+        if (row_etu.idEtu === exercice.idEtu) {
+          ok = true;
+          row_etu[exercice.idExo] = exercice.tentatives.length;
+        }
+      });
+      if (!ok) {
+        let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
+        row_etu[exercice.idExo] = exercice.tentatives.length;
+        rows_etu.push(row_etu);
+      }
+    },
+    [exercices, SeanceRef, selected],
+  );
   const rows = useMemo(() => {
     const rows_etu = [];
     Object.values(exercices).forEach((exercice) => {
       let ok = false;
-      //seance.groupe + ' - ' + seance.encadrant
       if (exercice.idSeance === SeanceRef) {
         if (selected === 'tous') {
-          rows_etu.forEach((row_etu) => {
-            if (row_etu.idEtu === exercice.idEtu) {
-              ok = true;
-              row_etu[exercice.idExo] = exercice.tentatives.length;
-            }
-          });
-          if (!ok) {
-            let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
-            row_etu[exercice.idExo] = exercice.tentatives.length;
-            rows_etu.push(row_etu);
-          }
+          generateRows(rows_etu, exercice, ok);
         }
         if (selected === 'finis') {
           if (exercice.estFini) {
-            rows_etu.forEach((row_etu) => {
-              if (row_etu.idEtu === exercice.idEtu) {
-                ok = true;
-                row_etu[exercice.idExo] = exercice.tentatives.length;
-              }
-            });
-            if (!ok) {
-              let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
-              row_etu[exercice.idExo] = exercice.tentatives.length;
-              rows_etu.push(row_etu);
-            }
+            generateRows(rows_etu, exercice, ok);
           }
         }
         if (selected === 'en cours') {
           if (!exercice.estFini) {
-            rows_etu.forEach((row_etu) => {
-              if (row_etu.idEtu === exercice.idEtu) {
-                ok = true;
-                row_etu[exercice.idExo] = exercice.tentatives.length;
-              }
-            });
-            if (!ok) {
-              let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
-              row_etu[exercice.idExo] = exercice.tentatives.length;
-              rows_etu.push(row_etu);
-            }
+            generateRows(rows_etu, exercice, ok);
           }
         }
         if (selected === 'aides') {
-          console.log('myexo', exercice);
           if (exercice.aides.length > 0 && !exercice.estFini) {
-            rows_etu.forEach((row_etu) => {
-              if (row_etu.idEtu === exercice.idEtu) {
-                ok = true;
-                row_etu[exercice.idExo] = exercice.tentatives.length;
-              }
-            });
-            if (!ok) {
-              let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
-              row_etu[exercice.idExo] = exercice.tentatives.length;
-              rows_etu.push(row_etu);
-            }
+            generateRows(rows_etu, exercice, ok);
           }
         }
       }
@@ -134,7 +106,6 @@ const ComposantResultatsGlobaux = () => {
   const columns = useMemo(() => {
     if (CURRENTSESSION !== undefined && CURRENTSESSION.exercices !== undefined) {
       for (const exo of CURRENTSESSION.exercices) {
-        // console.log('exo', exo);
         if (selected === 'aides') {
           columns_aides.push({
             field: exo.id,
@@ -152,7 +123,6 @@ const ComposantResultatsGlobaux = () => {
                         params.field == exo.id &&
                         e.idEtu === params.row.idEtu &&
                         exo.aides.length > 0,
-                      // exo.aides.length > 0,
                     )}
                   params={params}
                   variant="filled"
@@ -329,14 +299,15 @@ const ComposantResultatsGlobaux = () => {
         }}
         rows={selectedSession !== '' ? rows : []}
         columns={selectedSession !== '' ? columns : []}
+        loading={rows.length <= 1}
         autoHeight={true}
         autoWidth={true}
         headerHeight={36}
         density={'compact'}
         onCellClick={handlePopoverClick}
       />
-      <Box id="container" sx={containerStyle}>
-        {anchorEl !== null ? (
+      <div id="container" style={containerStyle}>
+        {
           <PopperDetailsMemo
             exercices={Object.values(exercices)}
             session={CURRENTSESSION}
@@ -344,10 +315,8 @@ const ComposantResultatsGlobaux = () => {
             anchorEl={anchorEl}
             handlePopoverClose={handlePopoverClick}
           />
-        ) : (
-          <></>
-        )}
-      </Box>
+        }
+      </div>
     </Box>
   );
   PopperDetailsMemo.propTypes = {
