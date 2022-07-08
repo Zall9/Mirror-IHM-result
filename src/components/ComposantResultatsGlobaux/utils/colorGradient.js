@@ -18,6 +18,12 @@ const _makeRainbow = (interval, colors) => {
   }
   return selected;
 };
+/**
+ * prends un nombre de tentatives et un booléen, et renvoie une couleur
+ * @param nbTentatives - le nombre de tentatives effectuées par l'utilisateur
+ * @param boolean - si vrai renvoie une couleur sinon une autre.
+ * @returns Une chaîne d'une couleur.
+ */
 export const colorGradient = (nbTentatives, boolean) => {
   if (nbTentatives > 0) {
     if (boolean) {
