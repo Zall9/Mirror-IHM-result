@@ -22,7 +22,7 @@ const PopperDetails = (props) => {
   // const [exoRef, setExoState] = useState(props.exo);
   const exoRef = useRef(props.exo);
   const [clicked, setClicked] = useState('');
-  const [open, setOpen] = useState(Boolean(props.anchorEl));
+  const [open, setOpen] = useState(true);
   useEffect(() => {
     setConsigne(
       props.session?.exercices.filter((exo) => exo.id == exoRef.current.field)[0]?.enonce,
@@ -169,4 +169,4 @@ PopperDetails.propTypes = {
   exercices: PropTypes.array,
   session: PropTypes.object,
 };
-export default React.memo(PopperDetails);
+export default PopperDetails;
