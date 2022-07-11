@@ -109,7 +109,7 @@ const PopperDetails = (props) => {
                 <Typography>{exoRef.current === '' ? '' : consigne}</Typography>
               </ListItem>
               {exoRef.current == '' || exerciceAffiche == -1 ? (
-                <></>
+                <>{console.log('bolz', exoRef.current == '' || exerciceAffiche == -1)}</>
               ) : (
                 <div
                   style={{
@@ -138,9 +138,7 @@ const PopperDetails = (props) => {
                     <></>
                   ) : (
                     tentatives.map((tentative, index) =>
-                      tentative.id == clicked && tentatives.length - 1 > index ? (
-                        renderTentatives(tentative, langage)
-                      ) : (
+                      !(tentative.id == clicked && tentatives.length - 1 > index) ? (
                         <>
                           {index === tentatives.length - 1 ? (
                             renderTentatives(tentative, langage)
@@ -148,6 +146,8 @@ const PopperDetails = (props) => {
                             <></>
                           )}
                         </>
+                      ) : (
+                        renderTentatives(tentative, langage)
                       ),
                     )
                   )}

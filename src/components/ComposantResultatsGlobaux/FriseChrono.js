@@ -52,7 +52,7 @@ const useStyles = makeStyles({
 /**
  * @param {object} props: {exercice, callback setClicked}
  *
- * prend un objet d'exercice comme paramètre et renvoie un composant de chronologie qui affiche
+ * prend un objet d'exercice comme paramètre et renvoie un composant de timeline qui affiche
  * l'heure de début de l'exercice, le temps moyen nécessaire pour terminer l'exercice et les heures
  * auxquelles l'élève a demandé de l'aide et validé l'exercice.
  * @returns Un composant

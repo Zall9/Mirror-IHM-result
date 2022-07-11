@@ -29,7 +29,6 @@ const ComposantResultatsGlobaux = () => {
     right: '0',
     width: '3vh',
   };
-
   //Initialisations
   let CURRENTSESSION = sessions.find((s) => s.id === selectedSession);
 
@@ -112,6 +111,7 @@ const ComposantResultatsGlobaux = () => {
             align: 'center',
             flex: 1,
             maxWidth: 75,
+            hideSortIcons: true,
             headerName: exo.nom,
             renderCell: (params) => {
               return (
@@ -140,6 +140,8 @@ const ComposantResultatsGlobaux = () => {
             headerName: '' + exo.nom,
             align: 'center',
             flex: 1,
+            hideSortIcons: true,
+
             maxWidth: 75,
 
             renderCell: (params) => {
@@ -168,6 +170,8 @@ const ComposantResultatsGlobaux = () => {
             headerName: '' + exo.nom,
             align: 'center',
             flex: 1,
+            hideSortIcons: true,
+
             maxWidth: 75,
 
             renderCell: (params) => {
@@ -198,6 +202,8 @@ const ComposantResultatsGlobaux = () => {
             headerName: '' + exo.nom,
             align: 'center',
             flex: 1,
+            hideSortIcons: true,
+
             maxWidth: 75,
             renderCell: (params) => {
               return (
@@ -247,7 +253,7 @@ const ComposantResultatsGlobaux = () => {
 
   const handlePopoverClick = (params, event) => {
     console.log('paramsCLICK', event);
-    if (event !== undefined) {
+    if (event !== undefined && event.currentTarget !== undefined) {
       exoRef.current = params;
       setAnchorEl(document.getElementById('container'));
     } else {
@@ -267,6 +273,10 @@ const ComposantResultatsGlobaux = () => {
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <DataGrid
         disableColumnMenu={true}
+        disableColumnFilter={true}
+        disableToolPanel={true}
+        disableSelectionOnClick={true}
+        disableColumnSelector={true}
         rowHeight={36}
         sx={{ display: 'flex', flexDirection: 'column-reverse' }}
         localeText={{

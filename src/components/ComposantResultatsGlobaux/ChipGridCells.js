@@ -6,7 +6,6 @@ import { colorGradient } from './utils/colorGradient';
 import { calculateTimeBetween } from './utils/dateParser';
 const ChipGridCells = (props) => {
   let resolue = false;
-  console.log('props', props);
   if (props.exercices !== undefined) {
     props.exercices.aides.forEach((element) => {
       resolue = element.resolue;
