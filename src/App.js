@@ -25,7 +25,7 @@ const initExercices = (dispatch) => {
 };
 
 const initSessions = (dispatch) => {
-  axios.get(process.env.REACT_APP_SRVEXO_URL + '/sessions').then((res) => {
+  axios.get(process.env.REACT_APP_SRVEXO_URL + '/sessions?populate=true').then((res) => {
     dispatch(setSession(res.data.sessions));
     initSocketConnection(dispatch);
   });

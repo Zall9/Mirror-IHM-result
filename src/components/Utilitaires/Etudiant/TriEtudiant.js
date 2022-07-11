@@ -1,7 +1,9 @@
 export function triEtudiants(listeEtudiantsExos, methode, reverseTri, exoValides) {
   switch (methode) {
     case 'alphabetique':
+      console.log('avant tri', listeEtudiantsExos);
       listeEtudiantsExos.sort(triIdAlphabetique);
+      console.log('tri alphabetique', listeEtudiantsExos);
       break;
     case 'nbExercice':
       listeEtudiantsExos.sort(compareNbExercice);
@@ -189,6 +191,7 @@ export function triParTempsDepuisDernierExo(exosEtu1, exosEtu2) {
  */
 export function triIdAlphabetique(exosEtu1, exosEtu2) {
   if (exosEtu1.idEtu < exosEtu2.idEtu) {
+    console.log('__', exosEtu1.idEtu, exosEtu2.idEtu);
     return -1;
   } else if (exosEtu1.idEtu > exosEtu2.idEtu) {
     return 1;
@@ -197,25 +200,25 @@ export function triIdAlphabetique(exosEtu1, exosEtu2) {
   }
 }
 
-// fonction de tri en fonction du nombre d'exercice réussi et leur difficulté
-// un exercice de difficulté réussi 5 rapporte 5 points
+/**
+ * prend deux liste d'exercices d'étudiants et renvoie un nombre qui représente la
+ * différence entre la difficulté des exercices que les deux objets ont terminés
+ * @param exosEtu1 - les exercices du premier élève
+ * @param exosEtu2 - les exercices du deuxième élève
+ * @returns La différence entre les notes des deux élèves.
+ */
 export function triParDifficulte(exosEtu1, exosEtu2) {
   let pointsEtu1 = 0;
   let pointsEtu2 = 0;
-
   const listeExoEtu1 = exosEtu1.listeExos;
   const listeExoEtu2 = exosEtu2.listeExos;
-
   listeExoEtu1.map((exo) => {
     if (exo.estFini) {
-      // ajouter sa difficulté au score
       pointsEtu1 += exo.difficulte;
     }
   });
-
   listeExoEtu2.map((exo) => {
     if (exo.estFini) {
-      // ajouter sa difficulté au score
       pointsEtu2 += exo.difficulte;
     }
   });

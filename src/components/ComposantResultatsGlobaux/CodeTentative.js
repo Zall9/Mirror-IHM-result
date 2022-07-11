@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import Prism from 'prismjs';
-// import './style.css';
 import PropTypes from 'prop-types';
 import 'prismjs/themes/prism-okaidia.css';
 import 'prismjs/components/prism-css';

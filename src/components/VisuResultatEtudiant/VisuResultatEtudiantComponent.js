@@ -7,9 +7,7 @@ import Divider from '@mui/material/Divider';
 import Etudiant from './Etudiant';
 import IconButton from '@mui/material/IconButton';
 import CompareArrows from '@mui/icons-material/CompareArrows';
-
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-
 import Box from '@mui/material/Box';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import * as triUtils from '../Utilitaires/Etudiant/TriEtudiant';

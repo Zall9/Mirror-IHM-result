@@ -16,7 +16,6 @@ export const exercicesSlice = createSlice({
     },
     addTentative: (state, respTentative) => {
       let exercice = state.exercices[respTentative.payload.idExoEtu];
-      console.log(state);
       // delete infos en double
       console.log('AddTentative !', exercice);
       console.log('Payload AddTentative', respTentative.payload);
@@ -26,28 +25,20 @@ export const exercicesSlice = createSlice({
           exercice.estFini = true;
         }
       } else {
-        throw Error('Exercice not found');
+        throw Error('Exercice not found for Tentative!');
       }
     },
     addAide: (state, respAide) => {
-      if (state.exercices.length > 0) {
-        let exercice = state.exercices[respAide.payload.idExoEtu];
-
-        if (exercice) {
-          // Si l'aide existe déjà, on la met à jour
-          let exist = false;
-          exercice.aides = exercice.aides.map((aide) => {
-            if (aide.id == respAide.payload.id) {
-              exist = true;
-              return respAide.payload;
-            } else {
-              return aide;
-            }
-          });
-          if (!exist) exercice.aides.push(respAide.payload);
-        } else {
-          throw Error('Exercice not found');
+      let exercice = state.exercices[respAide.payload.idExoEtu];
+      console.log('AddAide !', exercice);
+      console.log('Payload AddAide', respAide.payload);
+      if (exercice) {
+        exercice.aides.push(respAide.payload);
+        if (respAide.payload.resolue) {
+          exercice.aides.find((aide) => aide.id === respAide.payload.id).resolue = true;
         }
+      } else {
+        throw Error('Exercice not found for HelpRequest!');
       }
     },
   },
@@ -56,6 +47,7 @@ export const exercicesSlice = createSlice({
 export const getExercices = (state) => {
   return state.exercices.exercices;
 };
+
 // Action creators are generated for each case reducer function
 export const { setExercices, addExercice, addTentative, addAide } = exercicesSlice.actions;
 

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   ClickAwayListener,
+  Divider,
   IconButton,
   List,
   ListItem,
   Popper,
-  Slide,
   Typography,
 } from '@mui/material';
 import FriseChrono from './FriseChrono';
@@ -15,30 +15,59 @@ import { getExoFromIds } from './utils/getExoFromIds';
 import CodeTentative from './CodeTentative';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { dateParser } from './utils/dateParser';
+
 const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
-  const open = Boolean(props.anchorEl);
-  let exo = props.exo;
+  const [consigne, setConsigne] = useState('');
+  // const [exoRef, setExoState] = useState(props.exo);
+  const exoRef = useRef(props.exo);
+  const [clicked, setClicked] = useState('');
+  const [open, setOpen] = useState(Boolean(props.anchorEl));
+  useEffect(() => {
+    setConsigne(
+      props.session?.exercices.filter((exo) => exo.id == exoRef.current.field)[0]?.enonce,
+    );
+  }, []);
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;
-
   const anchorEl = props.anchorEl;
-  const exerciceAffiche = getExoFromIds(
-    exo.ownerElement.parentElement.dataset.id,
-    exo.nodeValue,
-    exercices,
-  );
+  const exerciceAffiche = getExoFromIds(exoRef.current.id, exoRef.current.field, exercices);
   const nomExo = exerciceAffiche.nomExo;
   const langage = exerciceAffiche.langage;
   const tentatives = exerciceAffiche.tentatives;
   const difficulte = exerciceAffiche.difficulte;
+
+  const renderTentatives = (tentative, langage) => {
+    return (
+      <div id={tentative.id} key={tentative.id}>
+        <ListItem key={tentative.id + 'dateSoumission'}>
+          <Typography>{dateParser(tentative.dateSoumission)}</Typography>
+          <Typography>{':'}&nbsp;</Typography>
+          <Typography key={tentative.id + 'Logs'}>{tentative.logErreurs}</Typography>
+        </ListItem>
+        {langage !== '' && langage !== undefined ? (
+          <div id={tentative.id + '-code'}>
+            <CodeTentative
+              code={tentative.reponseEtudiant}
+              key={tentative.id + '-code'}
+              language={langage}
+            />
+            {clicked == tentative.id + '-code' ? (
+              <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
+            ) : null}
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    );
+  };
   return (
     <ClickAwayListener onClickAway={handlePopoverClose}>
       <Popper
         open={open}
-        onClickAway={handlePopoverClose}
         anchorEl={anchorEl}
-        disablePortal={false}
+        disablePortal={true}
         placement={'right'}
         popperOptions={{
           positionFixed: false,
@@ -49,81 +78,82 @@ const PopperDetails = (props) => {
             style={{
               border: '3px solid black',
               backgroundColor: 'white',
-              width: 'max-content',
+              width: '25vw',
               position: 'relative',
             }}
           >
-            {console.log('langage', langage)}
             <IconButton onClick={handlePopoverClose}>
               <CancelIcon></CancelIcon>
             </IconButton>
-            {exo == '' || exerciceAffiche == -1 ? (
-              ''
-            ) : (
-              <ListItem
-                sx={{
-                  display: 'flex',
-                  flex_wrap: 'nowrap',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  margin: '0 auto',
-                  top: '0',
-
-                  width: 90 * tentatives.length + 70,
-                  height: '5vh',
-                  // paddingTop: 1 + exerciceAffiche.tentatives.length + 'em',
-                  // paddingRight: 3 - exerciceAffiche.tentatives.length + 'em',
-                  // paddingLeft: 9 - exerciceAffiche.tentatives.length + 'em',
-                }}
-              >
-                <FriseChrono exo={exerciceAffiche}></FriseChrono>
-              </ListItem>
-            )}
-            <ul sx={{ width: '100%', height: '100%' }}>
+            <Box
+              sx={{
+                width: '100%',
+                height: '100%',
+                justifyContent: 'center',
+              }}
+            >
               <ListItem>
                 <Typography variant="h6">
-                  {exo === '' ? '' : exo.ownerElement.parentElement.dataset.id}
+                  {exoRef.current === '' ? '' : exoRef.current.id}
                 </Typography>
               </ListItem>
               <List sx={{ display: 'flex' }}>
                 <ListItem>
-                  <Typography>{exo === '' ? '' : nomExo}</Typography>
+                  <Typography>{exoRef.current === '' ? '' : nomExo}</Typography>
                 </ListItem>
                 <ListItem>
-                  <Typography sx={{ p: 1 }}>{exo === '' ? '' : difficulte}</Typography>
+                  <Typography sx={{ p: 1 }}>{exoRef.current === '' ? '' : difficulte}</Typography>
                 </ListItem>
               </List>
+              <ListItem>
+                <Typography>{exoRef.current === '' ? '' : consigne}</Typography>
+              </ListItem>
+              {exoRef.current == '' || exerciceAffiche == -1 ? (
+                <>{console.log('bolz', exoRef.current == '' || exerciceAffiche == -1)}</>
+              ) : (
+                <div
+                  style={{
+                    overflowY: 'hidden',
+                    overflowX: 'scroll',
+                    height: '100px',
+                  }}
+                >
+                  <FriseChrono
+                    exo={exerciceAffiche}
+                    clicked={clicked}
+                    setClicked={setClicked}
+                  ></FriseChrono>
+                </div>
+              )}
               <List>
-                <ListItem>
-                  <Typography variant="h6">Tentatives:</Typography>
-                </ListItem>
-                <List sx={{ display: 'inline-block', overflow: 'auto', height: '50vh' }}>
-                  {exo === '' || exerciceAffiche == -1
-                    ? ''
-                    : tentatives.map((tentative) => (
-                        <Box key={tentative.id + 'Box'}>
-                          <ListItem key={tentative.id + 'dateSoumission'}>
-                            {dateParser(tentative.dateSoumission)}
-                          </ListItem>
-                          <ListItem key={tentative.id + 'Logs'}>
-                            <Typography key={tentative.id}>{tentative.logErreurs}</Typography>
-                          </ListItem>
-                          {langage !== '' && langage !== undefined ? (
-                            <div id={tentative.id + 'code'}>
-                              <CodeTentative
-                                code={tentative.reponseEtudiant}
-                                key={tentative.id + 'code'}
-                                language={langage}
-                              />
-                            </div>
+                <List
+                  sx={{
+                    display: 'inline-block',
+                    overflow: 'auto',
+                    height: 'auto',
+                    width: '99.9%',
+                  }}
+                >
+                  {exoRef.current === '' || exerciceAffiche == -1 ? (
+                    <></>
+                  ) : (
+                    tentatives.map((tentative, index) =>
+                      !(tentative.id == clicked && tentatives.length - 1 > index) ? (
+                        <>
+                          {index === tentatives.length - 1 ? (
+                            renderTentatives(tentative, langage)
                           ) : (
-                            ''
+                            <></>
                           )}
-                        </Box>
-                      ))}
+                        </>
+                      ) : (
+                        renderTentatives(tentative, langage)
+                      ),
+                    )
+                  )}
                 </List>
               </List>
-            </ul>
+            </Box>
           </div>
         }
       </Popper>
@@ -137,5 +167,6 @@ PopperDetails.propTypes = {
   open: PropTypes.bool,
   exo: PropTypes.any,
   exercices: PropTypes.array,
+  session: PropTypes.object,
 };
-export default PopperDetails;
+export default React.memo(PopperDetails);
