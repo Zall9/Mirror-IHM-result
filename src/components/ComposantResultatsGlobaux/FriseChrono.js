@@ -58,6 +58,10 @@ const useStyles = makeStyles({
  * auxquelles l'élève a demandé de l'aide et validé l'exercice.
  * @returns Un composant
  */
+function areEqual(content, nextContent) {
+  console.log('areEqual', 'cntnt:', content, 'nxtcntn', nextContent);
+  return content === nextContent;
+}
 const FriseChrono = ({ exo, clicked, setClicked }) => {
   const classes = useStyles();
   const aides = exo.aides;
@@ -81,7 +85,6 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
         icon: () => <AccessTimeFilledIcon className={classes.timelineIcon} />,
       },
     ];
-
     exo.tentatives.map((tentative) => {
       _timeline.push({
         date: tentative.dateSoumission,
@@ -165,7 +168,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
       });
     });
     return _timeline;
-  }, []);
+  }, [clicked]);
 
   timeline.sort((a, b) => {
     return new Date(a.date) - new Date(b.date);
@@ -174,38 +177,46 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
   if (timeline[timeline.length - 1].type === 'moyen') {
     timeline.pop();
   }
-  const content = (item, index) => {
-    return (
-      <TimelineItem
-        key={item.id + 'TimeLineItem' + index}
-        onClick={(event, params) => {
-          SetClicked(item.id);
-        }}
-      >
-        <TimelineSeparator>
-          {item.icon(item, index, clicked === item.id)}
-          {index === timeline.length - 1 ? '' : <TimelineConnector />}
-        </TimelineSeparator>
-        <TimelineContent className={classes.timelineContentContainer}>
-          <Paper elevation={0} className={classes.timelineContentPair}>
-            <Typography>
-              {index === 0 ? <Typography>Début</Typography> : calculateTime(heureDebut, item.date)}
-            </Typography>
-          </Paper>
-          <Paper elevation={0} className={classes.timelineContentImpair}>
-            <Typography>{index === 0 ? dateParser(heureDebut) : dateParser(item.date)}</Typography>
-          </Paper>
-        </TimelineContent>
-      </TimelineItem>
-    );
-  };
+  const content = useCallback(
+    (item, index) => {
+      return (
+        <TimelineItem
+          key={item?.id + 'TimeLineItem' + index}
+          onClick={(event, params) => {
+            SetClicked(item?.id);
+          }}
+        >
+          <TimelineSeparator>
+            {item?.icon(item, index, clicked === item?.id)}
+            {index === timeline?.length - 1 ? '' : <TimelineConnector />}
+          </TimelineSeparator>
+          <TimelineContent className={classes?.timelineContentContainer}>
+            <Paper elevation={0} className={classes?.timelineContentPair}>
+              <Typography>
+                {index === 0 ? (
+                  <Typography>Début</Typography>
+                ) : (
+                  calculateTime(heureDebut, item?.date)
+                )}
+              </Typography>
+            </Paper>
+            <Paper elevation={0} className={classes?.timelineContentImpair}>
+              <Typography>
+                {index === 0 ? dateParser(heureDebut) : dateParser(item?.date)}
+              </Typography>
+            </Paper>
+          </TimelineContent>
+        </TimelineItem>
+      );
+    },
+    [clicked],
+  );
   //memoize content
-  const MemoizedContent = useCallback(content, [content]);
   return (
     <>
       <Timeline align="alternate" className={classes.timeline} key={'TimeLine-Tentatives'}>
-        {timeline.map((item, index) => {
-          return MemoizedContent(item, index);
+        {timeline.map((timelineItem, index) => {
+          return content(timelineItem, index);
         })}
       </Timeline>
     </>
@@ -217,4 +228,4 @@ FriseChrono.propTypes = {
   clicked: PropTypes.any,
   setClicked: PropTypes.any,
 };
-export default React.memo(FriseChrono);
+export default React.memo(FriseChrono, areEqual);
