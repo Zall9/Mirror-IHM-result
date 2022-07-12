@@ -30,6 +30,7 @@ const ComposantResultatsGlobaux = () => {
     backgroundColor: '',
     position: 'fixed',
     top: '1vh',
+    right: '0',
     bottom: '1vh',
     width: '3vh',
   };

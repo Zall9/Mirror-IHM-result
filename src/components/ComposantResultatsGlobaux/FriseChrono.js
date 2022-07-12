@@ -97,7 +97,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
           !_clicked ? (
             item.validationExercice == true ? (
               <CheckIcon
-                className={classes._timelineIcon}
+                className={classes.timelineIcon}
                 key={item.id + 'Icon' + index}
                 sx={{
                   color: colorGradient(

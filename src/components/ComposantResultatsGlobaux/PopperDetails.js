@@ -37,7 +37,6 @@ const PopperDetails = (props) => {
   const langage = exerciceAffiche.langage;
   const tentatives = exerciceAffiche.tentatives;
   const difficulte = exerciceAffiche.difficulte;
-  console.log('popperpros', props);
   const renderTentatives = (tentative, langage) => {
     return (
       <div id={tentative.id} key={tentative.id}>
@@ -133,7 +132,7 @@ const PopperDetails = (props) => {
                     width: '99.9%',
                   }}
                 >
-                  {!(exoRef.current === '' || exerciceAffiche == -1) ? (
+                  {exoRef.current === '' || exerciceAffiche == -1 ? (
                     <></>
                   ) : (
                     tentatives?.map((tentative, index) =>
