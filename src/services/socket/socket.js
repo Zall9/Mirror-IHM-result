@@ -1,31 +1,22 @@
 import { io } from 'socket.io-client';
-import { addExercice, addTentative } from '@stores/Exercices/exercicesSlice';
-import { addSession } from '@stores/Sessions/sessionSlice';
-import axios from 'axios';
+import { addExercice, addTentative, addAide } from '@stores/Exercices/exercicesSlice';
 
 export const initSocketConnection = (dispatch, sessions) => {
   const socket = io(process.env.REACT_APP_SRVRESULT_URL, {
-    path: process.env.REACT_APP_SRVRESULT_SUBFOLDER,
+    path: process.env.REACT_APP_SRVRESULT_SOCKETIO_SUBFOLDER,
   });
 
   socket.on('exercices', ({ etudiantCommenceExo }) => {
+    console.log('socket:Etudiant Commence', etudiantCommenceExo);
     dispatch(addExercice(etudiantCommenceExo));
-    var sessionExist = sessions.find((session) => session.id === etudiantCommenceExo.idSession);
-    if (!sessionExist) {
-      axios
-        .get(process.env.REACT_APP_SRVEXO_URL + '/sessions/' + etudiantCommenceExo.idSession)
-        .then((res) => {
-          dispatch(addSession(res.data.session));
-        });
-    }
   });
 
   socket.on('tentatives', ({ etudiantFaitNouvelleTentative }) => {
+    console.log('socket:Etudiant Fait une nouvelle tentative', etudiantFaitNouvelleTentative);
     dispatch(addTentative(etudiantFaitNouvelleTentative));
   });
 
   socket.on('aides', ({ etudiantDemandeAide }) => {
-    console.log(etudiantDemandeAide);
     dispatch(addAide(etudiantDemandeAide));
   });
 };

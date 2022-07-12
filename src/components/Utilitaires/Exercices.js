@@ -6,7 +6,9 @@
  */
 export function recupereExerciceCourantEtudiant(exercices, idEtudiant) {
   // On récupère les exercices de l'étudiant
-  const exercicesEtudiant = exercices.filter((exercice) => exercice.idEtu === idEtudiant);
+  const exercicesEtudiant = Object.values(exercices).filter(
+    (exercice) => exercice.idEtu === idEtudiant,
+  );
 
   // parcourir les exercices de l'étudiant et garder le temps mini si il est fini
   let derniereSoumission = 0;
@@ -28,5 +30,5 @@ export function recupereExerciceCourantEtudiant(exercices, idEtudiant) {
           : exo.tentatives[exo.tentatives.length - 1].dateSoumission;
     }
   });
-  return exercices.find((exo) => exo.idExo === idExo);
+  return Object.values(exercices).find((exo) => exo.idExo === idExo);
 }
