@@ -27,6 +27,7 @@ const PopperDetails = (props) => {
     setConsigne(
       props.session?.exercices.filter((exo) => exo.id == exoRef.current.field)[0]?.enonce,
     );
+    console.log('cons', consigne);
   }, []);
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;
@@ -36,7 +37,7 @@ const PopperDetails = (props) => {
   const langage = exerciceAffiche.langage;
   const tentatives = exerciceAffiche.tentatives;
   const difficulte = exerciceAffiche.difficulte;
-
+  console.log('popperpros', props);
   const renderTentatives = (tentative, langage) => {
     return (
       <div id={tentative.id} key={tentative.id}>
@@ -65,12 +66,12 @@ const PopperDetails = (props) => {
   return (
     <ClickAwayListener onClickAway={handlePopoverClose}>
       <Popper
-        open={open}
+        open={true}
         anchorEl={anchorEl}
-        disablePortal={true}
+        disablePortal={false}
         placement={'right'}
         popperOptions={{
-          positionFixed: false,
+          positionFixed: true,
         }}
       >
         {
@@ -93,23 +94,21 @@ const PopperDetails = (props) => {
               }}
             >
               <ListItem>
-                <Typography variant="h6">
-                  {exoRef.current === '' ? '' : exoRef.current.id}
-                </Typography>
+                <Typography variant="h6">{exoRef.current.id}</Typography>
               </ListItem>
               <List sx={{ display: 'flex' }}>
                 <ListItem>
-                  <Typography>{exoRef.current === '' ? '' : nomExo}</Typography>
+                  <Typography>{nomExo}</Typography>
                 </ListItem>
                 <ListItem>
-                  <Typography sx={{ p: 1 }}>{exoRef.current === '' ? '' : difficulte}</Typography>
+                  <Typography sx={{ p: 1 }}>{difficulte}</Typography>
                 </ListItem>
               </List>
               <ListItem>
-                <Typography>{exoRef.current === '' ? '' : consigne}</Typography>
+                <Typography>{consigne}</Typography>
               </ListItem>
-              {exoRef.current == '' || exerciceAffiche == -1 ? (
-                <>{console.log('bolz', exoRef.current == '' || exerciceAffiche == -1)}</>
+              {exerciceAffiche == -1 ? (
+                <></>
               ) : (
                 <div
                   style={{
@@ -134,10 +133,10 @@ const PopperDetails = (props) => {
                     width: '99.9%',
                   }}
                 >
-                  {exoRef.current === '' || exerciceAffiche == -1 ? (
+                  {!(exoRef.current === '' || exerciceAffiche == -1) ? (
                     <></>
                   ) : (
-                    tentatives.map((tentative, index) =>
+                    tentatives?.map((tentative, index) =>
                       !(tentative.id == clicked && tentatives.length - 1 > index) ? (
                         <>
                           {index === tentatives.length - 1 ? (
@@ -169,4 +168,4 @@ PopperDetails.propTypes = {
   exercices: PropTypes.array,
   session: PropTypes.object,
 };
-export default PopperDetails;
+export default React.memo(PopperDetails);

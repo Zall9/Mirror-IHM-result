@@ -8,6 +8,11 @@ import { Box } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCells from './ChipGridCells';
+
+const areEqualPoppers = (prevProps, nextProps) => {
+  console.log('areEqualPoppers', prevProps, nextProps);
+  return prevProps.exercices === nextProps.exercices;
+};
 const ComposantResultatsGlobaux = () => {
   // HOOKS & STATES
   const exercices = useSelector(getExercices);
@@ -26,7 +31,6 @@ const ComposantResultatsGlobaux = () => {
     position: 'fixed',
     top: '1vh',
     bottom: '1vh',
-    right: '0',
     width: '3vh',
   };
   //Initialisations
@@ -234,17 +238,6 @@ const ComposantResultatsGlobaux = () => {
     return [];
   }, [exercices, sessions, CURRENTSESSION, selectedSeance, SeanceRef]);
   //MEMOIZED COMPONENTS
-  const PopperDetailsMemo = React.memo(function renderPoppers(props) {
-    return (
-      <PopperDetails
-        exercices={props.exercices}
-        session={CURRENTSESSION}
-        exo={props.exo === '' ? '' : props.exo}
-        anchorEl={props.anchorEl}
-        handlePopoverClose={props.handlePopoverClose}
-      />
-    );
-  });
 
   //replace useState anchorEL and setAnchorEl with useReducer
   //@TODO : anchorEL to implement without useState
@@ -257,9 +250,7 @@ const ComposantResultatsGlobaux = () => {
       exoRef.current = params;
       setAnchorEl(document.getElementById('container'));
     } else {
-      console.log('else', params);
       if (params.defaultMuiPrevented == false && params.target.nodeName !== 'HTML') {
-        console.log('else', 'true !');
         setAnchorEl(null);
         setAnchorEl(document.getElementById('container'));
       } else {
@@ -316,17 +307,22 @@ const ComposantResultatsGlobaux = () => {
         density={'compact'}
         onCellClick={handlePopoverClick}
       />
-      <div id="container" style={containerStyle}>
-        {
-          <PopperDetailsMemo
-            exercices={Object.values(exercices)}
-            session={CURRENTSESSION}
-            exo={exoRef.current}
-            anchorEl={anchorEl}
-            handlePopoverClose={handlePopoverClick}
-          />
-        }
-      </div>
+      <div id="container" style={containerStyle}></div>
+      {
+        <>
+          {anchorEl != null ? (
+            <PopperDetails
+              exercices={Object.values(exercices)}
+              session={CURRENTSESSION}
+              exo={exoRef.current}
+              anchorEl={anchorEl}
+              handlePopoverClose={handlePopoverClick}
+            />
+          ) : (
+            <></>
+          )}
+        </>
+      }
     </Box>
   );
   PopperDetailsMemo.propTypes = {
@@ -348,4 +344,4 @@ const ComposantResultatsGlobaux = () => {
     backgroundColor: PropTypes.any,
   };
 };
-export default React.memo(ComposantResultatsGlobaux);
+export default ComposantResultatsGlobaux;

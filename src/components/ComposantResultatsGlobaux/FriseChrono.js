@@ -60,7 +60,10 @@ const useStyles = makeStyles({
  */
 function areEqual(content, nextContent) {
   console.log('areEqual', 'cntnt:', content, 'nxtcntn', nextContent);
-  return content === nextContent;
+  return (
+    content.exo.tentatives.length == nextContent.exo.tentatives.length &&
+    content.clicked == nextContent.clicked
+  );
 }
 const FriseChrono = ({ exo, clicked, setClicked }) => {
   const classes = useStyles();
@@ -69,7 +72,6 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
   const tempsMoyen = exo.tempsMoyen;
   // const tentatives = exo.tentatives; CURRENTLY UNUSED
   const SetClicked = setClicked;
-  console.log('EXO', exo);
   let timeline = useMemo(() => {
     let _timeline = [
       {
@@ -183,7 +185,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
         <TimelineItem
           key={item?.id + 'TimeLineItem' + index}
           onClick={(event, params) => {
-            SetClicked(item?.id);
+            SetClicked(item.id);
           }}
         >
           <TimelineSeparator>
