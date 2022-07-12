@@ -49,13 +49,9 @@ const _dateToTimestamp = (date) => {
  */
 export const calculateTimeBetween = (dateStart, tempsMoyen, lastDate) => {
   if (dateStart !== undefined && tempsMoyen !== undefined && lastDate !== undefined) {
-    console.log('dateStart', dateStart);
-    console.log('tempsMoyen', tempsMoyen);
-    console.log('lastDate', lastDate);
     const DATE1 = _dateToTimestamp(dateStart);
     const DATE2 = _dateToTimestamp(lastDate);
     let tmp = DATE1 + tempsMoyen * 1000;
-    console.log('tmp', tmp);
     return tmp >= DATE2;
   }
   return 0;

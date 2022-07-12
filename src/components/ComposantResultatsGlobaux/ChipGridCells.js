@@ -23,7 +23,6 @@ const ChipGridCells = (props) => {
   const cellsStyle = useCallback(
     function (params) {
       if (params.label !== '') {
-        console.log('params', params, 'boolean', boolean);
         let style = {
           backgroundColor: colorGradient(params.label, boolean),
         };
