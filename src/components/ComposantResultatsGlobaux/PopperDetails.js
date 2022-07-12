@@ -27,7 +27,6 @@ const PopperDetails = (props) => {
     setConsigne(
       props.session?.exercices.filter((exo) => exo.id == exoRef.current.field)[0]?.enonce,
     );
-    console.log('cons', consigne);
   }, []);
   const exercices = props.exercices;
   const handlePopoverClose = props.handlePopoverClose;

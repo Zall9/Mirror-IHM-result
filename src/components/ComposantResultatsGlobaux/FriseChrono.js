@@ -44,12 +44,16 @@ const useStyles = makeStyles({
     bottom: '2.5ch', //magic number
   },
   timelineIcon: {
-    '&:hover': {
-      cursor: 'pointer',
-    },
     transform: 'rotate(90deg)',
   },
 });
+
+function areEqual(content, nextContent) {
+  return (
+    content.exo.tentatives.length == nextContent.exo.tentatives.length &&
+    content.clicked == nextContent.clicked
+  );
+}
 /**
  * @param {object} props: {exercice, callback setClicked}
  *
@@ -58,20 +62,12 @@ const useStyles = makeStyles({
  * auxquelles l'élève a demandé de l'aide et validé l'exercice.
  * @returns Un composant
  */
-function areEqual(content, nextContent) {
-  console.log('areEqual', 'cntnt:', content, 'nxtcntn', nextContent);
-  return (
-    content.exo.tentatives.length == nextContent.exo.tentatives.length &&
-    content.clicked == nextContent.clicked
-  );
-}
 const FriseChrono = ({ exo, clicked, setClicked }) => {
   const classes = useStyles();
   const aides = exo.aides;
   const heureDebut = exo.debut;
   const tempsMoyen = exo.tempsMoyen;
   // const tentatives = exo.tentatives; CURRENTLY UNUSED
-  const SetClicked = setClicked;
   let timeline = useMemo(() => {
     let _timeline = [
       {
@@ -170,7 +166,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
       });
     });
     return _timeline;
-  }, [clicked]);
+  }, [clicked, exo]);
 
   timeline.sort((a, b) => {
     return new Date(a.date) - new Date(b.date);
@@ -185,7 +181,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
         <TimelineItem
           key={item?.id + 'TimeLineItem' + index}
           onClick={(event, params) => {
-            SetClicked(item.id);
+            setClicked(item.id);
           }}
         >
           <TimelineSeparator>
@@ -211,7 +207,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
         </TimelineItem>
       );
     },
-    [clicked],
+    [clicked, exo],
   );
   //memoize content
   return (

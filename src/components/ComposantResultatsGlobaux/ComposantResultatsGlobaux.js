@@ -9,10 +9,6 @@ import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCells from './ChipGridCells';
 
-const areEqualPoppers = (prevProps, nextProps) => {
-  console.log('areEqualPoppers', prevProps, nextProps);
-  return prevProps.exercices === nextProps.exercices;
-};
 const ComposantResultatsGlobaux = () => {
   // HOOKS & STATES
   const exercices = useSelector(getExercices);
