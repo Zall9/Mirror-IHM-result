@@ -17,27 +17,29 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { dateParser } from './utils/dateParser';
 
 const PopperDetails = (props) => {
-  const [statement, setStatement] = useState('');
+  // const [anchor, setAnchor] = useState(props.anchorEl);
+  const [statement, setstatement] = useState('');
+  // const [exerciseRef, setExoState] = useState(props.exo);
   const exerciseRef = useRef(props.exo);
   const [clicked, setClicked] = useState('');
   const [open, setOpen] = useState(true);
   useEffect(() => {
-    setStatement(
+    setstatement(
       props.session?.exercices.filter((exo) => exo.id == exerciseRef.current.field)[0]?.enonce,
     );
   }, []);
   const exercises = props.exercises;
   const handlePopoverClose = props.handlePopoverClose;
   const anchorEl = props.anchorEl;
-  const currentExercise = getExoFromIds(
+  const exerciceAffiche = getExoFromIds(
     exerciseRef.current.id,
     exerciseRef.current.field,
     exercises,
   );
-  const exerciseName = currentExercise.nomExo;
-  const language = currentExercise.langage;
-  const attempts = currentExercise.tentatives;
-  const difficulty = currentExercise.difficulte;
+  const exerciseName = exerciceAffiche.nomExo;
+  const language = exerciceAffiche.langage;
+  const attempts = exerciceAffiche.tentatives;
+  const difficulty = exerciceAffiche.difficulte;
   const renderAttempt = (attempt, language) => {
     return (
       <div id={attempt.id} key={attempt.id}>
@@ -107,7 +109,7 @@ const PopperDetails = (props) => {
               <ListItem>
                 <Typography>{statement}</Typography>
               </ListItem>
-              {currentExercise == -1 ? (
+              {exerciceAffiche == -1 ? (
                 <></>
               ) : (
                 <div
@@ -118,7 +120,7 @@ const PopperDetails = (props) => {
                   }}
                 >
                   <FriseChrono
-                    exo={currentExercise}
+                    currentExercise={exerciceAffiche}
                     clicked={clicked}
                     setClicked={setClicked}
                   ></FriseChrono>
@@ -133,7 +135,7 @@ const PopperDetails = (props) => {
                     width: '99.9%',
                   }}
                 >
-                  {exerciseRef.current === '' || currentExercise == -1 ? (
+                  {exerciseRef.current === '' || exerciceAffiche == -1 ? (
                     <></>
                   ) : (
                     attempts?.map((attempt, index) =>

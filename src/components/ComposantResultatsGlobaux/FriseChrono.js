@@ -58,7 +58,7 @@ const useStyles = makeStyles({
  */
 function areEqual(content, nextContent) {
   return (
-    content.exo.tentatives.length == nextContent.exo.tentatives.length &&
+    content.currentExercise.tentatives.length == nextContent.currentExercise.tentatives.length &&
     content.clicked == nextContent.clicked
   );
 }
@@ -70,12 +70,12 @@ function areEqual(content, nextContent) {
  * auxquelles l'élève a demandé de l'aide et validé l'exercice.
  * @returns Un composant
  */
-const FriseChrono = ({ exo, clicked, setClicked }) => {
+const FriseChrono = ({ currentExercise, clicked, setClicked }) => {
   const classes = useStyles();
-  const aides = exo.aides;
-  const heureDebut = exo.debut;
-  const tempsMoyen = exo.tempsMoyen;
-  // const tentatives = exo.tentatives; CURRENTLY UNUSED
+  const aides = currentExercise.aides;
+  const heureDebut = currentExercise.debut;
+  const tempsMoyen = currentExercise.tempsMoyen;
+  // const tentatives = currentExercise.tentatives; CURRENTLY UNUSED
   let timeline = useMemo(() => {
     let _timeline = [
       {
@@ -91,7 +91,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
         icon: () => <AccessTimeFilledIcon className={classes.timelineIcon} />,
       },
     ];
-    exo.tentatives.map((tentative) => {
+    currentExercise.tentatives.map((tentative) => {
       _timeline.push({
         date: tentative.dateSoumission,
         type: 'tentative',
@@ -107,9 +107,9 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                   color: colorGradient(
                     index,
                     isStudentLate(
-                      exo.debut,
-                      exo.tempsMoyen,
-                      exo.tentatives[index - 1]?.dateSoumission,
+                      currentExercise.debut,
+                      currentExercise.tempsMoyen,
+                      currentExercise.tentatives[index - 1]?.dateSoumission,
                     ),
                   ),
                 }}
@@ -123,9 +123,9 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                   color: colorGradient(
                     index,
                     isStudentLate(
-                      exo.debut,
-                      exo.tempsMoyen,
-                      exo.tentatives[index - 1]?.dateSoumission,
+                      currentExercise.debut,
+                      currentExercise.tempsMoyen,
+                      currentExercise.tentatives[index - 1]?.dateSoumission,
                     ),
                   ),
                 }}
@@ -139,9 +139,9 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                 color: colorGradient(
                   index,
                   isStudentLate(
-                    exo.debut,
-                    exo.tempsMoyen,
-                    exo.tentatives[index - 1]?.dateSoumission,
+                    currentExercise.debut,
+                    currentExercise.tempsMoyen,
+                    currentExercise.tentatives[index - 1]?.dateSoumission,
                   ),
                 ),
               }}
@@ -155,9 +155,9 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                 color: colorGradient(
                   index,
                   isStudentLate(
-                    exo.debut,
-                    exo.tempsMoyen,
-                    exo.tentatives[index - 1]?.dateSoumission,
+                    currentExercise.debut,
+                    currentExercise.tempsMoyen,
+                    currentExercise.tentatives[index - 1]?.dateSoumission,
                   ),
                 ),
               }}
@@ -165,7 +165,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
           ),
       });
     });
-    exo.aides.map((aide) => {
+    currentExercise.aides.map((aide) => {
       _timeline.push({
         date: aide.date,
         type: 'aide',
@@ -174,7 +174,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
       });
     });
     return _timeline;
-  }, [clicked, exo]);
+  }, [clicked, currentExercise]);
 
   timeline.sort((a, b) => {
     return new Date(a.date) - new Date(b.date);
@@ -216,7 +216,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
         </TimelineItem>
       );
     },
-    [clicked, exo],
+    [clicked, currentExercise],
   );
   //memoize content
   return (
@@ -231,7 +231,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
 };
 
 FriseChrono.propTypes = {
-  exo: PropTypes.any,
+  currentExercise: PropTypes.any,
   clicked: PropTypes.any,
   setClicked: PropTypes.any,
 };

@@ -310,7 +310,7 @@ const GlobalResults = () => {
         <>
           {anchorElPopper != null ? (
             <PopperDetails
-              exercise={Object.values(exercises)}
+              exercises={Object.values(exercises)}
               session={CURRENT_SESSION}
               exo={exerciseRef.current}
               anchorEl={anchorElPopper}
