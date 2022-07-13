@@ -31,15 +31,15 @@ const PopperDetails = (props) => {
   const exercises = props.exercises;
   const handlePopoverClose = props.handlePopoverClose;
   const anchorEl = props.anchorEl;
-  const exerciceAffiche = getExoFromIds(
+  const currentExercise = getExoFromIds(
     exerciseRef.current.id,
     exerciseRef.current.field,
     exercises,
   );
-  const exerciseName = exerciceAffiche.nomExo;
-  const language = exerciceAffiche.langage;
-  const attempts = exerciceAffiche.tentatives;
-  const difficulty = exerciceAffiche.difficulte;
+  const exerciseName = currentExercise.nomExo;
+  const language = currentExercise.langage;
+  const attempts = currentExercise.tentatives;
+  const difficulty = currentExercise.difficulte;
   const renderAttempt = (attempt, language) => {
     return (
       <div id={attempt.id} key={attempt.id}>
@@ -109,7 +109,7 @@ const PopperDetails = (props) => {
               <ListItem>
                 <Typography>{statement}</Typography>
               </ListItem>
-              {exerciceAffiche == -1 ? (
+              {currentExercise == -1 ? (
                 <></>
               ) : (
                 <div
@@ -120,7 +120,7 @@ const PopperDetails = (props) => {
                   }}
                 >
                   <FriseChrono
-                    currentExercise={exerciceAffiche}
+                    currentExercise={currentExercise}
                     clicked={clicked}
                     setClicked={setClicked}
                   ></FriseChrono>
@@ -135,7 +135,7 @@ const PopperDetails = (props) => {
                     width: '99.9%',
                   }}
                 >
-                  {exerciseRef.current === '' || exerciceAffiche == -1 ? (
+                  {exerciseRef.current === '' || currentExercise == -1 ? (
                     <></>
                   ) : (
                     attempts?.map((attempt, index) =>
