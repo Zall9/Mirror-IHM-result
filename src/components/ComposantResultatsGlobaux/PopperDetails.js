@@ -66,7 +66,7 @@ const PopperDetails = (props) => {
       <Popper
         open={true}
         anchorEl={anchorEl}
-        disablePortal={false}
+        disablePortal={true}
         placement={'right'}
         popperOptions={{
           positionFixed: true,

@@ -16,31 +16,31 @@ import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import MenuDeroulantSession from '../MenuDeroulantSession/MenuDeroulantSession';
 import JsonExportMenuItem from './JsonExportMenuItem';
 const ToolBar = ({
-  _setSelected,
-  _selected,
-  _sessions,
-  _selectedSession,
-  _setSelectedSession,
-  _selectedSeance,
-  _setSelectedSeance,
-  _SeanceRef,
-  _SetSeanceRef,
+  setSelected,
+  selected,
+  sessions,
+  selectedSession,
+  setSelectedSession,
+  selectedSeance,
+  setSelectedSeance,
+  SeanceRef,
+  SetSeanceRef,
 }) => {
   let listeNomSeances = [];
   let listeIdSeances = [];
-  _sessions.forEach((session) => {
-    if (_selectedSession === session.id) {
+  sessions.forEach((session) => {
+    if (selectedSession === session.id) {
       listeNomSeances = session.seances.map((seance) => {
         listeIdSeances.push(seance.id);
         return seance.groupe + ' - ' + seance.encadrant;
       });
     }
   });
-  _sessions.forEach((session) => {
-    if (_selectedSession === session.id) {
+  sessions.forEach((session) => {
+    if (selectedSession === session.id) {
       session.seances.forEach((seance) => {
-        if (_selectedSeance === seance.groupe + ' - ' + seance.encadrant) {
-          _SetSeanceRef(seance.id);
+        if (selectedSeance === seance.groupe + ' - ' + seance.encadrant) {
+          SetSeanceRef(seance.id);
         }
       });
     }
@@ -60,13 +60,13 @@ const ToolBar = ({
       ? sessionStorage.getItem(sessionStorageSeance)
       : 'all',
   );
-  _setSelectedSession(choixSession);
-  _setSelectedSeance(seance);
+  setSelectedSession(choixSession);
+  setSelectedSeance(seance);
   let buttonColor = 'black';
   return (
     <GridToolbarContainer>
       <MenuDeroulantSession
-        sessions={_sessions}
+        sessions={sessions}
         choixSession={choixSession}
         setSession={setSession}
         storageName={sessionStorageNameSession}
@@ -89,16 +89,16 @@ const ToolBar = ({
       <IconButton
         sx={{ color: buttonColor }}
         onClick={() => {
-          _setSelected(selection[(selection.indexOf(_selected) + 1) % selection.length]);
+          setSelected(selection[(selection.indexOf(selected) + 1) % selection.length]);
         }}
       >
         <FilterAltIcon></FilterAltIcon>
-        <Typography>{_selected}</Typography>
+        <Typography>{selected}</Typography>
       </IconButton>
       <IconButton
         sx={{ color: buttonColor }}
         onClick={() => {
-          _setSelected('aides');
+          setSelected('aides');
         }}
       >
         <PanToolIcon></PanToolIcon>

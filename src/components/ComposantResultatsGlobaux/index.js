@@ -14,12 +14,13 @@ const ComposantResultatsGlobaux = () => {
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
   console.log('sessions', sessions);
-  let exoRef = useRef({});
+  const exoRef = useRef({});
   const [SeanceRef, SetSeanceRef] = useState('');
   const [anchorEl, setAnchorEl] = useState();
   const [selected, setSelected] = useState('tous');
+
   const [selectedSession, setSelectedSession] = useState('');
-  const [selectedSeance, setSelectedSeance] = useState('');
+  const [selectedSeance, setSelectedSeance] = useState(''); //on laisse
 
   //STYLES
   const containerStyle = {
@@ -30,6 +31,7 @@ const ComposantResultatsGlobaux = () => {
     bottom: '1vh',
     width: '3vh',
   };
+
   //Initialisations
   let CURRENTSESSION = sessions.find((s) => s.id === selectedSession);
 
@@ -51,6 +53,7 @@ const ComposantResultatsGlobaux = () => {
     },
     [exercices, SeanceRef, selected],
   );
+
   const rows = useMemo(() => {
     const rows_etu = [];
     Object.values(exercices).forEach((exercice) => {
@@ -79,6 +82,7 @@ const ComposantResultatsGlobaux = () => {
     console.log(rows_etu, 'rows_etu');
     return rows_etu;
   }, [exercices, selected, selectedSeance, SeanceRef]);
+
   let tmp_columns = [
     {
       field: 'idEtu',
@@ -104,7 +108,7 @@ const ComposantResultatsGlobaux = () => {
     },
   ];
   const columns = useMemo(() => {
-    if (CURRENTSESSION !== undefined && CURRENTSESSION.exercices !== undefined) {
+    if (CURRENTSESSION && CURRENTSESSION.exercices) {
       for (const exo of CURRENTSESSION.exercices) {
         if (selected === 'aides') {
           columns_aides.push({
@@ -142,9 +146,7 @@ const ComposantResultatsGlobaux = () => {
             align: 'center',
             flex: 1,
             hideSortIcons: true,
-
             maxWidth: 75,
-
             renderCell: (params) => {
               return (
                 <ChipGridCells
@@ -243,7 +245,7 @@ const ComposantResultatsGlobaux = () => {
 
   const handlePopoverClick = (params, event) => {
     console.log('paramsCLICK', event);
-    if (event !== undefined && event.currentTarget !== undefined) {
+    if (event && event.currentTarget) {
       exoRef.current = params;
       setAnchorEl(document.getElementById('container'));
     } else {
@@ -265,7 +267,6 @@ const ComposantResultatsGlobaux = () => {
         disableToolPanel={true}
         disableSelectionOnClick={true}
         disableColumnSelector={true}
-        rowHeight={36}
         sx={{ display: 'flex', flexDirection: 'column-reverse' }}
         localeText={{
           toolbarFilters: 'FILTRER',
@@ -277,30 +278,24 @@ const ComposantResultatsGlobaux = () => {
         }}
         componentsProps={{
           footer: {
-            _setSelected: setSelected,
-            _selected: selected,
-            _sessions: sessions,
-            _selectedSession: selectedSession,
-            _setSelectedSession: setSelectedSession,
-            _selectedSeance: selectedSeance,
-            _setSelectedSeance: setSelectedSeance,
-            _SeanceRef: SeanceRef,
-            _SetSeanceRef: SetSeanceRef,
-          },
-        }}
-        initialState={{
-          columns: {
-            columnVisibilityModel: {
-              idEtu: true,
-            },
+            setSelected,
+            selected,
+            sessions,
+            selectedSession,
+            setSelectedSession,
+            selectedSeance,
+            setSelectedSeance,
+            SeanceRef,
+            SetSeanceRef,
           },
         }}
         rows={selectedSession !== '' ? rows : []}
         columns={selectedSession !== '' ? columns : []}
-        loading={rows.length <= 1}
+        loading={rows.length == 0}
         autoHeight={true}
         autoWidth={true}
         headerHeight={36}
+        rowHeight={36}
         density={'compact'}
         onCellClick={handlePopoverClick}
       />
