@@ -5,16 +5,17 @@ import PanToolIcon from '@mui/icons-material/PanTool';
 import { colorGradient } from './utils/colorGradient';
 import { isStudentLate } from './utils/dateParser';
 const ChipGridCell = (props) => {
+  console.log('ChipGridCell', props);
   let isResolved = false;
-  if (props.exercises !== undefined) {
-    props.exercises.aides[props.exercises.aides.length - 1]?.resolue === true
+  if (props.exercise !== undefined) {
+    props.exercise.aides[props.exercise.aides.length - 1]?.resolue === true
       ? (isResolved = true)
       : (isResolved = false);
   }
   var isAverageExceeded = isStudentLate(
-    props?.exercises?.debut,
-    props?.exercises?.tempsMoyen,
-    props?.exercises?.tentatives[props.exercises?.tentatives.length - 1]?.dateSoumission,
+    props?.exercise?.debut,
+    props?.exercise?.tempsMoyen,
+    props?.exercise?.tentatives[props.exercise?.tentatives.length - 1]?.dateSoumission,
   );
   const cellsStyle = useCallback(
     function (params) {
@@ -30,10 +31,10 @@ const ChipGridCell = (props) => {
   return (
     <>
       {props.label !== '' ? <Chip {...props} sx={cellsStyle(props)} /> : <></>}
-      {props?.exercises !== undefined &&
-      props?.exercises.estFini != true &&
+      {props?.exercise !== undefined &&
+      props?.exercise.estFini != true &&
       isResolved == false &&
-      props?.exercises.aides.length > 0 ? (
+      props?.exercise.aides.length > 0 ? (
         <PanToolIcon></PanToolIcon>
       ) : null}
     </>
@@ -42,7 +43,7 @@ const ChipGridCell = (props) => {
 
 ChipGridCell.propTypes = {
   label: PropTypes.string.isRequired,
-  exercises: PropTypes.object.isRequired,
+  exercise: PropTypes.object.isRequired,
 };
 
 export default React.memo(ChipGridCell);

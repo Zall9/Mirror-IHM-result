@@ -11,18 +11,18 @@ import ChipGridCell from './ChipGridCell';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme(frFR);
-const ComposantResultatsGlobaux = () => {
+const GlobalResults = () => {
   // HOOKS & STATES
   const exercises = useSelector(getExercices);
   const sessions = useSelector(getSessions);
   console.log('sessions', sessions);
   const exerciseRef = useRef({});
   const [SeanceRef, SetSeanceRef] = useState('');
-  const [anchorEl, setAnchorEl] = useState();
+  const [anchorElPopper, setAnchorElPopper] = useState();
   const [selected, setSelected] = useState('tous');
 
   const [selectedSession, setSelectedSession] = useState('');
-  const [selectedSeance, setSelectedSeance] = useState(''); //on laisse
+  const [selectedSeance, setSelectedSeance] = useState('');
 
   //STYLES
   const containerStyle = {
@@ -35,22 +35,28 @@ const ComposantResultatsGlobaux = () => {
   };
 
   //Initialisations
-  let CURRENTSESSION = sessions.find((s) => s.id === selectedSession);
+  let CURRENT_SESSION = sessions.find((s) => s.id === selectedSession);
 
   // MEMOIZED Datas
 
+  /**  Fonction mémorisée utilisée pour générer des lignes pour la grille de données.
+   * @param {Object} studentsRows - Ligne de données
+   * @param {Object} exercise - L'exercice
+   * @param {Object} ok - un boolean
+   *
+   **/
   const generateRows = useCallback(
-    (rows_etu, exercice, ok) => {
-      rows_etu.forEach((row_etu) => {
-        if (row_etu.idEtu === exercice.idEtu) {
+    (studentsRows, exercise, ok) => {
+      studentsRows.forEach((studentRow) => {
+        if (studentRow.idEtu === exercise.idEtu) {
           ok = true;
-          row_etu[exercice.idExo] = exercice.tentatives.length;
+          studentRow[exercise.idExo] = exercise.tentatives.length;
         }
       });
       if (!ok) {
-        let row_etu = { id: exercice.idEtu, idEtu: exercice.idEtu };
-        row_etu[exercice.idExo] = exercice.tentatives.length;
-        rows_etu.push(row_etu);
+        let studentRow = { id: exercise.idEtu, idEtu: exercise.idEtu };
+        studentRow[exercise.idExo] = exercise.tentatives.length;
+        studentsRows.push(studentRow);
       }
     },
     [exercises, SeanceRef, selected],
@@ -63,7 +69,7 @@ const ComposantResultatsGlobaux = () => {
       if (exercice.idSeance === SeanceRef) {
         switch (selected) {
           case 'finis':
-            if (exercice.tentatives.length > 0) {
+            if (exercice.estFini) {
               generateRows(rows_etu, exercice, ok);
             }
             break;
@@ -111,8 +117,8 @@ const ComposantResultatsGlobaux = () => {
     },
   ];
   const columns = useMemo(() => {
-    if (CURRENTSESSION && CURRENTSESSION.exercices) {
-      for (const exo of CURRENTSESSION.exercices) {
+    if (CURRENT_SESSION && CURRENT_SESSION.exercices) {
+      for (const exo of CURRENT_SESSION.exercices) {
         if (selected === 'aides') {
           columns_aides.push({
             field: exo.id,
@@ -124,7 +130,7 @@ const ComposantResultatsGlobaux = () => {
             renderCell: (params) => {
               return (
                 <ChipGridCell
-                  exercises={Object.values(exercises)
+                  exercise={Object.values(exercises)
                     .filter((e) => e.idExo === exo.id)
                     .find(
                       (e) =>
@@ -153,7 +159,7 @@ const ComposantResultatsGlobaux = () => {
             renderCell: (params) => {
               return (
                 <ChipGridCell
-                  exercises={Object.values(exercises)
+                  exercise={Object.values(exercises)
                     .filter((e) => e.idExo === exo.id)
                     .find(
                       (e) =>
@@ -183,7 +189,7 @@ const ComposantResultatsGlobaux = () => {
             renderCell: (params) => {
               return (
                 <ChipGridCell
-                  exercises={Object.values(exercises)
+                  exercise={Object.values(exercises)
                     .filter((e) => e.idExo === exo.id)
                     .find(
                       (e) =>
@@ -214,7 +220,7 @@ const ComposantResultatsGlobaux = () => {
             renderCell: (params) => {
               return (
                 <ChipGridCell
-                  exercises={Object.values(exercises)
+                  exercise={Object.values(exercises)
                     .filter((e) => e.idExo === exo.id)
                     .find(
                       (e) =>
@@ -238,11 +244,11 @@ const ComposantResultatsGlobaux = () => {
       return tmp_columns;
     }
     return [];
-  }, [exercises, sessions, CURRENTSESSION, selectedSeance, SeanceRef]);
+  }, [exercises, sessions, CURRENT_SESSION, selectedSeance, SeanceRef]);
   //MEMOIZED COMPONENTS
 
-  //replace useState anchorEL and setAnchorEl with useReducer
-  //@TODO : anchorEL to implement without useState
+  //replace useState anchorElPopper and setAnchorElPopper with useReducer
+  //@TODO : anchorElPopper to implement without useState
 
   // HANDLERS
 
@@ -250,18 +256,18 @@ const ComposantResultatsGlobaux = () => {
     console.log('paramsCLICK', event);
     if (event && event.currentTarget) {
       exerciseRef.current = params;
-      setAnchorEl(document.getElementById('container'));
+      setAnchorElPopper(document.getElementById('container'));
     } else {
       if (params.defaultMuiPrevented == false && params.target.nodeName !== 'HTML') {
-        setAnchorEl(null);
-        setAnchorEl(document.getElementById('container'));
+        setAnchorElPopper(null);
+        setAnchorElPopper(document.getElementById('container'));
       } else {
-        setAnchorEl(null);
+        setAnchorElPopper(null);
       }
     }
   };
   console.log('columns', columns);
-  console.log('CURRENT', CURRENTSESSION);
+  console.log('CURRENT', CURRENT_SESSION);
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <ThemeProvider theme={theme}>
@@ -302,12 +308,12 @@ const ComposantResultatsGlobaux = () => {
       <div id="container" style={containerStyle}></div>
       {
         <>
-          {anchorEl != null ? (
+          {anchorElPopper != null ? (
             <PopperDetails
-              exercises={Object.values(exercises)}
-              session={CURRENTSESSION}
+              exercise={Object.values(exercises)}
+              session={CURRENT_SESSION}
               exo={exerciseRef.current}
-              anchorEl={anchorEl}
+              anchorEl={anchorElPopper}
               handlePopoverClose={handlePopoverClick}
             />
           ) : (
@@ -318,9 +324,9 @@ const ComposantResultatsGlobaux = () => {
     </Box>
   );
   PopperDetailsMemo.propTypes = {
-    exercises: PropTypes.any,
+    exercise: PropTypes.any,
     exo: PropTypes.any,
-    anchorEl: PropTypes.any,
+    anchorElPopper: PropTypes.any,
     handlePopoverClose: PropTypes.any,
   };
   DataGridMemo.propTypes = {
@@ -336,4 +342,4 @@ const ComposantResultatsGlobaux = () => {
     backgroundColor: PropTypes.any,
   };
 };
-export default ComposantResultatsGlobaux;
+export default GlobalResults;
