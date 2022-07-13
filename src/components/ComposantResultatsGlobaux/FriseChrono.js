@@ -48,6 +48,14 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * Si le nombre de tentatives est le même et que l'utilisateur n'a cliqué sur rien, alors le contenu
+ * n'a pas changé
+ * @param content - l'état actuel du composant
+ * @param nextContent - l'état suivant du composant
+ * @returns true si la longueur du tableau de tentatives est la même et si la valeur cliquée est la
+ * même.
+ */
 function areEqual(content, nextContent) {
   return (
     content.exo.tentatives.length == nextContent.exo.tentatives.length &&
@@ -175,6 +183,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
   if (timeline[timeline.length - 1].type === 'moyen') {
     timeline.pop();
   }
+
   const content = useCallback(
     (item, index) => {
       return (
@@ -186,7 +195,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
         >
           <TimelineSeparator>
             {item?.icon(item, index, clicked === item?.id)}
-            {index === timeline?.length - 1 ? '' : <TimelineConnector />}
+            {index === timeline?.length - 1 ? <></> : <TimelineConnector />}
           </TimelineSeparator>
           <TimelineContent className={classes?.timelineContentContainer}>
             <Paper elevation={0} className={classes?.timelineContentPair}>

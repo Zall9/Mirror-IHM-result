@@ -23,7 +23,6 @@ const ToolBar = ({
   setSelectedSession,
   selectedSeance,
   setSelectedSeance,
-  SeanceRef,
   SetSeanceRef,
 }) => {
   let listeNomSeances = [];
