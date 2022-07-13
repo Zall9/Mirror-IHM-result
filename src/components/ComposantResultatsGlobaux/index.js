@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useCallback } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, frFR } from '@mui/x-data-grid';
 import ToolBar from './ToolBar';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
@@ -8,13 +8,15 @@ import { Box } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCells from './ChipGridCells';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+const theme = createTheme(frFR);
 const ComposantResultatsGlobaux = () => {
   // HOOKS & STATES
   const exercices = useSelector(getExercices);
   const sessions = useSelector(getSessions);
   console.log('sessions', sessions);
-  const exoRef = useRef({});
+  const exerciseRef = useRef({});
   const [SeanceRef, SetSeanceRef] = useState('');
   const [anchorEl, setAnchorEl] = useState();
   const [selected, setSelected] = useState('tous');
@@ -59,23 +61,24 @@ const ComposantResultatsGlobaux = () => {
     Object.values(exercices).forEach((exercice) => {
       let ok = false;
       if (exercice.idSeance === SeanceRef) {
-        if (selected === 'tous') {
-          generateRows(rows_etu, exercice, ok);
-        }
-        if (selected === 'finis') {
-          if (exercice.estFini) {
+        switch (selected) {
+          case 'finis':
+            if (exercice.tentatives.length > 0) {
+              generateRows(rows_etu, exercice, ok);
+            }
+            break;
+          case 'en cours':
+            if (!exercice.estFini) {
+              generateRows(rows_etu, exercice, ok);
+            }
+            break;
+          case 'aides':
+            if (exercice.aides.length > 0 && !exercice.estFini) {
+              generateRows(rows_etu, exercice, ok);
+            }
+            break;
+          default:
             generateRows(rows_etu, exercice, ok);
-          }
-        }
-        if (selected === 'en cours') {
-          if (!exercice.estFini) {
-            generateRows(rows_etu, exercice, ok);
-          }
-        }
-        if (selected === 'aides') {
-          if (exercice.aides.length > 0 && !exercice.estFini) {
-            generateRows(rows_etu, exercice, ok);
-          }
         }
       }
     });
@@ -246,7 +249,7 @@ const ComposantResultatsGlobaux = () => {
   const handlePopoverClick = (params, event) => {
     console.log('paramsCLICK', event);
     if (event && event.currentTarget) {
-      exoRef.current = params;
+      exerciseRef.current = params;
       setAnchorEl(document.getElementById('container'));
     } else {
       if (params.defaultMuiPrevented == false && params.target.nodeName !== 'HTML') {
@@ -261,44 +264,41 @@ const ComposantResultatsGlobaux = () => {
   console.log('CURRENT', CURRENTSESSION);
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
-      <DataGrid
-        disableColumnMenu={true}
-        disableColumnFilter={true}
-        disableToolPanel={true}
-        disableSelectionOnClick={true}
-        disableColumnSelector={true}
-        sx={{ display: 'flex', flexDirection: 'column-reverse' }}
-        localeText={{
-          toolbarFilters: 'FILTRER',
-          toolbarExport: 'EXPORTER',
-          toolbarColumns: 'COLONNES',
-        }}
-        components={{
-          Footer: ToolBar,
-        }}
-        componentsProps={{
-          footer: {
-            setSelected,
-            selected,
-            sessions,
-            selectedSession,
-            setSelectedSession,
-            selectedSeance,
-            setSelectedSeance,
-            SeanceRef,
-            SetSeanceRef,
-          },
-        }}
-        rows={selectedSession !== '' ? rows : []}
-        columns={selectedSession !== '' ? columns : []}
-        loading={rows.length == 0}
-        autoHeight={true}
-        autoWidth={true}
-        headerHeight={36}
-        rowHeight={36}
-        density={'compact'}
-        onCellClick={handlePopoverClick}
-      />
+      <ThemeProvider theme={theme}>
+        <DataGrid
+          disableColumnMenu={true}
+          disableColumnFilter={true}
+          disableToolPanel={true}
+          disableSelectionOnClick={true}
+          disableColumnSelector={true}
+          sx={{ display: 'flex', flexDirection: 'column-reverse' }}
+          localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
+          components={{
+            Footer: ToolBar,
+          }}
+          componentsProps={{
+            footer: {
+              setSelected,
+              selected,
+              sessions,
+              selectedSession,
+              setSelectedSession,
+              selectedSeance,
+              setSelectedSeance,
+              SetSeanceRef,
+            },
+          }}
+          rows={selectedSession !== '' ? rows : []}
+          columns={selectedSession !== '' ? columns : []}
+          loading={rows.length == 0}
+          autoHeight={true}
+          autoWidth={true}
+          headerHeight={36}
+          rowHeight={36}
+          density={'compact'}
+          onCellClick={handlePopoverClick}
+        />
+      </ThemeProvider>
       <div id="container" style={containerStyle}></div>
       {
         <>
@@ -306,7 +306,7 @@ const ComposantResultatsGlobaux = () => {
             <PopperDetails
               exercices={Object.values(exercices)}
               session={CURRENTSESSION}
-              exo={exoRef.current}
+              exo={exerciseRef.current}
               anchorEl={anchorEl}
               handlePopoverClose={handlePopoverClick}
             />
