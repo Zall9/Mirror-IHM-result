@@ -11,7 +11,7 @@ import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import PropTypes from 'prop-types';
-import { dateParser, calculateTime, calculateTimeBetween } from './utils/dateParser';
+import { dateParser, calculateTime, isStudentLate } from './utils/dateParser';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { colorGradient } from './utils/colorGradient';
@@ -106,7 +106,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                 sx={{
                   color: colorGradient(
                     index,
-                    calculateTimeBetween(
+                    isStudentLate(
                       exo.debut,
                       exo.tempsMoyen,
                       exo.tentatives[index - 1]?.dateSoumission,
@@ -122,7 +122,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
                 sx={{
                   color: colorGradient(
                     index,
-                    calculateTimeBetween(
+                    isStudentLate(
                       exo.debut,
                       exo.tempsMoyen,
                       exo.tentatives[index - 1]?.dateSoumission,
@@ -138,7 +138,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
               sx={{
                 color: colorGradient(
                   index,
-                  calculateTimeBetween(
+                  isStudentLate(
                     exo.debut,
                     exo.tempsMoyen,
                     exo.tentatives[index - 1]?.dateSoumission,
@@ -154,7 +154,7 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
               sx={{
                 color: colorGradient(
                   index,
-                  calculateTimeBetween(
+                  isStudentLate(
                     exo.debut,
                     exo.tempsMoyen,
                     exo.tentatives[index - 1]?.dateSoumission,

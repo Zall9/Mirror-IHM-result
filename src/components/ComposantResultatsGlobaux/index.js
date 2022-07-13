@@ -7,13 +7,13 @@ import { getSessions } from '@stores/Sessions/sessionSlice';
 import { Box } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
-import ChipGridCells from './ChipGridCells';
+import ChipGridCell from './ChipGridCell';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme(frFR);
 const ComposantResultatsGlobaux = () => {
   // HOOKS & STATES
-  const exercices = useSelector(getExercices);
+  const exercises = useSelector(getExercices);
   const sessions = useSelector(getSessions);
   console.log('sessions', sessions);
   const exerciseRef = useRef({});
@@ -53,12 +53,12 @@ const ComposantResultatsGlobaux = () => {
         rows_etu.push(row_etu);
       }
     },
-    [exercices, SeanceRef, selected],
+    [exercises, SeanceRef, selected],
   );
 
   const rows = useMemo(() => {
     const rows_etu = [];
-    Object.values(exercices).forEach((exercice) => {
+    Object.values(exercises).forEach((exercice) => {
       let ok = false;
       if (exercice.idSeance === SeanceRef) {
         switch (selected) {
@@ -84,7 +84,7 @@ const ComposantResultatsGlobaux = () => {
     });
     console.log(rows_etu, 'rows_etu');
     return rows_etu;
-  }, [exercices, selected, selectedSeance, SeanceRef]);
+  }, [exercises, selected, selectedSeance, SeanceRef]);
 
   let tmp_columns = [
     {
@@ -123,8 +123,8 @@ const ComposantResultatsGlobaux = () => {
             headerName: exo.nom,
             renderCell: (params) => {
               return (
-                <ChipGridCells
-                  exercices={Object.values(exercices)
+                <ChipGridCell
+                  exercises={Object.values(exercises)
                     .filter((e) => e.idExo === exo.id)
                     .find(
                       (e) =>
@@ -152,8 +152,8 @@ const ComposantResultatsGlobaux = () => {
             maxWidth: 75,
             renderCell: (params) => {
               return (
-                <ChipGridCells
-                  exercices={Object.values(exercices)
+                <ChipGridCell
+                  exercises={Object.values(exercises)
                     .filter((e) => e.idExo === exo.id)
                     .find(
                       (e) =>
@@ -182,8 +182,8 @@ const ComposantResultatsGlobaux = () => {
 
             renderCell: (params) => {
               return (
-                <ChipGridCells
-                  exercices={Object.values(exercices)
+                <ChipGridCell
+                  exercises={Object.values(exercises)
                     .filter((e) => e.idExo === exo.id)
                     .find(
                       (e) =>
@@ -213,8 +213,8 @@ const ComposantResultatsGlobaux = () => {
             maxWidth: 75,
             renderCell: (params) => {
               return (
-                <ChipGridCells
-                  exercices={Object.values(exercices)
+                <ChipGridCell
+                  exercises={Object.values(exercises)
                     .filter((e) => e.idExo === exo.id)
                     .find(
                       (e) =>
@@ -238,7 +238,7 @@ const ComposantResultatsGlobaux = () => {
       return tmp_columns;
     }
     return [];
-  }, [exercices, sessions, CURRENTSESSION, selectedSeance, SeanceRef]);
+  }, [exercises, sessions, CURRENTSESSION, selectedSeance, SeanceRef]);
   //MEMOIZED COMPONENTS
 
   //replace useState anchorEL and setAnchorEl with useReducer
@@ -304,7 +304,7 @@ const ComposantResultatsGlobaux = () => {
         <>
           {anchorEl != null ? (
             <PopperDetails
-              exercices={Object.values(exercices)}
+              exercises={Object.values(exercises)}
               session={CURRENTSESSION}
               exo={exerciseRef.current}
               anchorEl={anchorEl}
@@ -318,7 +318,7 @@ const ComposantResultatsGlobaux = () => {
     </Box>
   );
   PopperDetailsMemo.propTypes = {
-    exercices: PropTypes.any,
+    exercises: PropTypes.any,
     exo: PropTypes.any,
     anchorEl: PropTypes.any,
     handlePopoverClose: PropTypes.any,

@@ -17,41 +17,43 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { dateParser } from './utils/dateParser';
 
 const PopperDetails = (props) => {
-  // const [anchor, setAnchor] = useState(props.anchorEl);
-  const [consigne, setConsigne] = useState('');
-  // const [exoRef, setExoState] = useState(props.exo);
-  const exoRef = useRef(props.exo);
+  const [statement, setStatement] = useState('');
+  const exerciseRef = useRef(props.exo);
   const [clicked, setClicked] = useState('');
   const [open, setOpen] = useState(true);
   useEffect(() => {
-    setConsigne(
-      props.session?.exercices.filter((exo) => exo.id == exoRef.current.field)[0]?.enonce,
+    setStatement(
+      props.session?.exercices.filter((exo) => exo.id == exerciseRef.current.field)[0]?.enonce,
     );
   }, []);
-  const exercices = props.exercices;
+  const exercises = props.exercises;
   const handlePopoverClose = props.handlePopoverClose;
   const anchorEl = props.anchorEl;
-  const exerciceAffiche = getExoFromIds(exoRef.current.id, exoRef.current.field, exercices);
-  const nomExo = exerciceAffiche.nomExo;
-  const langage = exerciceAffiche.langage;
-  const tentatives = exerciceAffiche.tentatives;
-  const difficulte = exerciceAffiche.difficulte;
-  const renderTentatives = (tentative, langage) => {
+  const currentExercise = getExoFromIds(
+    exerciseRef.current.id,
+    exerciseRef.current.field,
+    exercises,
+  );
+  const exerciseName = currentExercise.nomExo;
+  const language = currentExercise.langage;
+  const attempts = currentExercise.tentatives;
+  const difficulty = currentExercise.difficulte;
+  const renderAttempt = (attempt, language) => {
     return (
-      <div id={tentative.id} key={tentative.id}>
-        <ListItem key={tentative.id + 'dateSoumission'}>
-          <Typography>{dateParser(tentative.dateSoumission)}</Typography>
+      <div id={attempt.id} key={attempt.id}>
+        <ListItem key={attempt.id + 'dateSoumission'}>
+          <Typography>{dateParser(attempt.dateSoumission)}</Typography>
           <Typography>{':'}&nbsp;</Typography>
-          <Typography key={tentative.id + 'Logs'}>{tentative.logErreurs}</Typography>
+          <Typography key={attempt.id + 'Logs'}>{attempt.logErreurs}</Typography>
         </ListItem>
-        {langage !== '' && langage !== undefined ? (
-          <div id={tentative.id + '-code'}>
+        {language !== '' && language !== undefined ? (
+          <div id={attempt.id + '-code'}>
             <CodeTentative
-              code={tentative.reponseEtudiant}
-              key={tentative.id + '-code'}
-              language={langage}
+              code={attempt.reponseEtudiant}
+              key={attempt.id + '-code'}
+              language={language}
             />
-            {clicked == tentative.id + '-code' ? (
+            {clicked == attempt.id + '-code' ? (
               <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
             ) : null}
           </div>
@@ -92,20 +94,20 @@ const PopperDetails = (props) => {
               }}
             >
               <ListItem>
-                <Typography variant="h6">{exoRef.current.id}</Typography>
+                <Typography variant="h6">{exerciseRef.current.id}</Typography>
               </ListItem>
               <List sx={{ display: 'flex' }}>
                 <ListItem>
-                  <Typography>{nomExo}</Typography>
+                  <Typography>{exerciseName}</Typography>
                 </ListItem>
                 <ListItem>
-                  <Typography sx={{ p: 1 }}>{difficulte}</Typography>
+                  <Typography sx={{ p: 1 }}>{difficulty}</Typography>
                 </ListItem>
               </List>
               <ListItem>
-                <Typography>{consigne}</Typography>
+                <Typography>{statement}</Typography>
               </ListItem>
-              {exerciceAffiche == -1 ? (
+              {currentExercise == -1 ? (
                 <></>
               ) : (
                 <div
@@ -116,7 +118,7 @@ const PopperDetails = (props) => {
                   }}
                 >
                   <FriseChrono
-                    exo={exerciceAffiche}
+                    exo={currentExercise}
                     clicked={clicked}
                     setClicked={setClicked}
                   ></FriseChrono>
@@ -131,20 +133,16 @@ const PopperDetails = (props) => {
                     width: '99.9%',
                   }}
                 >
-                  {exoRef.current === '' || exerciceAffiche == -1 ? (
+                  {exerciseRef.current === '' || currentExercise == -1 ? (
                     <></>
                   ) : (
-                    tentatives?.map((tentative, index) =>
-                      !(tentative.id == clicked && tentatives.length - 1 > index) ? (
+                    attempts?.map((attempt, index) =>
+                      !(attempt.id == clicked && attempts.length - 1 > index) ? (
                         <>
-                          {index === tentatives.length - 1 ? (
-                            renderTentatives(tentative, langage)
-                          ) : (
-                            <></>
-                          )}
+                          {index === attempts.length - 1 ? renderAttempt(attempt, language) : <></>}
                         </>
                       ) : (
-                        renderTentatives(tentative, langage)
+                        renderAttempt(attempt, language)
                       ),
                     )
                   )}
@@ -163,7 +161,7 @@ PopperDetails.propTypes = {
   handlePopoverClose: PropTypes.func,
   open: PropTypes.bool,
   exo: PropTypes.any,
-  exercices: PropTypes.array,
+  exercises: PropTypes.array,
   session: PropTypes.object,
 };
 export default React.memo(PopperDetails);
