@@ -5,17 +5,18 @@ import PanToolIcon from '@mui/icons-material/PanTool';
 import { colorGradient } from './utils/colorGradient';
 import { isStudentLate } from './utils/dateParser';
 const ChipGridCell = (props) => {
-  console.log('ChipGridCell', props);
+  console.info('ChipGridCell', props);
   let isResolved = false;
   if (props.exercise !== undefined) {
-    props.exercise.aides[props.exercise.aides.length - 1]?.resolue === true
+    props.exercise.aides[props?.exercise?.aides.length - 1]?.resolue === true
       ? (isResolved = true)
       : (isResolved = false);
   }
+  console.info('exo from cell', props.exercise);
   var isAverageExceeded = isStudentLate(
     props?.exercise?.debut,
     props?.exercise?.tempsMoyen,
-    props?.exercise?.tentatives[props.exercise?.tentatives.length - 1]?.dateSoumission,
+    props?.exercise?.tentatives[props?.exercise?.tentatives?.length - 1]?.dateSoumission,
   );
   const cellsStyle = useCallback(
     function (params) {

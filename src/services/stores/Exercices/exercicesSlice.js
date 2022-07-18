@@ -17,8 +17,6 @@ export const exercicesSlice = createSlice({
     addTentative: (state, respTentative) => {
       let exercice = state.exercices[respTentative.payload.idExoEtu];
       // delete infos en double
-      console.log('AddTentative !', exercice);
-      console.log('Payload AddTentative', respTentative.payload);
       if (exercice) {
         exercice.tentatives.push(respTentative.payload);
         if (respTentative.payload.validationExercice) {
@@ -44,6 +42,7 @@ export const exercicesSlice = createSlice({
   },
 });
 
+//A besoin d'être en dehors du Slice pour pouvoir return le state
 export const getExercices = (state) => {
   return state.exercices.exercices;
 };

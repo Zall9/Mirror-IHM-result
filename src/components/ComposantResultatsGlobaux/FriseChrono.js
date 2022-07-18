@@ -72,21 +72,21 @@ function areEqual(content, nextContent) {
 const FriseChrono = ({ currentExercise, clicked, setClicked }) => {
   const classes = useStyles();
   const aides = currentExercise.aides;
-  const heureDebut = currentExercise.debut;
+  const startTime = currentExercise.debut;
   const tempsMoyen = currentExercise.tempsMoyen;
   // const tentatives = currentExercise.tentatives; CURRENTLY UNUSED
   let timeline = useMemo(() => {
     let _timeline = [
       {
-        heureDebut: heureDebut,
+        startTime: startTime,
         type: 'debut',
-        date: heureDebut,
+        date: startTime,
         icon: () => <GolfCourseIcon className={classes.timelineIcon} />,
       },
       {
         tempsMoyen: tempsMoyen,
         type: 'moyen',
-        date: new Date(new Date(heureDebut).getTime() + tempsMoyen * 1000).toISOString(),
+        date: new Date(new Date(startTime).getTime() + tempsMoyen * 1000).toISOString(),
         icon: () => <AccessTimeFilledIcon className={classes.timelineIcon} />,
       },
     ];
@@ -202,13 +202,13 @@ const FriseChrono = ({ currentExercise, clicked, setClicked }) => {
                 {index === 0 ? (
                   <Typography>Début</Typography>
                 ) : (
-                  calculateTime(heureDebut, item?.date)
+                  calculateTime(startTime, item?.date)
                 )}
               </Typography>
             </Paper>
             <Paper elevation={0} className={classes?.timelineContentImpair}>
               <Typography>
-                {index === 0 ? dateParser(heureDebut) : dateParser(item?.date)}
+                {index === 0 ? dateParser(startTime) : dateParser(item?.date)}
               </Typography>
             </Paper>
           </TimelineContent>

@@ -4,18 +4,30 @@ import ToolBar from './ToolBar';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCell from './ChipGridCell';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const theme = createTheme(frFR);
+const theme = createTheme({
+  content: {
+    frFR: {
+      gridContent: {
+        columnHeaders: {
+          studentCol: {
+            headerName: 'id étudiant',
+          },
+        },
+      },
+    },
+  },
+});
 const GlobalResults = () => {
   // HOOKS & STATES
   const exercises = useSelector(getExercices);
   const sessions = useSelector(getSessions);
-  console.log('sessions', sessions);
+  console.debug('sessions', sessions);
   const exerciseRef = useRef({});
   const [SeanceRef, SetSeanceRef] = useState('');
   const [anchorElPopper, setAnchorElPopper] = useState();
@@ -88,14 +100,14 @@ const GlobalResults = () => {
         }
       }
     });
-    console.log(rows_etu, 'rows_etu');
+    console.debug(rows_etu, 'rows_etu');
     return rows_etu;
   }, [exercises, selected, selectedSeance, SeanceRef]);
 
   let tmp_columns = [
     {
       field: 'idEtu',
-      headerName: 'id etudiant',
+      headerName: theme.content.frFR.gridContent.columnHeaders.studentCol.headerName,
     },
   ];
   let columns_en_cours = [
@@ -154,11 +166,14 @@ const GlobalResults = () => {
             headerName: '' + exo.nom,
             align: 'center',
             flex: 1,
-            hideSortIcons: true,
+            height: 150,
             maxWidth: 75,
+            minHeight: 150,
+            hideSortIcons: true,
             renderCell: (params) => {
               return (
                 <ChipGridCell
+                  // les tentatives sont dans exercises(db result) pas dans CURRENT_SESSION.exercices(db exo)
                   exercise={Object.values(exercises)
                     .filter((e) => e.idExo === exo.id)
                     .find(
@@ -183,7 +198,6 @@ const GlobalResults = () => {
             align: 'center',
             flex: 1,
             hideSortIcons: true,
-
             maxWidth: 75,
 
             renderCell: (params) => {
@@ -215,7 +229,6 @@ const GlobalResults = () => {
             align: 'center',
             flex: 1,
             hideSortIcons: true,
-
             maxWidth: 75,
             renderCell: (params) => {
               return (
@@ -253,7 +266,7 @@ const GlobalResults = () => {
   // HANDLERS
 
   const handlePopoverClick = (params, event) => {
-    console.log('paramsCLICK', event);
+    console.debug('paramsCLICK', event);
     if (event && event.currentTarget) {
       exerciseRef.current = params;
       setAnchorElPopper(document.getElementById('container'));
@@ -266,8 +279,8 @@ const GlobalResults = () => {
       }
     }
   };
-  console.log('columns', columns);
-  console.log('CURRENT', CURRENT_SESSION);
+  console.info('columns', columns);
+  console.info('CURRENT', CURRENT_SESSION);
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
       <ThemeProvider theme={theme}>
@@ -299,7 +312,7 @@ const GlobalResults = () => {
           loading={rows.length == 0}
           autoHeight={true}
           autoWidth={true}
-          headerHeight={36}
+          headerHeight={225}
           rowHeight={36}
           density={'compact'}
           onCellClick={handlePopoverClick}

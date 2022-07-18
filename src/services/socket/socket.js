@@ -7,12 +7,12 @@ export const initSocketConnection = (dispatch, sessions) => {
   });
 
   socket.on('exercices', ({ etudiantCommenceExo }) => {
-    console.log('socket:Etudiant Commence', etudiantCommenceExo);
+    console.info('socket:Etudiant Commence', etudiantCommenceExo);
     dispatch(addExercice(etudiantCommenceExo));
   });
 
   socket.on('tentatives', ({ etudiantFaitNouvelleTentative }) => {
-    console.log('socket:Etudiant Fait une nouvelle tentative', etudiantFaitNouvelleTentative);
+    console.info('socket:Etudiant Fait une nouvelle tentative', etudiantFaitNouvelleTentative);
     dispatch(addTentative(etudiantFaitNouvelleTentative));
   });
 
