@@ -15,6 +15,8 @@ import React from 'react';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import MenuDeroulantSession from '../MenuDeroulantSession/MenuDeroulantSession';
 import JsonExportMenuItem from './JsonExportMenuItem';
+import { LANGUAGES_CONTENT } from './internationalization.js';
+
 const ToolBar = ({
   setSelected,
   selected,
@@ -23,7 +25,7 @@ const ToolBar = ({
   setSelectedSession,
   selectedSeance,
   setSelectedSeance,
-  SetSeanceRef,
+  setSeance,
 }) => {
   let listeNomSeances = [];
   let listeIdSeances = [];
@@ -39,7 +41,7 @@ const ToolBar = ({
     if (selectedSession === session.id) {
       session.seances.forEach((seance) => {
         if (selectedSeance === seance.groupe + ' - ' + seance.encadrant) {
-          SetSeanceRef(seance.id);
+          setSeance(seance.id);
         }
       });
     }
@@ -47,20 +49,20 @@ const ToolBar = ({
 
   const sessionStorageNameSession = 'idSes';
   const sessionStorageSeance = 'idSeance';
-  const selection = ['en cours', 'finis', 'tous', 'aides'];
+  const selection = LANGUAGES_CONTENT.frFR.gridContent.contentSelector.filters;
   //STATES
   const [choixSession, setSession] = React.useState(
     sessionStorage.getItem(sessionStorageNameSession)
       ? sessionStorage.getItem(sessionStorageNameSession)
       : 'aucune',
   );
-  const [seance, setSeance] = React.useState(
+  const [panelSeance, setPanelSeance] = React.useState(
     sessionStorage.getItem(sessionStorageSeance)
       ? sessionStorage.getItem(sessionStorageSeance)
       : 'all',
   );
   setSelectedSession(choixSession);
-  setSelectedSeance(seance);
+  setSelectedSeance(panelSeance);
   let buttonColor = 'black';
   return (
     <GridToolbarContainer>
@@ -73,8 +75,8 @@ const ToolBar = ({
       />
       <MenuDeroulant
         listeId={listeNomSeances}
-        choix={seance}
-        setState={setSeance}
+        choix={panelSeance}
+        setState={setPanelSeance}
         storageName={sessionStorageSeance}
         nomArticle="Seance"
       />

@@ -4,32 +4,19 @@ import ToolBar from './ToolBar';
 import { useSelector } from 'react-redux';
 import { getExercices } from '@stores/Exercices/exercicesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCell from './ChipGridCell';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { LANGUAGES_CONTENT } from './internationalization.js';
 
-const theme = createTheme({
-  content: {
-    frFR: {
-      gridContent: {
-        columnHeaders: {
-          studentCol: {
-            headerName: 'id étudiant',
-          },
-        },
-      },
-    },
-  },
-});
 const GlobalResults = () => {
   // HOOKS & STATES
   const exercises = useSelector(getExercices);
   const sessions = useSelector(getSessions);
   console.debug('sessions', sessions);
   const exerciseRef = useRef({});
-  const [SeanceRef, SetSeanceRef] = useState('');
+  const [seance, setSeance] = useState(''); //id
   const [anchorElPopper, setAnchorElPopper] = useState();
   const [selected, setSelected] = useState('tous');
 
@@ -71,14 +58,14 @@ const GlobalResults = () => {
         studentsRows.push(studentRow);
       }
     },
-    [exercises, SeanceRef, selected],
+    [exercises, seance, selected],
   );
 
   const rows = useMemo(() => {
     const rows_etu = [];
     Object.values(exercises).forEach((exercice) => {
       let ok = false;
-      if (exercice.idSeance === SeanceRef) {
+      if (exercice.idSeance === seance) {
         switch (selected) {
           case 'finis':
             if (exercice.estFini) {
@@ -102,12 +89,12 @@ const GlobalResults = () => {
     });
     console.debug(rows_etu, 'rows_etu');
     return rows_etu;
-  }, [exercises, selected, selectedSeance, SeanceRef]);
+  }, [exercises, selected, selectedSeance, seance]);
 
   let tmp_columns = [
     {
       field: 'idEtu',
-      headerName: theme.content.frFR.gridContent.columnHeaders.studentCol.headerName,
+      headerName: LANGUAGES_CONTENT.frFR.gridContent.columnHeaders.studentCol.headerName,
     },
   ];
   let columns_en_cours = [
@@ -257,7 +244,7 @@ const GlobalResults = () => {
       return tmp_columns;
     }
     return [];
-  }, [exercises, sessions, CURRENT_SESSION, selectedSeance, SeanceRef]);
+  }, [exercises, sessions, CURRENT_SESSION, selectedSeance, seance]);
   //MEMOIZED COMPONENTS
 
   //replace useState anchorElPopper and setAnchorElPopper with useReducer
@@ -283,41 +270,39 @@ const GlobalResults = () => {
   console.info('CURRENT', CURRENT_SESSION);
   return (
     <Box item justifyContent="center" alignItems="center" container spacing={1}>
-      <ThemeProvider theme={theme}>
-        <DataGrid
-          disableColumnMenu={true}
-          disableColumnFilter={true}
-          disableToolPanel={true}
-          disableSelectionOnClick={true}
-          disableColumnSelector={true}
-          sx={{ display: 'flex', flexDirection: 'column-reverse' }}
-          localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
-          components={{
-            Footer: ToolBar,
-          }}
-          componentsProps={{
-            footer: {
-              setSelected,
-              selected,
-              sessions,
-              selectedSession,
-              setSelectedSession,
-              selectedSeance,
-              setSelectedSeance,
-              SetSeanceRef,
-            },
-          }}
-          rows={selectedSession !== '' ? rows : []}
-          columns={selectedSession !== '' ? columns : []}
-          loading={rows.length == 0}
-          autoHeight={true}
-          autoWidth={true}
-          headerHeight={225}
-          rowHeight={36}
-          density={'compact'}
-          onCellClick={handlePopoverClick}
-        />
-      </ThemeProvider>
+      <DataGrid
+        disableColumnMenu={true}
+        disableColumnFilter={true}
+        disableToolPanel={true}
+        disableSelectionOnClick={true}
+        sx={{ display: 'flex', flexDirection: 'column-reverse' }}
+        localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
+        components={{
+          Footer: ToolBar,
+        }}
+        componentsProps={{
+          footer: {
+            setSelected,
+            selected,
+            sessions,
+            selectedSession,
+            setSelectedSession,
+            selectedSeance,
+            setSelectedSeance,
+            setSeance,
+          },
+        }}
+        rows={selectedSession !== '' ? rows : []}
+        columns={selectedSession !== '' ? columns : []}
+        loading={rows.length == 0}
+        autoHeight={true}
+        autoWidth={true}
+        headerHeight={36}
+        rowHeight={36}
+        density={'compact'}
+        onCellClick={handlePopoverClick}
+      />
+
       <div id="container" style={containerStyle}></div>
       {
         <>
