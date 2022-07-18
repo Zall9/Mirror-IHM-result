@@ -77,6 +77,7 @@ const PopperDetails = (props) => {
         }}
       >
         {
+          // div qui contient tout le contenu.
           <div
             style={{
               border: '3px solid black',
@@ -112,6 +113,7 @@ const PopperDetails = (props) => {
               {currentExercise == -1 ? (
                 <></>
               ) : (
+                // La div contient la frise chronologique
                 <div
                   style={{
                     overflowY: 'hidden',
@@ -127,6 +129,7 @@ const PopperDetails = (props) => {
                 </div>
               )}
               <>
+                {/* code des tentatives ci-dessous */}
                 <List
                   sx={{
                     display: 'inline-block',

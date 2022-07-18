@@ -32,6 +32,9 @@ const ChipGridCell = (props) => {
   return (
     <>
       {props.label !== '' ? <Chip {...props} sx={cellsStyle(props)} /> : <></>}
+      {/* ci-dessous: si l'exercice que l'on regarde éxiste pour l'étudiant,
+          s'il n'est pas fini et qu'il existe une aide non résolue par l'enseignant
+          on render la main */}
       {props?.exercise !== undefined &&
       props?.exercise.estFini != true &&
       isResolved == false &&
