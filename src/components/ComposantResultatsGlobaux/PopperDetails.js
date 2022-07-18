@@ -126,7 +126,7 @@ const PopperDetails = (props) => {
                   ></FriseChrono>
                 </div>
               )}
-              <List>
+              <>
                 <List
                   sx={{
                     display: 'inline-block',
@@ -149,7 +149,7 @@ const PopperDetails = (props) => {
                     )
                   )}
                 </List>
-              </List>
+              </>
             </Box>
           </div>
         }

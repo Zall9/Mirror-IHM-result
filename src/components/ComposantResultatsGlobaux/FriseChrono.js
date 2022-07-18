@@ -16,7 +16,6 @@ import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { colorGradient } from './utils/colorGradient';
 import CheckIcon from '@mui/icons-material/Check';
-import { ReceiptRounded } from '@mui/icons-material';
 const useStyles = makeStyles({
   timeline: {
     height: '75px',
@@ -51,8 +50,8 @@ const useStyles = makeStyles({
 /**
  * Si le nombre de tentatives est le même et que l'utilisateur n'a cliqué sur rien, alors le contenu
  * n'a pas changé
- * @param content - l'état actuel du composant
- * @param nextContent - l'état suivant du composant
+ * @param {object} content - l'état actuel du composant
+ * @param {object} nextContent - l'état suivant du composant
  * @returns true si la longueur du tableau de tentatives est la même et si la valeur cliquée est la
  * même.
  */
@@ -63,7 +62,7 @@ function areEqual(content, nextContent) {
   );
 }
 /**
- * @param {object} props: {exercice, callback setClicked}
+ * @param {object} props: { {Object}currentExercise , {string}clicked, {callback} setClicked}
  *
  * prend un objet d'exercice comme paramètre et renvoie un composant de timeline qui affiche
  * l'heure de début de l'exercice, le temps moyen nécessaire pour terminer l'exercice et les heures
@@ -218,7 +217,7 @@ const FriseChrono = ({ currentExercise, clicked, setClicked }) => {
     },
     [clicked, currentExercise],
   );
-  //memoize content
+
   return (
     <>
       <Timeline align="alternate" className={classes.timeline} key={'TimeLine-Tentatives'}>
