@@ -115,9 +115,11 @@ const GlobalResults = () => {
             let currentExercise = currentExercises.find(
               (e) => params.field == exo.id && e.idEtu === params.row.idEtu,
             );
+            console.log(params, 'params');
+            console.log(currentExercise, 'params exo');
             return (
               // check si c'est l'exercice courant de l'étudiant
-              currentExercise !== undefined && currentExercise.estFini ? (
+              !(currentExercise && params && !currentExercise?.estFini) ? (
                 <ChipGridCell
                   exercise={currentExercise}
                   params={params}
@@ -125,6 +127,8 @@ const GlobalResults = () => {
                   size="small"
                   label={params.value !== undefined ? '' + params.value : ''}
                 />
+              ) : selected == 'finis' ? (
+                <></>
               ) : (
                 <CurrentExerciseGridCell
                   exercise={currentExercise}
@@ -139,7 +143,7 @@ const GlobalResults = () => {
       return tmp_columns;
     }
     return tmp_columns;
-  }, [exercises, sessions, CURRENT_SESSION, selectedSeance, seance, tmp_columns]);
+  }, [exercises, sessions, CURRENT_SESSION, selectedSeance, seance, selected]);
   //MEMOIZED COMPONENTS
 
   //replace useState anchorElPopper and setAnchorElPopper with useReducer
