@@ -48,21 +48,7 @@ const useStyles = makeStyles({
 });
 
 /**
- * Si le nombre de tentatives est le même et que l'utilisateur n'a cliqué sur rien, alors le contenu
- * n'a pas changé
- * @param {object} content - l'état actuel du composant
- * @param {object} nextContent - l'état suivant du composant
- * @returns true si la longueur du tableau de tentatives est la même et si la valeur cliquée est la
- * même.
- */
-function areEqual(content, nextContent) {
-  return (
-    content.currentExercise.tentatives.length == nextContent.currentExercise.tentatives.length &&
-    content.clicked == nextContent.clicked
-  );
-}
-/**
- * @param {object} props: { {Object}currentExercise , {string}clicked, {callback} setClicked}
+ * @param props: { {Object}currentExercise , {string}clicked, {callback} setClicked}
  *
  * prend un objet d'exercice comme paramètre et renvoie un composant de timeline qui affiche
  * l'heure de début de l'exercice, le temps moyen nécessaire pour terminer l'exercice et les heures
@@ -234,4 +220,19 @@ FriseChrono.propTypes = {
   clicked: PropTypes.any,
   setClicked: PropTypes.any,
 };
+
+/**
+ * Si le nombre de tentatives est le même et que l'utilisateur n'a cliqué sur rien, alors le contenu
+ * n'a pas changé
+ * @param {object} content - l'état actuel du composant
+ * @param {object} nextContent - l'état suivant du composant
+ * @returns true si la longueur du tableau de tentatives est la même et si la valeur cliquée est la
+ * même.
+ */
+function areEqual(content, nextContent) {
+  return (
+    content.currentExercise.tentatives.length == nextContent.currentExercise.tentatives.length &&
+    content.clicked == nextContent.clicked
+  );
+}
 export default React.memo(FriseChrono, areEqual);
