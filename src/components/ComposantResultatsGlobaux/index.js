@@ -9,6 +9,7 @@ import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCell from './ChipGridCell';
 import { LANGUAGES_CONTENT } from './internationalization.js';
+import CurrentExerciseGridCell from './CurrentExerciseGridCells';
 
 const GlobalResults = () => {
   // HOOKS & STATES
@@ -175,13 +176,25 @@ const GlobalResults = () => {
               (e) => params.field == exo.id && e.idEtu === params.row.idEtu,
             );
             return (
-              <ChipGridCell
-                exercise={currentExercise}
-                params={params}
-                variant="filled"
-                size="small"
-                label={params.value !== undefined ? '' + params.value : ''}
-              />
+              // check si c'est l'exercice courant de l'étudiant
+              currentExercise?.estFini ? (
+                <ChipGridCell
+                  exercise={currentExercise}
+                  params={params}
+                  variant="filled"
+                  size="small"
+                  label={params.value !== undefined ? '' + params.value : ''}
+                />
+              ) : (
+                //@TODO: custom component pour exercice courrant
+                <ChipGridCell
+                  exercise={currentExercise}
+                  params={params}
+                  variant="string"
+                  size="small"
+                  label={params.value !== undefined ? '' + params.value : ''}
+                />
+              )
             );
           },
         });
