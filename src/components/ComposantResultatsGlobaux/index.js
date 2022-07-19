@@ -103,66 +103,6 @@ const GlobalResults = () => {
       for (const exo of CURRENT_SESSION.exercices) {
         //les exercices dans db resultats correspondant a l'exercice de Session sur lequel on itère
         let currentExercises = Object.values(exercises).filter((e) => e.idExo === exo.id);
-        // if (selected === 'aides') {
-        //   columns_aides.push({
-        //     field: exo.id,
-        //     align: 'center',
-        //     flex: 1,
-        //     maxWidth: 75,
-        //     hideSortIcons: true,
-        //     headerName: exo.nom,
-        //     renderCell: (params) => {
-        //       return (
-        //         <ChipGridCell
-        //           exercise={Object.values(exercises)
-        //             .filter((e) => e.idExo === exo.id)
-        //             .find(
-        //               (e) =>
-        //                 params.field == exo.id &&
-        //                 e.idEtu === params.row.idEtu &&
-        //                 exo.aides.length > 0,
-        //             )}
-        //           params={params}
-        //           variant="filled"
-        //           size="small"
-        //           label={params.value !== undefined ? '' + params.value : ''}
-        //         />
-        //       );
-        //     },
-        //   });
-        //   return columns_aides;
-        // }
-        // if (selected === 'tous') {
-        //   tmp_columns.push({
-        //     field: '' + exo.id,
-        //     headerName: '' + exo.nom,
-        //     align: 'center',
-        //     flex: 1,
-        //     height: 150,
-        //     maxWidth: 75,
-        //     minHeight: 150,
-        //     hideSortIcons: true,
-        //     renderCell: (params) => {
-        //       return (
-        //         <ChipGridCell
-        //           // les tentatives sont dans exercises(db result) pas dans CURRENT_SESSION.exercices(db exo)
-        //           exercise={Object.values(exercises)
-        //             .filter((e) => e.idExo === exo.id)
-        //             .find(
-        //               (e) =>
-        //                 params.field == exo.id &&
-        //                 e.idEtu === params.row.idEtu &&
-        //                 exo.aides.length > 0,
-        //             )}
-        //           params={params}
-        //           variant="filled"
-        //           size="small"
-        //           label={params.value !== undefined ? '' + params.value : ''}
-        //         />
-        //       );
-        //     },
-        //   });
-        // }
         tmp_columns.push({
           field: '' + exo.id,
           headerName: '' + exo.nom,
@@ -177,7 +117,7 @@ const GlobalResults = () => {
             );
             return (
               // check si c'est l'exercice courant de l'étudiant
-              currentExercise?.estFini ? (
+              currentExercise !== undefined && currentExercise.estFini ? (
                 <ChipGridCell
                   exercise={currentExercise}
                   params={params}
@@ -187,11 +127,9 @@ const GlobalResults = () => {
                 />
               ) : (
                 //@TODO: custom component pour exercice courrant
-                <ChipGridCell
+                <CurrentExerciseGridCell
                   exercise={currentExercise}
                   params={params}
-                  variant="string"
-                  size="small"
                   label={params.value !== undefined ? '' + params.value : ''}
                 />
               )
@@ -199,37 +137,6 @@ const GlobalResults = () => {
           },
         });
       }
-      // if (selected === 'finis') {
-      //   columns_finis.push({
-      //     field: '' + exo.id,
-      //     headerName: '' + exo.nom,
-      //     align: 'center',
-      //     flex: 1,
-      //     hideSortIcons: true,
-      //     maxWidth: 75,
-      //     renderCell: (params) => {
-      //       return (
-      //         <ChipGridCell
-      //           exercise={Object.values(exercises)
-      //             .filter((e) => e.idExo === exo.id)
-      //             .find(
-      //               (e) =>
-      //                 params.field == exo.id &&
-      //                 e.idEtu === params.row.idEtu &&
-      //                 exo.estFini == true &&
-      //                 exo.aides.length > 0,
-      //             )}
-      //           params={params}
-      //           variant="filled"
-      //           size="small"
-      //           label={params.value !== undefined ? '' + params.value : ''}
-      //         />
-      //       );
-      //     },
-      //   });
-      //   return columns_finis;
-      // }
-
       return tmp_columns;
     }
     return tmp_columns;
