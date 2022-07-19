@@ -2,10 +2,10 @@ import React from 'react';
 import DiagrammeCirculaire from '../DiagrammeCirculaire/DiagrammeCirculaire'; //TODO ALIAS SUR LE COMPONENT
 // import redux/store
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 
 const PourcentEtuParDifficulte = () => {
-  const exercices = useSelector(getExercices);
+  const exercices = useSelector(getExercises);
   /* Création d'un dictionnaire avec le nombre d'exercices par difficulté et compte le nombre d'étudiants par exercices non terminés */
   let difficulteDico = exercices.reduce(
     (acc, exercice) => {

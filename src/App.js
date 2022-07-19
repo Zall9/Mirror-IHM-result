@@ -14,14 +14,14 @@ import VisuResultatExercice from '@pages/VisuResultatExercice/VisuResultatExerci
 import { initSocketConnection } from '@services/socket/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessions, setSession } from '@stores/Sessions/sessionSlice';
-import { setExercices, getExercices } from '@stores/Exercices/exercicesSlice';
+import { setExercises, getExercises } from '@stores/Exercices/exercicesSlice';
 import axios from 'axios';
 import AuthLayout from '@components/AuthLayout/AuthLayout';
 import PageResultatsGlobaux from './pages/PageResultatsGlobaux/ComposantResultatsGlobaux';
 
 const initExercices = (dispatch) => {
   axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
-    dispatch(setExercices(res.data.exercices));
+    dispatch(setExercises(res.data.exercices));
   });
 };
 

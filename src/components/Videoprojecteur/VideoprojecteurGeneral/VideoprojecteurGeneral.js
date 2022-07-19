@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
@@ -9,7 +9,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 const VideoprojecteurGeneral = () => {
-  const exercices = useSelector(getExercices);
+  const exercices = useSelector(getExercises);
   /*
   let tabEtu = [];
   for (const exo of exercices) {

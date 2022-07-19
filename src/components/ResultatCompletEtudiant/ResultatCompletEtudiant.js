@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 import Row from './RowResultatComplet/RowResultatComplet';
 import Box from '@mui/material/Box';
 
@@ -19,7 +19,7 @@ import AfficheBoiteExercice from './AfficheBoiteExercice/AfficheBoiteExercice';
 const ResultatCompletEtudiant = (param /*, seance*/) => {
   const idEtu = param.idEtu;
 
-  const exercices = useSelector(getExercices).filter((exo) => exo.idEtu == idEtu);
+  const exercices = useSelector(getExercises).filter((exo) => exo.idEtu == idEtu);
   exercices.sort(triTab);
 
   // tri les résultats en fonction du fait qu'il soit fini ou non et de la date des soumissions

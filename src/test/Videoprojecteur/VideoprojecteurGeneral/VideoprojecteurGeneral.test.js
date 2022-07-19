@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { mockReactRedux } from 'mock-react-redux';
 
 import VideoprojecteurGeneral from '@components/Videoprojecteur/VideoprojecteurGeneral/VideoprojecteurGeneral';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 
 const donnees = [
   {
@@ -94,7 +94,7 @@ afterEach(() => {
 });
 
 it('test du component VideoprojecteurDetail.js', async () => {
-  mockReactRedux().give(getExercices, donnees);
+  mockReactRedux().give(getExercises, donnees);
 
   await act(async () => {
     render(<VideoprojecteurGeneral />, container);

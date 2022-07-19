@@ -3,7 +3,7 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { mockReactRedux } from 'mock-react-redux';
 import ResultatCompletEtudiant from '@components/ResultatCompletEtudiant/ResultatCompletEtudiant';
-import { getExercices } from '../../services/stores/Exercices/exercicesSlice';
+import { getExercises } from '../../services/stores/Exercices/exercicesSlice';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -62,7 +62,7 @@ afterEach(() => {
 });
 
 it('test du component RowResultatComplet.js avec données', async () => {
-  mockReactRedux().give(getExercices, donnees);
+  mockReactRedux().give(getExercises, donnees);
   // render du component
   await act(async () => {
     render(

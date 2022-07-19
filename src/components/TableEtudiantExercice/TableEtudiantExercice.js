@@ -13,11 +13,11 @@ import {
 
 // import redux/store
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 import { etudiantParser, etudiantUnParser } from '@components/Utilitaires/Etudiant/etudiantParser';
 
 const TableEtudiantExercice = () => {
-  const exercices = useSelector(getExercices);
+  const exercices = useSelector(getExercises);
   let navigate = useNavigate();
 
   let etudiantTrie = exercices.reduce((acc, exercice) => {

@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const exercicesSlice = createSlice({
-  name: 'exercices',
+  name: 'exercises',
   initialState: {
     exercices: {},
   },
   reducers: {
-    setExercices: (state, respExercices) => {
+    setExercises: (state, respExercices) => {
       respExercices.payload.forEach((exercice) => {
         state.exercices[exercice.id] = exercice;
       });
@@ -14,7 +14,7 @@ export const exercicesSlice = createSlice({
     addExercice: (state, respExercice) => {
       state.exercices[respExercice.payload.id] = respExercice.payload;
     },
-    addTentative: (state, respTentative) => {
+    addAttempt: (state, respTentative) => {
       let exercice = state.exercices[respTentative.payload.idExoEtu];
       // delete infos en double
       if (exercice) {
@@ -26,10 +26,10 @@ export const exercicesSlice = createSlice({
         throw Error('Exercice not found for Tentative!');
       }
     },
-    addAide: (state, respAide) => {
+    addSupportRequest: (state, respAide) => {
       let exercice = state.exercices[respAide.payload.idExoEtu];
-      console.log('AddAide !', exercice);
-      console.log('Payload AddAide', respAide.payload);
+      console.log('addSupportRequest !', exercice);
+      console.log('Payload addSupportRequest', respAide.payload);
       if (exercice) {
         exercice.aides.push(respAide.payload);
         if (respAide.payload.resolue) {
@@ -43,11 +43,11 @@ export const exercicesSlice = createSlice({
 });
 
 //A besoin d'être en dehors du Slice pour pouvoir return le state
-export const getExercices = (state) => {
+export const getExercises = (state) => {
   return state.exercices.exercices;
 };
 
 // Action creators are generated for each case reducer function
-export const { setExercices, addExercice, addTentative, addAide } = exercicesSlice.actions;
+export const { setExercises, addExercice, addAttempt, addSupportRequest } = exercicesSlice.actions;
 
 export default exercicesSlice.reducer;

@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { DataGrid, frFR } from '@mui/x-data-grid';
 import ToolBar from './ToolBar';
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
 import { Box } from '@mui/material';
 import PopperDetails from './PopperDetails';
@@ -13,7 +13,7 @@ import CurrentExerciseGridCell from './CurrentExerciseGridCells';
 
 const GlobalResults = () => {
   // HOOKS & STATES
-  const exercises = useSelector(getExercices);
+  const exercises = useSelector(getExercises);
   const sessions = useSelector(getSessions);
   console.debug('sessions', sessions);
   const exerciseRef = useRef({});
