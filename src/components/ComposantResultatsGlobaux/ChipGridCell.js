@@ -22,6 +22,7 @@ const ChipGridCell = (props) => {
     function (params) {
       if (params.label !== '') {
         let style = {
+          position: 'relative',
           backgroundColor: colorGradient(params.label, isAverageExceeded),
         };
         return style;
@@ -35,12 +36,6 @@ const ChipGridCell = (props) => {
       {/* ci-dessous: si l'exercice que l'on regarde éxiste pour l'étudiant,
           s'il n'est pas fini et qu'il existe une aide non résolue par l'enseignant
           on render la main */}
-      {props?.exercise !== undefined &&
-      props?.exercise.estFini != true &&
-      isResolved == false &&
-      props?.exercise.aides.length > 0 ? (
-        <PanToolIcon></PanToolIcon>
-      ) : null}
     </>
   );
 };

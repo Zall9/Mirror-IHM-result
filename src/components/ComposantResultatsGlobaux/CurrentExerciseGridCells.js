@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ChipGridCell from './ChipGridCell';
 import { Box } from '@mui/system';
+import PanToolIcon from '@mui/icons-material/PanTool';
 
 const CurrentExerciseGridCell = ({ exercise, params, label }) => {
   console.log(exercise, 'currentExercise');
@@ -11,16 +12,44 @@ const CurrentExerciseGridCell = ({ exercise, params, label }) => {
     <>
       {exercise !== undefined && label !== '' ? (
         <Box sx={{ position: 'relative' }}>
-          <CircularProgress size="1.75rem" color="success" variant="indeterminate" />
-          <Box sx={{ position: 'absolute', top: '2px', left: '3px' }}>
-            <ChipGridCell
-              variant="filled"
-              size="small"
-              label={label}
-              exercise={exercise}
-              params={params}
-            />
-          </Box>
+          {!exercise.estFini && exercise.aides.length > 0 ? (
+            <>
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <CircularProgress
+                  sx={{ position: 'absolute', top: '-2.5px', left: '-3px' }}
+                  size="1.75rem"
+                  color="success"
+                  variant="indeterminate"
+                />
+                <ChipGridCell
+                  variant="filled"
+                  size="small"
+                  label={label}
+                  exercise={exercise}
+                  params={params}
+                />
+                <PanToolIcon />
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <CircularProgress
+                  sx={{ position: 'absolute' }}
+                  size="1.75rem"
+                  color="success"
+                  variant="indeterminate"
+                />
+                <ChipGridCell
+                  variant="filled"
+                  size="small"
+                  label={label}
+                  exercise={exercise}
+                  params={params}
+                />
+              </Box>
+            </>
+          )}
         </Box>
       ) : (
         <></>
@@ -34,4 +63,7 @@ CurrentExerciseGridCell.propTypes = {
   params: PropTypes.object,
   label: PropTypes.string,
 };
-export default CurrentExerciseGridCell;
+const areEqual = (prevProps, nextProps) => {
+  return prevProps.exercise === nextProps.exercise;
+};
+export default React.memo(CurrentExerciseGridCell, areEqual);

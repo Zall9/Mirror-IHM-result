@@ -126,7 +126,6 @@ const GlobalResults = () => {
                   label={params.value !== undefined ? '' + params.value : ''}
                 />
               ) : (
-                //@TODO: custom component pour exercice courrant
                 <CurrentExerciseGridCell
                   exercise={currentExercise}
                   params={params}
