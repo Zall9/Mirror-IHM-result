@@ -1,39 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const exercicesSlice = createSlice({
+export const exercisesSlice = createSlice({
   name: 'exercises',
   initialState: {
-    exercices: {},
+    exercises: {},
   },
   reducers: {
-    setExercises: (state, respExercices) => {
-      respExercices.payload.forEach((exercice) => {
-        state.exercices[exercice.id] = exercice;
+    setExercises: (state, respExercises) => {
+      respExercises.payload.forEach((exercise) => {
+        state.exercises[exercise.id] = exercise;
       });
     },
-    addExercice: (state, respExercice) => {
-      state.exercices[respExercice.payload.id] = respExercice.payload;
+    addExercice: (state, respExercise) => {
+      state.exercises[respExercise.payload.id] = respExercise.payload;
     },
-    addAttempt: (state, respTentative) => {
-      let exercice = state.exercices[respTentative.payload.idExoEtu];
+    addAttempt: (state, respAttempt) => {
+      let exercice = state.exercises[respAttempt.payload.idExoEtu];
       // delete infos en double
       if (exercice) {
-        exercice.tentatives.push(respTentative.payload);
-        if (respTentative.payload.validationExercice) {
+        exercice.tentatives.push(respAttempt.payload);
+        if (respAttempt.payload.validationExercice) {
           exercice.estFini = true;
         }
       } else {
         throw Error('Exercice not found for Tentative!');
       }
     },
-    addSupportRequest: (state, respAide) => {
-      let exercice = state.exercices[respAide.payload.idExoEtu];
+    addSupportRequest: (state, respSupportRequest) => {
+      let exercice = state.exercises[respSupportRequest.payload.idExoEtu];
       console.log('addSupportRequest !', exercice);
-      console.log('Payload addSupportRequest', respAide.payload);
+      console.log('Payload addSupportRequest', respSupportRequest.payload);
       if (exercice) {
-        exercice.aides.push(respAide.payload);
-        if (respAide.payload.resolue) {
-          exercice.aides.find((aide) => aide.id === respAide.payload.id).resolue = true;
+        exercice.aides.push(respSupportRequest.payload);
+        if (respSupportRequest.payload.resolue) {
+          exercice.aides.find((aide) => aide.id === respSupportRequest.payload.id).resolue = true;
         }
       } else {
         throw Error('Exercice not found for HelpRequest!');
@@ -44,10 +44,10 @@ export const exercicesSlice = createSlice({
 
 //A besoin d'être en dehors du Slice pour pouvoir return le state
 export const getExercises = (state) => {
-  return state.exercices.exercices;
+  return state.exercises.exercises;
 };
 
 // Action creators are generated for each case reducer function
-export const { setExercises, addExercice, addAttempt, addSupportRequest } = exercicesSlice.actions;
+export const { setExercises, addExercice, addAttempt, addSupportRequest } = exercisesSlice.actions;
 
-export default exercicesSlice.reducer;
+export default exercisesSlice.reducer;
