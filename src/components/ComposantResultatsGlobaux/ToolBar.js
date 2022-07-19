@@ -15,32 +15,33 @@ import React from 'react';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import MenuDeroulantSession from '../MenuDeroulantSession/MenuDeroulantSession';
 import JsonExportMenuItem from './JsonExportMenuItem';
+import { LANGUAGES_CONTENT } from './internationalization.js';
+
 const ToolBar = ({
-  _setSelected,
-  _selected,
-  _sessions,
-  _selectedSession,
-  _setSelectedSession,
-  _selectedSeance,
-  _setSelectedSeance,
-  _SeanceRef,
-  _SetSeanceRef,
+  setSelected,
+  selected,
+  sessions,
+  selectedSession,
+  setSelectedSession,
+  selectedSeance,
+  setSelectedSeance,
+  setSeance,
 }) => {
   let listeNomSeances = [];
   let listeIdSeances = [];
-  _sessions.forEach((session) => {
-    if (_selectedSession === session.id) {
+  sessions.forEach((session) => {
+    if (selectedSession === session.id) {
       listeNomSeances = session.seances.map((seance) => {
         listeIdSeances.push(seance.id);
         return seance.groupe + ' - ' + seance.encadrant;
       });
     }
   });
-  _sessions.forEach((session) => {
-    if (_selectedSession === session.id) {
+  sessions.forEach((session) => {
+    if (selectedSession === session.id) {
       session.seances.forEach((seance) => {
-        if (_selectedSeance === seance.groupe + ' - ' + seance.encadrant) {
-          _SetSeanceRef(seance.id);
+        if (selectedSeance === seance.groupe + ' - ' + seance.encadrant) {
+          setSeance(seance.id);
         }
       });
     }
@@ -48,25 +49,25 @@ const ToolBar = ({
 
   const sessionStorageNameSession = 'idSes';
   const sessionStorageSeance = 'idSeance';
-  const selection = ['en cours', 'finis', 'tous', 'aides'];
+  const selection = LANGUAGES_CONTENT.frFR.gridContent.contentSelector.filters;
   //STATES
   const [choixSession, setSession] = React.useState(
     sessionStorage.getItem(sessionStorageNameSession)
       ? sessionStorage.getItem(sessionStorageNameSession)
       : 'aucune',
   );
-  const [seance, setSeance] = React.useState(
+  const [panelSeance, setPanelSeance] = React.useState(
     sessionStorage.getItem(sessionStorageSeance)
       ? sessionStorage.getItem(sessionStorageSeance)
       : 'all',
   );
-  _setSelectedSession(choixSession);
-  _setSelectedSeance(seance);
+  setSelectedSession(choixSession);
+  setSelectedSeance(panelSeance);
   let buttonColor = 'black';
   return (
     <GridToolbarContainer>
       <MenuDeroulantSession
-        sessions={_sessions}
+        sessions={sessions}
         choixSession={choixSession}
         setSession={setSession}
         storageName={sessionStorageNameSession}
@@ -74,8 +75,8 @@ const ToolBar = ({
       />
       <MenuDeroulant
         listeId={listeNomSeances}
-        choix={seance}
-        setState={setSeance}
+        choix={panelSeance}
+        setState={setPanelSeance}
         storageName={sessionStorageSeance}
         nomArticle="Seance"
       />
@@ -89,16 +90,16 @@ const ToolBar = ({
       <IconButton
         sx={{ color: buttonColor }}
         onClick={() => {
-          _setSelected(selection[(selection.indexOf(_selected) + 1) % selection.length]);
+          setSelected(selection[(selection.indexOf(selected) + 1) % selection.length]);
         }}
       >
         <FilterAltIcon></FilterAltIcon>
-        <Typography>{_selected}</Typography>
+        <Typography>{selected}</Typography>
       </IconButton>
       <IconButton
         sx={{ color: buttonColor }}
         onClick={() => {
-          _setSelected('aides');
+          setSelected('aides');
         }}
       >
         <PanToolIcon></PanToolIcon>

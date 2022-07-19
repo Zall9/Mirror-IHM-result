@@ -21,7 +21,7 @@ const pages = [
   'Videoprojecteur',
   'VisuResultatEtudiant',
   'VisuResultatExercice',
-  'ComposantResultatsGlobaux',
+  'PageResultatsGlobaux',
 ];
 
 const Navigation = () => {

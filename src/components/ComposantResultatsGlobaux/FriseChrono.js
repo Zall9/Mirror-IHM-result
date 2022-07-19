@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
@@ -11,7 +11,7 @@ import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import PropTypes from 'prop-types';
-import { dateParser, calculateTime, calculateTimeBetween } from './utils/dateParser';
+import { dateParser, calculateTime, isStudentLate } from './utils/dateParser';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { colorGradient } from './utils/colorGradient';
@@ -43,125 +43,124 @@ const useStyles = makeStyles({
     bottom: '2.5ch', //magic number
   },
   timelineIcon: {
-    '&:hover': {
-      cursor: 'pointer',
-    },
     transform: 'rotate(90deg)',
   },
 });
+
 /**
- * @param {object} props: {exercice, callback setClicked}
+ * @param props: { {Object}currentExercise , {string}clicked, {callback} setClicked}
  *
  * prend un objet d'exercice comme paramètre et renvoie un composant de timeline qui affiche
  * l'heure de début de l'exercice, le temps moyen nécessaire pour terminer l'exercice et les heures
  * auxquelles l'élève a demandé de l'aide et validé l'exercice.
  * @returns Un composant
  */
-const FriseChrono = ({ exo, clicked, setClicked }) => {
+const FriseChrono = ({ currentExercise, clicked, setClicked }) => {
   const classes = useStyles();
-  const aides = exo.aides;
-  const heureDebut = exo.debut;
-  const tempsMoyen = exo.tempsMoyen;
-  // const tentatives = exo.tentatives; CURRENTLY UNUSED
-  const SetClicked = setClicked;
-  console.log('EXO', exo);
-  let timeline = [
-    {
-      heureDebut: heureDebut,
-      type: 'debut',
-      date: heureDebut,
-      icon: () => <GolfCourseIcon className={classes.timelineIcon} />,
-    },
-    {
-      tempsMoyen: tempsMoyen,
-      type: 'moyen',
-      date: new Date(new Date(heureDebut).getTime() + tempsMoyen * 1000).toISOString(),
-      icon: () => <AccessTimeFilledIcon className={classes.timelineIcon} />,
-    },
-  ];
-
-  exo.tentatives.map((tentative) => {
-    timeline.push({
-      date: tentative.dateSoumission,
-      type: 'tentative',
-      validationExercice: tentative.validationExercice,
-      id: tentative.id,
-      icon: (item, index, _clicked) =>
-        !_clicked ? (
-          item.validationExercice == true ? (
-            <CheckIcon
+  const aides = currentExercise.aides;
+  const startTime = currentExercise.debut;
+  const tempsMoyen = currentExercise.tempsMoyen;
+  // const tentatives = currentExercise.tentatives; CURRENTLY UNUSED
+  let timeline = useMemo(() => {
+    let _timeline = [
+      {
+        startTime: startTime,
+        type: 'debut',
+        date: startTime,
+        icon: () => <GolfCourseIcon className={classes.timelineIcon} />,
+      },
+      {
+        tempsMoyen: tempsMoyen,
+        type: 'moyen',
+        date: new Date(new Date(startTime).getTime() + tempsMoyen * 1000).toISOString(),
+        icon: () => <AccessTimeFilledIcon className={classes.timelineIcon} />,
+      },
+    ];
+    currentExercise.tentatives.map((tentative) => {
+      _timeline.push({
+        date: tentative.dateSoumission,
+        type: 'tentative',
+        validationExercice: tentative.validationExercice,
+        id: tentative.id,
+        icon: (item, index, _clicked) =>
+          !_clicked ? (
+            item.validationExercice == true ? (
+              <CheckIcon
+                className={classes.timelineIcon}
+                key={item.id + 'Icon' + index}
+                sx={{
+                  color: colorGradient(
+                    index,
+                    isStudentLate(
+                      currentExercise.debut,
+                      currentExercise.tempsMoyen,
+                      currentExercise.tentatives[index - 1]?.dateSoumission,
+                    ),
+                  ),
+                }}
+              />
+            ) : (
+              <Error
+                className={classes.timelineIcon}
+                key={item.id + 'Icon' + index}
+                id={item.id}
+                sx={{
+                  color: colorGradient(
+                    index,
+                    isStudentLate(
+                      currentExercise.debut,
+                      currentExercise.tempsMoyen,
+                      currentExercise.tentatives[index - 1]?.dateSoumission,
+                    ),
+                  ),
+                }}
+              />
+            )
+          ) : item.validationExercice == true ? (
+            <CheckCircleOutline
               className={classes.timelineIcon}
               key={item.id + 'Icon' + index}
               sx={{
                 color: colorGradient(
                   index,
-                  calculateTimeBetween(
-                    exo.debut,
-                    exo.tempsMoyen,
-                    exo.tentatives[index - 1]?.dateSoumission,
+                  isStudentLate(
+                    currentExercise.debut,
+                    currentExercise.tempsMoyen,
+                    currentExercise.tentatives[index - 1]?.dateSoumission,
                   ),
                 ),
               }}
             />
           ) : (
-            <Error
+            <ErrorTwoToneIcon
               className={classes.timelineIcon}
               key={item.id + 'Icon' + index}
               id={item.id}
               sx={{
                 color: colorGradient(
                   index,
-                  calculateTimeBetween(
-                    exo.debut,
-                    exo.tempsMoyen,
-                    exo.tentatives[index - 1]?.dateSoumission,
+                  isStudentLate(
+                    currentExercise.debut,
+                    currentExercise.tempsMoyen,
+                    currentExercise.tentatives[index - 1]?.dateSoumission,
                   ),
                 ),
               }}
             />
-          )
-        ) : item.validationExercice == true ? (
-          <CheckCircleOutline
-            className={classes.timelineIcon}
-            key={item.id + 'Icon' + index}
-            sx={{
-              color: colorGradient(
-                index,
-                calculateTimeBetween(
-                  exo.debut,
-                  exo.tempsMoyen,
-                  exo.tentatives[index - 1]?.dateSoumission,
-                ),
-              ),
-            }}
-          />
-        ) : (
-          <ErrorTwoToneIcon
-            className={classes.timelineIcon}
-            key={item.id + 'Icon' + index}
-            id={item.id}
-            sx={{
-              color: colorGradient(
-                index,
-                calculateTimeBetween(
-                  exo.debut,
-                  exo.tempsMoyen,
-                  exo.tentatives[index - 1]?.dateSoumission,
-                ),
-              ),
-            }}
-          />
-        ),
+          ),
+      });
     });
-  });
-  exo.aides.map((aide) => {
-    timeline.push({
-      date: aide.date,
-      type: 'aide',
-      id: aides['_id'],
-      icon: () => <PanToolIcon className={classes.timelineIcon} />,
+    currentExercise.aides.map((aide) => {
+      _timeline.push({
+        date: aide.date,
+        type: 'aide',
+        id: aides['_id'],
+        icon: () => <PanToolIcon className={classes.timelineIcon} />,
+      });
     });
-  });
+    return _timeline;
+  }, [clicked, currentExercise]);
+
   timeline.sort((a, b) => {
     return new Date(a.date) - new Date(b.date);
   });
@@ -169,36 +168,47 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
   if (timeline[timeline.length - 1].type === 'moyen') {
     timeline.pop();
   }
-  const content = (item, index) => {
-    return (
-      <TimelineItem
-        key={item.id + 'TimeLineItem' + index}
-        onClick={(event, params) => {
-          SetClicked(item.id);
-        }}
-      >
-        <TimelineSeparator>
-          {item.icon(item, index, clicked === item.id)}
-          {index === timeline.length - 1 ? '' : <TimelineConnector />}
-        </TimelineSeparator>
-        <TimelineContent className={classes.timelineContentContainer}>
-          <Paper elevation={0} className={classes.timelineContentPair}>
-            <Typography>
-              {index === 0 ? <Typography>Début</Typography> : calculateTime(heureDebut, item.date)}
-            </Typography>
-          </Paper>
-          <Paper elevation={0} className={classes.timelineContentImpair}>
-            <Typography>{index === 0 ? dateParser(heureDebut) : dateParser(item.date)}</Typography>
-          </Paper>
-        </TimelineContent>
-      </TimelineItem>
-    );
-  };
+
+  const content = useCallback(
+    (item, index) => {
+      return (
+        <TimelineItem
+          key={item?.id + 'TimeLineItem' + index}
+          onClick={(event, params) => {
+            setClicked(item.id);
+          }}
+        >
+          <TimelineSeparator>
+            {item?.icon(item, index, clicked === item?.id)}
+            {index === timeline?.length - 1 ? <></> : <TimelineConnector />}
+          </TimelineSeparator>
+          <TimelineContent className={classes?.timelineContentContainer}>
+            <Paper elevation={0} className={classes?.timelineContentPair}>
+              <Typography>
+                {index === 0 ? (
+                  <Typography>Début</Typography>
+                ) : (
+                  calculateTime(startTime, item?.date)
+                )}
+              </Typography>
+            </Paper>
+            <Paper elevation={0} className={classes?.timelineContentImpair}>
+              <Typography>
+                {index === 0 ? dateParser(startTime) : dateParser(item?.date)}
+              </Typography>
+            </Paper>
+          </TimelineContent>
+        </TimelineItem>
+      );
+    },
+    [clicked, currentExercise],
+  );
+
   return (
     <>
       <Timeline align="alternate" className={classes.timeline} key={'TimeLine-Tentatives'}>
-        {timeline.map((timeLineItem, index) => {
-          return content(timeLineItem, index, clicked === timeLineItem.id);
+        {timeline.map((timelineItem, index) => {
+          return content(timelineItem, index);
         })}
       </Timeline>
     </>
@@ -206,8 +216,23 @@ const FriseChrono = ({ exo, clicked, setClicked }) => {
 };
 
 FriseChrono.propTypes = {
-  exo: PropTypes.any,
+  currentExercise: PropTypes.any,
   clicked: PropTypes.any,
   setClicked: PropTypes.any,
 };
-export default React.memo(FriseChrono);
+
+/**
+ * Si le nombre de tentatives est le même et que l'utilisateur n'a cliqué sur rien, alors le contenu
+ * n'a pas changé
+ * @param {object} content - l'état actuel du composant
+ * @param {object} nextContent - l'état suivant du composant
+ * @returns true si la longueur du tableau de tentatives est la même et si la valeur cliquée est la
+ * même.
+ */
+function areEqual(content, nextContent) {
+  return (
+    content.currentExercise.tentatives.length == nextContent.currentExercise.tentatives.length &&
+    content.clicked == nextContent.clicked
+  );
+}
+export default React.memo(FriseChrono, areEqual);

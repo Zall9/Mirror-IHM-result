@@ -32,5 +32,5 @@ export const colorGradient = (nbTentatives, boolean) => {
       return _makeRainbow(nbTentatives, ['yellow', 'orange', 'red']);
     }
   }
-  return 'white';
+  return 'grey';
 };

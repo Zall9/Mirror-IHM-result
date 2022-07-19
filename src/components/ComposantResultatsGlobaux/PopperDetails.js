@@ -18,41 +18,44 @@ import { dateParser } from './utils/dateParser';
 
 const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
-  const [consigne, setConsigne] = useState('');
-  // const [exoRef, setExoState] = useState(props.exo);
-  const exoRef = useRef(props.exo);
+  const [statement, setstatement] = useState('');
+  // const [exerciseRef, setExoState] = useState(props.exo);
+  const exerciseRef = useRef(props.exo);
   const [clicked, setClicked] = useState('');
-  const [open, setOpen] = useState(Boolean(props.anchorEl));
+  const [open, setOpen] = useState(true);
   useEffect(() => {
-    setConsigne(
-      props.session?.exercices.filter((exo) => exo.id == exoRef.current.field)[0]?.enonce,
+    setstatement(
+      props.session?.exercices.filter((exo) => exo.id == exerciseRef.current.field)[0]?.enonce,
     );
   }, []);
-  const exercices = props.exercices;
+  const exercises = props.exercises;
   const handlePopoverClose = props.handlePopoverClose;
   const anchorEl = props.anchorEl;
-  const exerciceAffiche = getExoFromIds(exoRef.current.id, exoRef.current.field, exercices);
-  const nomExo = exerciceAffiche.nomExo;
-  const langage = exerciceAffiche.langage;
-  const tentatives = exerciceAffiche.tentatives;
-  const difficulte = exerciceAffiche.difficulte;
-
-  const renderTentatives = (tentative, langage) => {
+  const currentExercise = getExoFromIds(
+    exerciseRef.current.id,
+    exerciseRef.current.field,
+    exercises,
+  );
+  const exerciseName = currentExercise.nomExo;
+  const language = currentExercise.langage;
+  const attempts = currentExercise.tentatives;
+  const difficulty = currentExercise.difficulte;
+  const renderAttempt = (attempt, language) => {
     return (
-      <div id={tentative.id} key={tentative.id}>
-        <ListItem key={tentative.id + 'dateSoumission'}>
-          <Typography>{dateParser(tentative.dateSoumission)}</Typography>
+      <div id={attempt.id} key={attempt.id}>
+        <ListItem key={attempt.id + 'dateSoumission'}>
+          <Typography>{dateParser(attempt.dateSoumission)}</Typography>
           <Typography>{':'}&nbsp;</Typography>
-          <Typography key={tentative.id + 'Logs'}>{tentative.logErreurs}</Typography>
+          <Typography key={attempt.id + 'Logs'}>{attempt.logErreurs}</Typography>
         </ListItem>
-        {langage !== '' && langage !== undefined ? (
-          <div id={tentative.id + '-code'}>
+        {language !== '' && language !== undefined ? (
+          <div id={attempt.id + '-code'}>
             <CodeTentative
-              code={tentative.reponseEtudiant}
-              key={tentative.id + '-code'}
-              language={langage}
+              code={attempt.reponseEtudiant}
+              key={attempt.id + '-code'}
+              language={language}
             />
-            {clicked == tentative.id + '-code' ? (
+            {clicked == attempt.id + '-code' ? (
               <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
             ) : null}
           </div>
@@ -65,15 +68,16 @@ const PopperDetails = (props) => {
   return (
     <ClickAwayListener onClickAway={handlePopoverClose}>
       <Popper
-        open={open}
+        open={true}
         anchorEl={anchorEl}
         disablePortal={true}
         placement={'right'}
         popperOptions={{
-          positionFixed: false,
+          positionFixed: true,
         }}
       >
         {
+          // div qui contient tout le contenu.
           <div
             style={{
               border: '3px solid black',
@@ -93,24 +97,23 @@ const PopperDetails = (props) => {
               }}
             >
               <ListItem>
-                <Typography variant="h6">
-                  {exoRef.current === '' ? '' : exoRef.current.id}
-                </Typography>
+                <Typography variant="h6">{exerciseRef.current.id}</Typography>
               </ListItem>
               <List sx={{ display: 'flex' }}>
                 <ListItem>
-                  <Typography>{exoRef.current === '' ? '' : nomExo}</Typography>
+                  <Typography>{exerciseName}</Typography>
                 </ListItem>
                 <ListItem>
-                  <Typography sx={{ p: 1 }}>{exoRef.current === '' ? '' : difficulte}</Typography>
+                  <Typography sx={{ p: 1 }}>{difficulty}</Typography>
                 </ListItem>
               </List>
               <ListItem>
-                <Typography>{exoRef.current === '' ? '' : consigne}</Typography>
+                <Typography>{statement}</Typography>
               </ListItem>
-              {exoRef.current == '' || exerciceAffiche == -1 ? (
-                <>{console.log('bolz', exoRef.current == '' || exerciceAffiche == -1)}</>
+              {currentExercise == -1 ? (
+                <></>
               ) : (
+                // La div contient la frise chronologique
                 <div
                   style={{
                     overflowY: 'hidden',
@@ -119,13 +122,14 @@ const PopperDetails = (props) => {
                   }}
                 >
                   <FriseChrono
-                    exo={exerciceAffiche}
+                    currentExercise={currentExercise}
                     clicked={clicked}
                     setClicked={setClicked}
                   ></FriseChrono>
                 </div>
               )}
-              <List>
+              <>
+                {/* code des tentatives ci-dessous */}
                 <List
                   sx={{
                     display: 'inline-block',
@@ -134,25 +138,21 @@ const PopperDetails = (props) => {
                     width: '99.9%',
                   }}
                 >
-                  {exoRef.current === '' || exerciceAffiche == -1 ? (
+                  {exerciseRef.current === '' || currentExercise == -1 ? (
                     <></>
                   ) : (
-                    tentatives.map((tentative, index) =>
-                      !(tentative.id == clicked && tentatives.length - 1 > index) ? (
+                    attempts?.map((attempt, index) =>
+                      !(attempt.id == clicked && attempts.length - 1 > index) ? (
                         <>
-                          {index === tentatives.length - 1 ? (
-                            renderTentatives(tentative, langage)
-                          ) : (
-                            <></>
-                          )}
+                          {index === attempts.length - 1 ? renderAttempt(attempt, language) : <></>}
                         </>
                       ) : (
-                        renderTentatives(tentative, langage)
+                        renderAttempt(attempt, language)
                       ),
                     )
                   )}
                 </List>
-              </List>
+              </>
             </Box>
           </div>
         }
@@ -166,7 +166,7 @@ PopperDetails.propTypes = {
   handlePopoverClose: PropTypes.func,
   open: PropTypes.bool,
   exo: PropTypes.any,
-  exercices: PropTypes.array,
+  exercises: PropTypes.array,
   session: PropTypes.object,
 };
 export default React.memo(PopperDetails);

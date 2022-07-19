@@ -10,13 +10,14 @@ import Avancement from '@pages/Avancement/Avancement';
 import Videoprojecteur from '@pages/Videoprojecteur/Videoprojecteur';
 import VisuResultatEtudiant from '@pages/VisuResultatEtudiant/VisuResultatEtudiant';
 import VisuResultatExercice from '@pages/VisuResultatExercice/VisuResultatExercice';
-import ComposantResultatsGlobaux from '@pages/ComposantResultatsGlobaux/ComposantResultatsGlobaux';
+
 import { initSocketConnection } from '@services/socket/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessions, setSession } from '@stores/Sessions/sessionSlice';
 import { setExercices, getExercices } from '@stores/Exercices/exercicesSlice';
 import axios from 'axios';
 import AuthLayout from '@components/AuthLayout/AuthLayout';
+import PageResultatsGlobaux from './pages/PageResultatsGlobaux/ComposantResultatsGlobaux';
 
 const initExercices = (dispatch) => {
   axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
@@ -51,7 +52,7 @@ export default function App() {
           <Route path="/videoprojecteur" element={<Videoprojecteur />} />
           <Route path="/visuresultatetudiant" element={<VisuResultatEtudiant />} />
           <Route path="/visuresultatexercice" element={<VisuResultatExercice />} />
-          <Route path="/ComposantResultatsGlobaux" element={<ComposantResultatsGlobaux />} />
+          <Route path="/PageResultatsGlobaux" element={<PageResultatsGlobaux />} />
         </Route>
 
         {/* Public routes */}
