@@ -97,154 +97,130 @@ const GlobalResults = () => {
       headerName: LANGUAGES_CONTENT.frFR.gridContent.columnHeaders.studentCol.headerName,
     },
   ];
-  let columns_en_cours = [
-    {
-      field: 'idEtu',
-      headerName: 'id etudiant',
-    },
-  ];
-  let columns_finis = [
-    {
-      field: 'idEtu',
-      headerName: 'id etudiant',
-    },
-  ];
-  let columns_aides = [
-    {
-      field: 'idEtu',
-      headerName: 'id etudiant',
-    },
-  ];
   const columns = useMemo(() => {
     if (CURRENT_SESSION && CURRENT_SESSION.exercices) {
       for (const exo of CURRENT_SESSION.exercices) {
-        if (selected === 'aides') {
-          columns_aides.push({
-            field: exo.id,
-            align: 'center',
-            flex: 1,
-            maxWidth: 75,
-            hideSortIcons: true,
-            headerName: exo.nom,
-            renderCell: (params) => {
-              return (
-                <ChipGridCell
-                  exercise={Object.values(exercises)
-                    .filter((e) => e.idExo === exo.id)
-                    .find(
-                      (e) =>
-                        params.field == exo.id &&
-                        e.idEtu === params.row.idEtu &&
-                        exo.aides.length > 0,
-                    )}
-                  params={params}
-                  variant="filled"
-                  size="small"
-                  label={params.value !== undefined ? '' + params.value : ''}
-                />
-              );
-            },
-          });
-          return columns_aides;
-        }
-        if (selected === 'tous') {
-          tmp_columns.push({
-            field: '' + exo.id,
-            headerName: '' + exo.nom,
-            align: 'center',
-            flex: 1,
-            height: 150,
-            maxWidth: 75,
-            minHeight: 150,
-            hideSortIcons: true,
-            renderCell: (params) => {
-              return (
-                <ChipGridCell
-                  // les tentatives sont dans exercises(db result) pas dans CURRENT_SESSION.exercices(db exo)
-                  exercise={Object.values(exercises)
-                    .filter((e) => e.idExo === exo.id)
-                    .find(
-                      (e) =>
-                        params.field == exo.id &&
-                        e.idEtu === params.row.idEtu &&
-                        exo.aides.length > 0,
-                    )}
-                  params={params}
-                  variant="filled"
-                  size="small"
-                  label={params.value !== undefined ? '' + params.value : ''}
-                />
-              );
-            },
-          });
-        }
-        if (selected === 'en cours') {
-          columns_en_cours.push({
-            field: '' + exo.id,
-            headerName: '' + exo.nom,
-            align: 'center',
-            flex: 1,
-            hideSortIcons: true,
-            maxWidth: 75,
-
-            renderCell: (params) => {
-              return (
-                <ChipGridCell
-                  exercise={Object.values(exercises)
-                    .filter((e) => e.idExo === exo.id)
-                    .find(
-                      (e) =>
-                        params.field == exo.id &&
-                        e.idEtu === params.row.idEtu &&
-                        exo.estFini == false &&
-                        exo.aides.length > 0,
-                    )}
-                  params={params}
-                  variant="filled"
-                  size="small"
-                  label={params.value !== undefined ? '' + params.value : ''}
-                />
-              );
-            },
-          });
-          return columns_en_cours;
-        }
-        if (selected === 'finis') {
-          columns_finis.push({
-            field: '' + exo.id,
-            headerName: '' + exo.nom,
-            align: 'center',
-            flex: 1,
-            hideSortIcons: true,
-            maxWidth: 75,
-            renderCell: (params) => {
-              return (
-                <ChipGridCell
-                  exercise={Object.values(exercises)
-                    .filter((e) => e.idExo === exo.id)
-                    .find(
-                      (e) =>
-                        params.field == exo.id &&
-                        e.idEtu === params.row.idEtu &&
-                        exo.estFini == true &&
-                        exo.aides.length > 0,
-                    )}
-                  params={params}
-                  variant="filled"
-                  size="small"
-                  label={params.value !== undefined ? '' + params.value : ''}
-                />
-              );
-            },
-          });
-          return columns_finis;
-        }
+        //les exercices dans db resultats correspondant a l'exercice de Session sur lequel on itère
+        let currentExercises = Object.values(exercises).filter((e) => e.idExo === exo.id);
+        // if (selected === 'aides') {
+        //   columns_aides.push({
+        //     field: exo.id,
+        //     align: 'center',
+        //     flex: 1,
+        //     maxWidth: 75,
+        //     hideSortIcons: true,
+        //     headerName: exo.nom,
+        //     renderCell: (params) => {
+        //       return (
+        //         <ChipGridCell
+        //           exercise={Object.values(exercises)
+        //             .filter((e) => e.idExo === exo.id)
+        //             .find(
+        //               (e) =>
+        //                 params.field == exo.id &&
+        //                 e.idEtu === params.row.idEtu &&
+        //                 exo.aides.length > 0,
+        //             )}
+        //           params={params}
+        //           variant="filled"
+        //           size="small"
+        //           label={params.value !== undefined ? '' + params.value : ''}
+        //         />
+        //       );
+        //     },
+        //   });
+        //   return columns_aides;
+        // }
+        // if (selected === 'tous') {
+        //   tmp_columns.push({
+        //     field: '' + exo.id,
+        //     headerName: '' + exo.nom,
+        //     align: 'center',
+        //     flex: 1,
+        //     height: 150,
+        //     maxWidth: 75,
+        //     minHeight: 150,
+        //     hideSortIcons: true,
+        //     renderCell: (params) => {
+        //       return (
+        //         <ChipGridCell
+        //           // les tentatives sont dans exercises(db result) pas dans CURRENT_SESSION.exercices(db exo)
+        //           exercise={Object.values(exercises)
+        //             .filter((e) => e.idExo === exo.id)
+        //             .find(
+        //               (e) =>
+        //                 params.field == exo.id &&
+        //                 e.idEtu === params.row.idEtu &&
+        //                 exo.aides.length > 0,
+        //             )}
+        //           params={params}
+        //           variant="filled"
+        //           size="small"
+        //           label={params.value !== undefined ? '' + params.value : ''}
+        //         />
+        //       );
+        //     },
+        //   });
+        // }
+        tmp_columns.push({
+          field: '' + exo.id,
+          headerName: '' + exo.nom,
+          align: 'center',
+          flex: 1,
+          hideSortIcons: true,
+          maxWidth: 75,
+          renderCell: (params) => {
+            //obligé de passer par params pour utiliser row.idetu
+            let currentExercise = currentExercises.find(
+              (e) => params.field == exo.id && e.idEtu === params.row.idEtu,
+            );
+            return (
+              <ChipGridCell
+                exercise={currentExercise}
+                params={params}
+                variant="filled"
+                size="small"
+                label={params.value !== undefined ? '' + params.value : ''}
+              />
+            );
+          },
+        });
       }
+      // if (selected === 'finis') {
+      //   columns_finis.push({
+      //     field: '' + exo.id,
+      //     headerName: '' + exo.nom,
+      //     align: 'center',
+      //     flex: 1,
+      //     hideSortIcons: true,
+      //     maxWidth: 75,
+      //     renderCell: (params) => {
+      //       return (
+      //         <ChipGridCell
+      //           exercise={Object.values(exercises)
+      //             .filter((e) => e.idExo === exo.id)
+      //             .find(
+      //               (e) =>
+      //                 params.field == exo.id &&
+      //                 e.idEtu === params.row.idEtu &&
+      //                 exo.estFini == true &&
+      //                 exo.aides.length > 0,
+      //             )}
+      //           params={params}
+      //           variant="filled"
+      //           size="small"
+      //           label={params.value !== undefined ? '' + params.value : ''}
+      //         />
+      //       );
+      //     },
+      //   });
+      //   return columns_finis;
+      // }
 
       return tmp_columns;
     }
-    return [];
-  }, [exercises, sessions, CURRENT_SESSION, selectedSeance, seance]);
+    return tmp_columns;
+  }, [exercises, sessions, CURRENT_SESSION, selectedSeance, seance, tmp_columns]);
   //MEMOIZED COMPONENTS
 
   //replace useState anchorElPopper and setAnchorElPopper with useReducer
