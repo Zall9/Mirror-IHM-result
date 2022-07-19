@@ -157,8 +157,11 @@ const GlobalResults = () => {
       exerciseRef.current = params;
       setAnchorElPopper(document.getElementById('container'));
     } else {
-      if (params.defaultMuiPrevented == false && params.target.nodeName !== 'HTML') {
+      if (params) {
         setAnchorElPopper(null);
+
+        params.target.click();
+
         setAnchorElPopper(document.getElementById('container'));
       } else {
         setAnchorElPopper(null);
