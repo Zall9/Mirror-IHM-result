@@ -1,17 +1,10 @@
 import { Chip } from '@mui/material';
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import PanToolIcon from '@mui/icons-material/PanTool';
 import { colorGradient } from './utils/colorGradient';
 import { isStudentLate } from './utils/dateParser';
 const ChipGridCell = (props) => {
   console.info('ChipGridCell', props);
-  let isResolved = false;
-  if (props.exercise !== undefined) {
-    props.exercise.aides[props?.exercise?.aides.length - 1]?.resolue === true
-      ? (isResolved = true)
-      : (isResolved = false);
-  }
   console.info('exo from cell', props.exercise);
   var isAverageExceeded = isStudentLate(
     props?.exercise?.debut,
@@ -30,14 +23,7 @@ const ChipGridCell = (props) => {
     },
     [props, isAverageExceeded],
   );
-  return (
-    <>
-      {props.label !== '' ? <Chip {...props} sx={cellsStyle(props)} /> : <></>}
-      {/* ci-dessous: si l'exercice que l'on regarde éxiste pour l'étudiant,
-          s'il n'est pas fini et qu'il existe une aide non résolue par l'enseignant
-          on render la main */}
-    </>
-  );
+  return <>{props.label !== '' ? <Chip {...props} sx={cellsStyle(props)} /> : <></>}</>;
 };
 
 ChipGridCell.propTypes = {

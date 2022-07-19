@@ -155,13 +155,11 @@ const GlobalResults = () => {
     console.debug('paramsCLICK', event);
     if (event && event.currentTarget) {
       exerciseRef.current = params;
+      setAnchorElPopper(null);
       setAnchorElPopper(document.getElementById('container'));
     } else {
       if (params) {
         setAnchorElPopper(null);
-
-        params.target.click();
-
         setAnchorElPopper(document.getElementById('container'));
       } else {
         setAnchorElPopper(null);
