@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
@@ -121,7 +121,7 @@ const VisuResultatEtudiantComponent = () => {
   };
 
   // récupérer tous les exercices pour chaque  étudiant
-  const exercices = useSelector(getExercices);
+  const exercices = useSelector(getExercises);
 
   let navigate = useNavigate();
   const redirectionResultat = () => {

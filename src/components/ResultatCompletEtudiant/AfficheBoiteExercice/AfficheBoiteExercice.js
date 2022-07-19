@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import Item from '@mui/material/ListItem';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 
 function EtudiantSession(exercices, idSession) {
   const etudiants = [];
@@ -71,7 +71,7 @@ const AfficheBoiteExercice = ({ listeExercices }) => {
   // recuperer les exercices faits par l'étudiant
   // parcourir les exercices
   // récupérer les paramètres de cet exercice
-  const exercices = useSelector(getExercices);
+  const exercices = useSelector(getExercises);
   return (
     <Stack direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={1}>
       {listeExercices.map((exercice, index) => (

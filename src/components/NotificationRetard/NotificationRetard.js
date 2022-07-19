@@ -4,7 +4,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import { useNavigate } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 
 /**
  * compte le nombre d'étudiant qui ont passé plus de 2 fois le temps moyen de l'exo
@@ -49,7 +49,7 @@ const NotificationRetard = () => {
     };
   });
 
-  const exercices = useSelector(getExercices);
+  const exercices = useSelector(getExercises);
   const [openInfo, setOpenInfo] = React.useState(null);
   const fermerInfo = (event) => {
     setOpenInfo(null);

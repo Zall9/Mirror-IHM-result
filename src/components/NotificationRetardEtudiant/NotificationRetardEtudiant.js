@@ -2,7 +2,7 @@ import React from 'react';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 import PropTypes from 'prop-types';
 import { recupereExerciceCourantEtudiant } from '../Utilitaires/Exercices';
 
@@ -14,7 +14,7 @@ import { recupereExerciceCourantEtudiant } from '../Utilitaires/Exercices';
  */
 const NotificationRetardEtudiant = (props) => {
   const idEtudiant = props.idEtudiant;
-  const exercices = useSelector(getExercices);
+  const exercices = useSelector(getExercises);
   const exerciceCourant = recupereExerciceCourantEtudiant(exercices, idEtudiant);
 
   // useState utiliser pour réafficher le composant régulièrement

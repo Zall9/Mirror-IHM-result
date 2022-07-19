@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 import { useNavigate } from 'react-router-dom';
 
 import EqualizerIcon from '@mui/icons-material/Equalizer';
@@ -18,7 +18,7 @@ const VideoprojecteurDetail = () => {
   ];
 
   // récupérer tous les résultats
-  const exercices = useSelector(getExercices);
+  const exercices = useSelector(getExercises);
   // collecter uniquement les exercices via leur nom
   let tabExo = [];
   for (const exo of exercices) {

@@ -3,7 +3,7 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { mockReactRedux } from 'mock-react-redux';
 import PourcentEtuParDifficulte from '@components/PourcentEtuParDifficulte/PourcentEtuParDifficulte';
-import { getExercices } from '../../services/stores/Exercices/exercicesSlice';
+import { getExercises } from '../../services/stores/Exercices/exercicesSlice';
 
 const dataVerfication = {
   couleurs: ['rgb(252, 232, 232)', 'rgb(23, 3, 3)'],
@@ -109,7 +109,7 @@ afterEach(() => {
 });
 
 it('test du component PourcentEtuParDifficulte.js avec données', async () => {
-  mockReactRedux().give(getExercices, data);
+  mockReactRedux().give(getExercises, data);
   // render du component
   await act(async () => {
     render(<PourcentEtuParDifficulte />, container);

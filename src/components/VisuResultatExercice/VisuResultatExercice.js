@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getExercices } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercices/exercicesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -55,7 +55,7 @@ const VisuResultatExercice = () => {
   };
 
   // récupérer tous les exercices
-  const exercices = useSelector(getExercices);
+  const exercices = useSelector(getExercises);
   const idSession = choixSession;
 
   // filtre suivant difficulté
