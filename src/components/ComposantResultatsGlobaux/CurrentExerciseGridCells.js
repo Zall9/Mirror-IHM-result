@@ -6,8 +6,6 @@ import { Box } from '@mui/system';
 import PanToolIcon from '@mui/icons-material/PanTool';
 
 const CurrentExerciseGridCell = ({ exercise, params, label }) => {
-  console.log(exercise, 'currentExercise');
-
   return (
     <>
       {exercise !== undefined && label !== '' ? (

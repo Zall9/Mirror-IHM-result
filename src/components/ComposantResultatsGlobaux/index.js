@@ -115,8 +115,7 @@ const GlobalResults = () => {
             let currentExercise = currentExercises.find(
               (e) => params.field == exo.id && e.idEtu === params.row.idEtu,
             );
-            console.log(params, 'params');
-            console.log(currentExercise, 'params exo');
+
             return (
               // check si c'est l'exercice courant de l'étudiant
               !(currentExercise && params && !currentExercise?.estFini) ? (
@@ -152,17 +151,20 @@ const GlobalResults = () => {
   // HANDLERS
 
   const handlePopoverClick = (params, event) => {
-    console.debug('paramsCLICK', event);
     if (event && event.currentTarget) {
+      console.debug('paramsCLICK', event);
       exerciseRef.current = params;
-      setAnchorElPopper(null);
+
       setAnchorElPopper(document.getElementById('container'));
     } else {
-      if (params) {
+      console.debug('paramsCLICK', event);
+
+      if (params && params.defaultMuiPrevented !== undefined) {
         setAnchorElPopper(null);
         setAnchorElPopper(document.getElementById('container'));
       } else {
         setAnchorElPopper(null);
+        setAnchorElPopper(document.getElementById('container'));
       }
     }
   };
@@ -212,6 +214,7 @@ const GlobalResults = () => {
               session={CURRENT_SESSION}
               exo={exerciseRef.current}
               anchorEl={anchorElPopper}
+              setAnchorEl={setAnchorElPopper}
               handlePopoverClose={handlePopoverClick}
             />
           ) : (
@@ -225,6 +228,7 @@ const GlobalResults = () => {
     exercise: PropTypes.any,
     exo: PropTypes.any,
     anchorElPopper: PropTypes.any,
+    setAnchorEl: PropTypes.any,
     handlePopoverClose: PropTypes.any,
   };
   DataGridMemo.propTypes = {
