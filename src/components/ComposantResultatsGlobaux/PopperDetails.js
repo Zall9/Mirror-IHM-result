@@ -31,6 +31,7 @@ const PopperDetails = (props) => {
   const exercises = props.exercises;
   const handlePopoverClose = props.handlePopoverClose;
   const anchorEl = props.anchorEl;
+  const setAnchorEl = props.setAnchorEl;
   const currentExercise = getExoFromIds(
     exerciseRef.current.id,
     exerciseRef.current.field,
@@ -66,7 +67,11 @@ const PopperDetails = (props) => {
     );
   };
   return (
-    <ClickAwayListener onClickAway={handlePopoverClose}>
+    <ClickAwayListener
+      onClickAway={() => {
+        setAnchorEl(null);
+      }}
+    >
       <Popper
         open={true}
         anchorEl={anchorEl}
@@ -133,7 +138,6 @@ const PopperDetails = (props) => {
                 <List
                   sx={{
                     display: 'inline-block',
-                    overflow: 'auto',
                     height: 'auto',
                     width: '99.9%',
                   }}
@@ -163,6 +167,7 @@ const PopperDetails = (props) => {
 
 PopperDetails.propTypes = {
   anchorEl: PropTypes.object,
+  setAnchorEl: PropTypes.func,
   handlePopoverClose: PropTypes.func,
   open: PropTypes.bool,
   exo: PropTypes.any,
