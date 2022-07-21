@@ -47,7 +47,6 @@
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.2",
-    "react-scripts": "5.0.0",
     "react-syntax-highlighter": "^15.4.5",
     "react-test-renderer": "^17.0.2",
     "socket.io-client": "^4.4.1",
@@ -55,14 +54,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "dev": "vite",
+    "build": "vite build",
     "test": "react-app-rewired test --watchAll=false --ci",
     "test:dev": "react-app-rewired test -- --watchAll=true",
-    "eject": "react-scripts eject",
     "prepare": "./prepare.sh",
-    "lint": "eslint . --ext .ts",
-    "lint-fix": "eslint . --ext .ts --fix",
+    "lint": "eslint . --ext .js",
+    "lint-fix": "eslint . --ext .js --fix",
     "prettier-format": "run-script-os",
     "prettier-format:win32": "prettier --config .prettierrc \"./src/**/*.js\" --write",
     "prettier-format:darwin:linux": "prettier --config .prettierrc 'src/**/*.js' --write",
@@ -71,12 +69,6 @@
     "prettier-watch:win32": "onchange \"src/**/*.js\" -- prettier --write {{changed}}",
     "prettier-watch:darwin:linux": "onchange 'src/**/*.js' -- prettier --write {{changed}}",
     "prettier-watch:default": "onchange 'src/**/*.js' -- prettier --write {{changed}}"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -94,6 +86,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
+    "@vitejs/plugin-react": "^2.0.0",
     "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
     "eslint": "^8.10.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -107,13 +100,7 @@
     "lint-staged": "^12.3.7",
     "prettier": "^2.5.1",
     "prop-types": "^15.8.1",
-    "react-app-rewire-alias": "^1.1.7",
-    "react-app-rewired": "^2.2.1",
-    "run-script-os": "^1.1.6"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "^@components(.*)$": "<rootDir>/src/components$1"
-    }
+    "run-script-os": "^1.1.6",
+    "vite": "^3.0.2"
   }
 }
