@@ -1,5 +1,5 @@
 import { Chip } from '@mui/material';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { colorGradient } from './utils/colorGradient';
 import { isStudentLate } from './utils/dateParser';
@@ -16,7 +16,9 @@ const ChipGridCell = (props) => {
     function (params) {
       const color = colorGradient(params.label, isAverageExceeded);
       const colorForCircular = shadeColor(color, -12);
-      props.setColorForCircular !== undefined && props.setColorForCircular(colorForCircular);
+      if (props.setColorForCircular !== undefined) {
+        useEffect(() => props.setColorForCircular(colorForCircular), []);
+      }
       if (params.label !== '') {
         let style = {
           position: 'relative',
@@ -27,12 +29,15 @@ const ChipGridCell = (props) => {
     },
     [props, isAverageExceeded],
   );
-  return <>{props.label !== '' ? <Chip {...props} sx={cellsStyle(props)} /> : <></>}</>;
+  //pour supprimer les warnings
+  let tmpProps = { ...props };
+  delete tmpProps.setColorForCircular;
+  return <>{props.label !== '' ? <Chip {...tmpProps} sx={cellsStyle(props)} /> : <></>}</>;
 };
 
 ChipGridCell.propTypes = {
-  label: PropTypes.string.isRequired,
-  exercise: PropTypes.object.isRequired,
+  label: PropTypes.string,
+  exercise: PropTypes.object,
   setColorForCircular: PropTypes.func,
   color: PropTypes.string,
 };

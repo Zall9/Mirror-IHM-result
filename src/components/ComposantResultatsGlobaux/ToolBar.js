@@ -13,7 +13,7 @@ import {
 import PanToolIcon from '@mui/icons-material/PanTool';
 import PropTypes from 'prop-types';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import React from 'react';
+import React, { useEffect } from 'react';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
 import MenuDeroulantSession from '../MenuDeroulantSession/MenuDeroulantSession';
 import JsonExportMenuItem from './JsonExportMenuItem';
@@ -39,15 +39,7 @@ const ToolBar = ({
       });
     }
   });
-  sessions.forEach((session) => {
-    if (selectedSession === session.id) {
-      session.seances.forEach((seance) => {
-        if (selectedSeance === seance.groupe + ' - ' + seance.encadrant) {
-          setSeance(seance.id);
-        }
-      });
-    }
-  });
+
   //on utilise le session storage ici pour stocker l'id de la session
 
   const sessionStorageNameSession = 'idSes';
@@ -64,8 +56,20 @@ const ToolBar = ({
       ? sessionStorage.getItem(sessionStorageSeance)
       : 'all',
   );
-  setSelectedSession(choixSession);
-  setSelectedSeance(panelSeance);
+  useEffect(() => {
+    sessions.forEach((session) => {
+      if (selectedSession === session.id) {
+        session.seances.forEach((seance) => {
+          if (selectedSeance === seance.groupe + ' - ' + seance.encadrant) {
+            setSeance(seance.id);
+          }
+        });
+      }
+    });
+    setSelectedSession(choixSession);
+    setSelectedSeance(panelSeance);
+  }, [choixSession, panelSeance, selectedSeance]);
+
   let buttonColor = 'black';
   return (
     <GridToolbarContainer>
