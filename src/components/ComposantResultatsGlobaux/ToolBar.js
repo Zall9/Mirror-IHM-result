@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Box, IconButton, Toolbar, Typography } from '@mui/material';
+import { Divider } from '@mui/material';
+
 import {
   GridCsvExportMenuItem,
   GridFooter,
@@ -80,33 +82,36 @@ const ToolBar = ({
         storageName={sessionStorageSeance}
         nomArticle="Seance"
       />
-      <GridToolbarColumnsButton sx={{ color: buttonColor }} />
-      {/* les options d'exports sont ci-dessous */}
-      <GridToolbarExportContainer sx={{ color: buttonColor }}>
-        <GridPrintExportMenuItem />
-        <GridCsvExportMenuItem />
-        <JsonExportMenuItem />
-      </GridToolbarExportContainer>
-      <IconButton
-        sx={{ color: buttonColor }}
-        onClick={() => {
-          setSelected(selection[(selection.indexOf(selected) + 1) % selection.length]);
-        }}
-      >
-        <FilterAltIcon></FilterAltIcon>
-        <Typography>{selected}</Typography>
-      </IconButton>
-      <IconButton
-        sx={{ color: buttonColor }}
-        onClick={() => {
-          setSelected('aides');
-        }}
-      >
-        <PanToolIcon></PanToolIcon>
-        <Typography sx={{ marginLeft: '3px' }}>Aides</Typography>
-      </IconButton>
-      <Box sx={{ display: 'flex', marginLeft: 'auto' }}>
-        <GridFooter />
+      <Divider sx={{ marginLeft: '3ch' }} orientation="vertical" flexItem />
+      <Box sx={{ marginLeft: '3ch' }}>
+        <GridToolbarColumnsButton sx={{ color: buttonColor }} />
+        {/* les options d'exports sont ci-dessous */}
+        <GridToolbarExportContainer sx={{ color: buttonColor }}>
+          <GridPrintExportMenuItem />
+          <GridCsvExportMenuItem />
+          <JsonExportMenuItem />
+        </GridToolbarExportContainer>
+        <IconButton
+          sx={{ color: buttonColor }}
+          onClick={() => {
+            setSelected(selection[(selection.indexOf(selected) + 1) % selection.length]);
+          }}
+        >
+          <FilterAltIcon></FilterAltIcon>
+          <Typography>{selected}</Typography>
+        </IconButton>
+        <IconButton
+          sx={{ color: buttonColor }}
+          onClick={() => {
+            setSelected('aides');
+          }}
+        >
+          <PanToolIcon></PanToolIcon>
+          <Typography sx={{ marginLeft: '3px' }}>Aides</Typography>
+        </IconButton>
+        <Box sx={{ display: 'flex', marginLeft: 'auto' }}>
+          <GridFooter />
+        </Box>
       </Box>
     </GridToolbarContainer>
   );
