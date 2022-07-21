@@ -17,16 +17,16 @@ import { getSessions, setSession } from '@stores/Sessions/sessionSlice';
 import { setExercises, getExercises } from '@stores/Exercices/exercicesSlice';
 import axios from 'axios';
 import AuthLayout from '@components/AuthLayout/AuthLayout';
-import PageResultatsGlobaux from './pages/PageResultatsGlobaux/ComposantResultatsGlobaux';
+import PageResultatsGlobaux from '@pages/PageResultatsGlobaux/ComposantResultatsGlobaux';
 
 const initExercices = (dispatch) => {
-  axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices').then((res) => {
+  axios.get(import.meta.env.VITE_SRVRESULT_URL + '/exercices').then((res) => {
     dispatch(setExercises(res.data.exercices));
   });
 };
 
 const initSessions = (dispatch) => {
-  axios.get(process.env.REACT_APP_SRVEXO_URL + '/sessions?populate=true').then((res) => {
+  axios.get(import.meta.env.VITE_SRVEXO_URL + '/sessions?populate=true').then((res) => {
     dispatch(setSession(res.data.sessions));
     initSocketConnection(dispatch);
   });

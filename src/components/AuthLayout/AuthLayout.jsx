@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 const AuthLayout = ({ redirect }) => {
   const auth = useSelector(getAuth);
 
-  const enabled = process.env.REACT_APP_OAUTH_ENABLED === 'true';
+  const enabled = import.meta.env.VITE_OAUTH_ENABLED === 'true';
 
   if (!enabled) return <Outlet />;
   if (auth.isAuthenticated) return <Outlet />;

@@ -2,8 +2,8 @@ import { io } from 'socket.io-client';
 import { addExercice, addAttempt, addSupportRequest } from '@stores/Exercices/exercicesSlice';
 
 export const initSocketConnection = (dispatch, sessions) => {
-  const socket = io(process.env.REACT_APP_SRVRESULT_URL, {
-    path: process.env.REACT_APP_SRVRESULT_SOCKETIO_SUBFOLDER,
+  const socket = io(import.meta.env.VITE_SRVRESULT_URL, {
+    path: import.meta.env.VITE_SRVRESULT_SOCKETIO_SUBFOLDER,
   });
 
   socket.on('exercices', ({ etudiantCommenceExo }) => {
