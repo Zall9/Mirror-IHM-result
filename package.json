@@ -55,16 +55,10 @@
     "build": "vite build",
     "preview": "vite build && vite preview",
     "prepare": "./prepare.sh",
-    "lint": "eslint . --ext .js",
-    "lint-fix": "eslint . --ext .js --fix",
-    "prettier-format": "run-script-os",
-    "prettier-format:win32": "prettier --config .prettierrc \"./src/**/*.js\" --write",
-    "prettier-format:darwin:linux": "prettier --config .prettierrc 'src/**/*.js' --write",
-    "prettier-format:default": "prettier --config .prettierrc 'src/**/*.js' --write",
-    "prettier-watch": "run-script-os",
-    "prettier-watch:win32": "onchange \"src/**/*.js\" -- prettier --write {{changed}}",
-    "prettier-watch:darwin:linux": "onchange 'src/**/*.js' -- prettier --write {{changed}}",
-    "prettier-watch:default": "onchange 'src/**/*.js' -- prettier --write {{changed}}"
+    "lint": "eslint . --ext .js,jsx",
+    "lint-fix": "eslint . --ext .js,.jsx --fix",
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.{js,jsx}' --write",
+    "prettier-watch": "onchange 'src/**/*.js' -- prettier --config .prettierrc --write {{changed}}"
   },
   "browserslist": {
     "production": [
@@ -96,7 +90,6 @@
     "lint-staged": "^12.3.7",
     "prettier": "^2.5.1",
     "prop-types": "^15.8.1",
-    "run-script-os": "^1.1.6",
     "sass": "^1.53.0",
     "vite": "^3.0.2"
   }
