@@ -4,12 +4,13 @@ import ToolBar from './ToolBar';
 import { useSelector } from 'react-redux';
 import { getExercises } from '@stores/Exercices/exercicesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCell from './ChipGridCell';
 import { LANGUAGES_CONTENT } from './internationalization.js';
 import CurrentExerciseGridCell from './CurrentExerciseGridCells';
+import ColumnsHeader from './ColumnsHeader';
 
 const GlobalResults = () => {
   // HOOKS & STATES
@@ -110,13 +111,22 @@ const GlobalResults = () => {
           flex: 1,
           hideSortIcons: true,
           maxWidth: 75,
+          renderHeader: (params) => {
+            console.log('PARAMZZS', params);
+            return (
+              <>
+                <ColumnsHeader field={params.colDef.headerName} />
+              </>
+            );
+          },
           renderCell: (params) => {
+            console.log('PARAMZZS', params);
+
             //obligé de passer par params pour utiliser row.idetu
             let currentExercise = currentExercises.find(
               (e) => params.field == exo.id && e.idEtu === params.row.idEtu,
             );
-            console.log(params, 'params');
-            console.log(currentExercise, 'params exo');
+
             return (
               // check si c'est l'exercice courant de l'étudiant
               !(currentExercise && params && !currentExercise?.estFini) ? (
@@ -152,17 +162,20 @@ const GlobalResults = () => {
   // HANDLERS
 
   const handlePopoverClick = (params, event) => {
-    console.debug('paramsCLICK', event);
     if (event && event.currentTarget) {
+      console.debug('paramsCLICK', event);
       exerciseRef.current = params;
-      setAnchorElPopper(null);
+
       setAnchorElPopper(document.getElementById('container'));
     } else {
-      if (params) {
+      console.debug('paramsCLICK', event);
+
+      if (params && params.defaultMuiPrevented !== undefined) {
         setAnchorElPopper(null);
         setAnchorElPopper(document.getElementById('container'));
       } else {
         setAnchorElPopper(null);
+        setAnchorElPopper(document.getElementById('container'));
       }
     }
   };
@@ -212,6 +225,7 @@ const GlobalResults = () => {
               session={CURRENT_SESSION}
               exo={exerciseRef.current}
               anchorEl={anchorElPopper}
+              setAnchorEl={setAnchorElPopper}
               handlePopoverClose={handlePopoverClick}
             />
           ) : (
@@ -225,6 +239,7 @@ const GlobalResults = () => {
     exercise: PropTypes.any,
     exo: PropTypes.any,
     anchorElPopper: PropTypes.any,
+    setAnchorEl: PropTypes.any,
     handlePopoverClose: PropTypes.any,
   };
   DataGridMemo.propTypes = {
