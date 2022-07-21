@@ -15,7 +15,11 @@ const ChipGridCell = (props) => {
   const cellsStyle = useCallback(
     function (params) {
       const color = colorGradient(params.label, isAverageExceeded);
-      const colorForCircular = shadeColor(color, -12);
+      if (params.label > 0) {
+        var colorForCircular = shadeColor(color, -12);
+      } else {
+        var colorForCircular = 'grey';
+      }
       if (props.setColorForCircular !== undefined) {
         useEffect(() => props.setColorForCircular(colorForCircular), []);
       }
