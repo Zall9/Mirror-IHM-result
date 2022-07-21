@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { colorGradient } from './utils/colorGradient';
 import { isStudentLate } from './utils/dateParser';
+import { shadeColor } from './utils/colorTones';
 const ChipGridCell = (props) => {
   console.info('ChipGridCell', props);
   console.info('exo from cell', props.exercise);
@@ -13,10 +14,13 @@ const ChipGridCell = (props) => {
   );
   const cellsStyle = useCallback(
     function (params) {
+      const color = colorGradient(params.label, isAverageExceeded);
+      const colorForCircular = shadeColor(color, -12);
+      props.setColorForCircular !== undefined && props.setColorForCircular(colorForCircular);
       if (params.label !== '') {
         let style = {
           position: 'relative',
-          backgroundColor: colorGradient(params.label, isAverageExceeded),
+          backgroundColor: color,
         };
         return style;
       }
@@ -29,6 +33,8 @@ const ChipGridCell = (props) => {
 ChipGridCell.propTypes = {
   label: PropTypes.string.isRequired,
   exercise: PropTypes.object.isRequired,
+  setColorForCircular: PropTypes.func,
+  color: PropTypes.string,
 };
 
 export default React.memo(ChipGridCell);
