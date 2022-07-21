@@ -55,8 +55,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "react-app-rewired test --watchAll=false --ci",
-    "test:dev": "react-app-rewired test -- --watchAll=true",
+    "preview": "vite build && vite preview",
     "prepare": "./prepare.sh",
     "lint": "eslint . --ext .js",
     "lint-fix": "eslint . --ext .js --fix",
