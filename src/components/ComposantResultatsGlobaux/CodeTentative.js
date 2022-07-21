@@ -34,7 +34,8 @@ import 'prismjs/components/prism-ocaml';
 const CodeTentative = ({ code, language }) => {
   language.toLowerCase();
   // sauter des lignes après les : dans le code
-  let codeStyled = code.replace(/ *: /gim, ':\n \t');
+  let codeStyled = code.replace(/ *: /gim, ':\n\t');
+
   // sauter des lignes après les } dans le code
   codeStyled = codeStyled.replace(/ *} /gim, '}\n \t');
   // sauter des lignes après les { dans le code
@@ -43,10 +44,8 @@ const CodeTentative = ({ code, language }) => {
   codeStyled = codeStyled.replace(/ *; /gim, ';\n');
   // sauter des lignes après le mot apres les return dans le code
   codeStyled = codeStyled.replace(/ return /gim, '\nreturn ');
-
-  // codeStyled = code.replace(/ *; /gim, ';\n');
-  // codeStyled = code.replace(/ *{}, /gim, '{\n \t}');
-
+  //sauter des lignes avant le for
+  codeStyled = codeStyled.replace(/ for /gim, '\n\tfor ');
   useEffect(() => {
     Prism.highlightAll();
   }, []);

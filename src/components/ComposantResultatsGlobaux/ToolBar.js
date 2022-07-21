@@ -48,6 +48,7 @@ const ToolBar = ({
       });
     }
   });
+  //on utilise le session storage ici pour stocker l'id de la session
 
   const sessionStorageNameSession = 'idSes';
   const sessionStorageSeance = 'idSeance';
@@ -85,7 +86,6 @@ const ToolBar = ({
       <Divider sx={{ marginLeft: '3ch' }} orientation="vertical" flexItem />
       <Box sx={{ marginLeft: '3ch' }}>
         <GridToolbarColumnsButton sx={{ color: buttonColor }} />
-        {/* les options d'exports sont ci-dessous */}
         <GridToolbarExportContainer sx={{ color: buttonColor }}>
           <GridPrintExportMenuItem />
           <GridCsvExportMenuItem />

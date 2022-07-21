@@ -87,7 +87,8 @@ const PopperDetails = (props) => {
             style={{
               border: '3px solid black',
               backgroundColor: 'white',
-              width: '25vw',
+              width: '37vw',
+              height: 'match-content',
               position: 'relative',
             }}
           >
@@ -138,8 +139,10 @@ const PopperDetails = (props) => {
                 <List
                   sx={{
                     display: 'inline-block',
-                    height: 'auto',
+                    height: '50vh',
                     width: '99.9%',
+                    overflowY: 'scroll',
+                    overflowX: 'hidden',
                   }}
                 >
                   {exerciseRef.current === '' || currentExercise == -1 ? (

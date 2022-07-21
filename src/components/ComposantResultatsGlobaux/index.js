@@ -4,12 +4,13 @@ import ToolBar from './ToolBar';
 import { useSelector } from 'react-redux';
 import { getExercises } from '@stores/Exercices/exercicesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import PopperDetails from './PopperDetails';
 import PropTypes from 'prop-types';
 import ChipGridCell from './ChipGridCell';
 import { LANGUAGES_CONTENT } from './internationalization.js';
 import CurrentExerciseGridCell from './CurrentExerciseGridCells';
+import ColumnsHeader from './ColumnsHeader';
 
 const GlobalResults = () => {
   // HOOKS & STATES
@@ -110,7 +111,17 @@ const GlobalResults = () => {
           flex: 1,
           hideSortIcons: true,
           maxWidth: 75,
+          renderHeader: (params) => {
+            console.log('PARAMZZS', params);
+            return (
+              <>
+                <ColumnsHeader field={params.colDef.headerName} />
+              </>
+            );
+          },
           renderCell: (params) => {
+            console.log('PARAMZZS', params);
+
             //obligé de passer par params pour utiliser row.idetu
             let currentExercise = currentExercises.find(
               (e) => params.field == exo.id && e.idEtu === params.row.idEtu,
