@@ -28,8 +28,8 @@ export const exercisesSlice = createSlice({
     },
     addSupportRequest: (state, respSupportRequest) => {
       let exercice = state.exercises[respSupportRequest.payload.idExoEtu];
-      console.log('addSupportRequest !', exercice);
-      console.log('Payload addSupportRequest', respSupportRequest.payload);
+      console.info('addSupportRequest !', exercice);
+      console.info('Payload addSupportRequest', respSupportRequest.payload);
       if (exercice) {
         exercice.aides.push(respSupportRequest.payload);
         if (respSupportRequest.payload.resolue) {

@@ -1,13 +1,15 @@
 import { CircularProgress } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ChipGridCell from './ChipGridCell';
 import { Box } from '@mui/system';
 import PanToolIcon from '@mui/icons-material/PanTool';
+import { makeStyles } from '@mui/styles';
 
+const useStyles = makeStyles({});
 const CurrentExerciseGridCell = ({ exercise, params, label }) => {
-  console.log(exercise, 'currentExercise');
-
+  const [color, setColor] = useState('');
+  console.log('color', color);
   return (
     <>
       {exercise !== undefined && label !== '' ? (
@@ -16,9 +18,9 @@ const CurrentExerciseGridCell = ({ exercise, params, label }) => {
             <>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <CircularProgress
+                  style={{ color: color }}
                   sx={{ position: 'absolute', top: '-2.5px', left: '-3px' }}
                   size="1.75rem"
-                  color="success"
                   variant="indeterminate"
                 />
                 <ChipGridCell
@@ -27,6 +29,7 @@ const CurrentExerciseGridCell = ({ exercise, params, label }) => {
                   label={label}
                   exercise={exercise}
                   params={params}
+                  setColorForCircular={setColor}
                 />
                 <PanToolIcon />
               </Box>
@@ -35,10 +38,10 @@ const CurrentExerciseGridCell = ({ exercise, params, label }) => {
             <>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <CircularProgress
-                  sx={{ position: 'absolute' }}
+                  sx={{ position: 'absolute', color: color }}
                   size="1.75rem"
-                  color="success"
                   variant="indeterminate"
+                  style={{ color: color }}
                 />
                 <ChipGridCell
                   variant="filled"
@@ -46,6 +49,7 @@ const CurrentExerciseGridCell = ({ exercise, params, label }) => {
                   label={label}
                   exercise={exercise}
                   params={params}
+                  setColorForCircular={setColor}
                 />
               </Box>
             </>
