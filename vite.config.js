@@ -21,4 +21,7 @@ export default defineConfig({
   preview: {
     port: 3003,
   },
+  build: {
+    outDir: 'build',
+  },
 });
