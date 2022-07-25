@@ -1,8 +1,21 @@
-# Getting Started with Create React App
+# IHM des résultats étudiants
 
 Pour installer l'IHM, référez-vous à INSTALL.md
 
-This project was bootstrapped with [Vite](https://vitejs.dev).
+## Architecture
+
+Les composants de l'IHM sont définis dans le fichier `src/components/ComposantResultatsGlobaux`.
+Le fichier index.jsx contient le code de l'IHM.
+
+Le dossier `services` contient l'implémentation de la connection WS, l'userProfile ainsi que le store Redux.
+Le store est alimenté par les soumissions des étudiants reçues en websocket.
+
+internationalization.js est un fichier exportant un objet qui contient les données statiques d'index.js.
+
+Les dossiers préfixé `LEGACY-` sont les dossiers contenant le travail ayant été utilisé pour la version de l'IHM réalisée par l'équipe de projet.
+Les architectures du store & des bases de données ont changés au cours du stage.
+Les composants ne sont plus fonctionnels.
+Ces composants n'avaient pas été testés au cours de leurs dévelopement avec beaucoup de données. Il est donc possible que certains problèmes de performances soient présents.
 
 ## Available Scripts
 
