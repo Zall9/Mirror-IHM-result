@@ -19,7 +19,7 @@ Ces composants n'avaient pas été testés au cours de leurs dévelopement avec 
 
 ## Indicateurs
 
-![Alt Text](https://manouchian.univ-smb.fr/smartlab/projetsl3-2021/latools/ihmresult/-/issues/31/designs/Peek_25-07-2022_12-16.gif)
+![Alt Text](https://cdn.discordapp.com/attachments/924613729881059389/1001072830231883776/Peek_25-07-2022_12-25.gif)
 
 ## Available Scripts
 
