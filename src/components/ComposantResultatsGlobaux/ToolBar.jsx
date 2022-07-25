@@ -41,7 +41,6 @@ const ToolBar = ({
   });
 
   //on utilise le session storage ici pour stocker l'id de la session
-
   const sessionStorageNameSession = 'idSes';
   const sessionStorageSeance = 'idSeance';
   const selection = LANGUAGES_CONTENT.frFR.gridContent.contentSelector.filters;
@@ -68,7 +67,7 @@ const ToolBar = ({
     });
     setSelectedSession(choixSession);
     setSelectedSeance(panelSeance);
-  }, [choixSession, panelSeance, selectedSeance]);
+  }, [choixSession, panelSeance, selectedSeance, sessions]);
 
   let buttonColor = 'black';
   return (

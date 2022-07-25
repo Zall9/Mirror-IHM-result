@@ -4,9 +4,9 @@ import DiagrammeCirculaireExercice from './DiagrammeCirculaireExercice';
 import CircularProgressWithLabel from '@components/CircularProgressWithLabel/CircularProgressWithLabel';
 
 import { useNavigate } from 'react-router-dom';
-import calculScoreListeExo from '../Utilitaires/CalculScoreListeExo';
-import compteNbExoValides from '../Utilitaires/CompteNbExoValides';
-import { etudiantParser, etudiantUnParser } from '../Utilitaires/Etudiant/etudiantParser';
+import calculScoreListeExo from '../LEGACY-Utilitaires/CalculScoreListeExo';
+import compteNbExoValides from '../LEGACY-Utilitaires/CompteNbExoValides';
+import { etudiantParser, etudiantUnParser } from '../LEGACY-Utilitaires/Etudiant/etudiantParser';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import { Divider, IconButton, Stack } from '@mui/material';
 import axios from 'axios';

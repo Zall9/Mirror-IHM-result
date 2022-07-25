@@ -9,7 +9,7 @@ import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import ArrowReverseTri from './ArrowReverseTri/ArrowReverseTri';
 import ExercicesListe from './ExercicesListe/ExercicesListe';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
-import { recupereSessions, recupereSeance } from '../Utilitaires/gestionSession';
+import { recupereSessions, recupereSeance } from '../LEGACY-Utilitaires/gestionSession';
 import { triEtudiants } from '@components/Utilitaires/Exercices/TriEtudiants';
 //###########################################################################
 

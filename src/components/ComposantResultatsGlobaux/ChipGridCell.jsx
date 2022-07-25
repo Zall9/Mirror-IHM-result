@@ -4,6 +4,13 @@ import PropTypes from 'prop-types';
 import { colorGradient } from './utils/colorGradient';
 import { isStudentLate } from './utils/dateParser';
 import { shadeColor } from './utils/colorTones';
+/**
+ * High Order Component de @mui/Chip
+ * @param props: {voir api de mui Chip}
+ *
+ *
+ * @returns Un composant
+ */
 const ChipGridCell = (props) => {
   console.info('ChipGridCell', props);
   console.info('exo from cell', props.exercise);
@@ -33,7 +40,7 @@ const ChipGridCell = (props) => {
     },
     [props, isAverageExceeded],
   );
-  //pour supprimer les warnings
+  //pour supprimer les warnings (setcolorForCircular is not a recognized DOM property)
   let tmpProps = { ...props };
   delete tmpProps.setColorForCircular;
   return <>{props.label !== '' ? <Chip {...tmpProps} sx={cellsStyle(props)} /> : <></>}</>;

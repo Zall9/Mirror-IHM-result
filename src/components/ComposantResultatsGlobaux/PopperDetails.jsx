@@ -16,12 +16,26 @@ import CodeTentative from './CodeTentative';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { dateParser } from './utils/dateParser';
 
+/**
+ * @param props: {
+ *  exercises: les exercices etudiants
+ *  exo: l'exercice correspondant a la cellule cliquee
+ *  anchorEl: l'element sur lequel le popper est positionne
+ *  setAnchorEl: la fonction permettant de modifier l'element sur lequel le popper est positionne
+ *  handlePopoverClose: la fonction permettant de fermer le popper
+ *
+ * }
+ *
+ *
+ *
+ * @returns Un composant
+ */
 const PopperDetails = (props) => {
   // const [anchor, setAnchor] = useState(props.anchorEl);
   const [statement, setstatement] = useState('');
   // const [exerciseRef, setExoState] = useState(props.exo);
   const exerciseRef = useRef(props.exo);
-  const [clicked, setClicked] = useState('');
+  const [clickedTimeLine, setClickedTimeLine] = useState('');
   const [open, setOpen] = useState(true);
   useEffect(() => {
     setstatement(
@@ -56,7 +70,7 @@ const PopperDetails = (props) => {
               key={attempt.id + '-code'}
               language={language}
             />
-            {clicked == attempt.id + '-code' ? (
+            {clickedTimeLine == attempt.id + '-code' ? (
               <Divider sx={{ border: '3px solid rgba(0,0,0,0.5)' }} />
             ) : null}
           </div>
@@ -129,8 +143,8 @@ const PopperDetails = (props) => {
                 >
                   <FriseChrono
                     currentExercise={currentExercise}
-                    clicked={clicked}
-                    setClicked={setClicked}
+                    clicked={clickedTimeLine}
+                    setClicked={setClickedTimeLine}
                   ></FriseChrono>
                 </div>
               )}
@@ -149,7 +163,7 @@ const PopperDetails = (props) => {
                     <></>
                   ) : (
                     attempts?.map((attempt, index) =>
-                      !(attempt.id == clicked && attempts.length - 1 > index) ? (
+                      !(attempt.id == clickedTimeLine && attempts.length - 1 > index) ? (
                         <>
                           {index === attempts.length - 1 ? renderAttempt(attempt, language) : <></>}
                         </>

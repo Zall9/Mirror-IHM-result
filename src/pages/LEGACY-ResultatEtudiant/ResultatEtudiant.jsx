@@ -1,9 +1,9 @@
 import React from 'react';
 import Navigation from '@components/NavigationBar/NavigationBar';
 import { Box } from '@mui/material';
-import ResultatCompletEtudiant from '@components/ResultatCompletEtudiant/ResultatCompletEtudiant';
+import ResultatCompletEtudiant from '@components/LEGACY-ResultatCompletEtudiant/ResultatCompletEtudiant';
 import { useParams } from 'react-router-dom';
-import { etudiantParser } from '../../components/Utilitaires/Etudiant/etudiantParser';
+import { etudiantParser } from '../../components/LEGACY-Utilitaires/Etudiant/etudiantParser';
 const ResultatEtudiant = () => {
   var idEtu = useParams().etu;
   const etudiant = etudiantParser(idEtu);

@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { getExercises } from '@stores/Exercices/exercicesSlice';
 import PropTypes from 'prop-types';
-import { recupereExerciceCourantEtudiant } from '../Utilitaires/Exercices';
+import { recupereExerciceCourantEtudiant } from '../LEGACY-Utilitaires/Exercices';
 
 /**
  *  Composant qui s'affiche si l'etudiant est en retard

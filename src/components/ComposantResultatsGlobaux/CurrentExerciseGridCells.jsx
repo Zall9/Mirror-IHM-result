@@ -7,6 +7,15 @@ import PanToolIcon from '@mui/icons-material/PanTool';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({});
+/**
+ *
+ * @param props: { exercise objet (exercice courrant),
+ * @param params: objet (params de renderCell),
+ * @param label: int (nb tentatives)}
+ *
+ *
+ * @returns Un composant
+ */
 const CurrentExerciseGridCell = ({ exercise, params, label }) => {
   const [color, setColor] = useState('');
   console.log('color', color);

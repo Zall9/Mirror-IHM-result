@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import Item from '@mui/material/ListItem';
 import BoiteRectangulaireEtudiant from './BoiteRectangulaireEtudiant/BoiteRectangulaireEtudiant';
 import PropTypes from 'prop-types';
-import { etudiantParser } from '../../../../Utilitaires/Etudiant/etudiantParser';
+import { etudiantParser } from '../../../../LEGACY-Utilitaires/Etudiant/etudiantParser';
 /**
  * Liste des cartes étudiants participant / ayant participé à un exercice donné
  */

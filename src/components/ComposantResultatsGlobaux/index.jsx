@@ -26,6 +26,7 @@ const GlobalResults = () => {
   const [selectedSeance, setSelectedSeance] = useState('');
 
   //STYLES
+  // style du conteneur sur lequel s'accroche le popper
   const containerStyle = {
     backgroundColor: '',
     position: 'fixed',
@@ -126,26 +127,24 @@ const GlobalResults = () => {
             let currentExercise = currentExercises.find(
               (e) => params.field == exo.id && e.idEtu === params.row.idEtu,
             );
-
-            return (
-              // check si c'est l'exercice courant de l'étudiant
-              !(currentExercise && params && !currentExercise?.estFini) ? (
-                <ChipGridCell
-                  exercise={currentExercise}
-                  params={params}
-                  variant="filled"
-                  size="small"
-                  label={params.value !== undefined ? '' + params.value : ''}
-                />
-              ) : selected == 'finis' ? (
-                <></>
-              ) : (
-                <CurrentExerciseGridCell
-                  exercise={currentExercise}
-                  params={params}
-                  label={params.value !== undefined ? '' + params.value : ''}
-                />
-              )
+            // permets de rendre un composant différent pour les exercices finis et non finis
+            //
+            return !(currentExercise && params && !currentExercise?.estFini) ? (
+              <ChipGridCell
+                exercise={currentExercise}
+                params={params}
+                variant="filled"
+                size="small"
+                label={params.value !== undefined ? '' + params.value : ''}
+              />
+            ) : selected == 'finis' ? (
+              <></>
+            ) : (
+              <CurrentExerciseGridCell
+                exercise={currentExercise}
+                params={params}
+                label={params.value !== undefined ? '' + params.value : ''}
+              />
             );
           },
         });
@@ -175,7 +174,6 @@ const GlobalResults = () => {
         setAnchorElPopper(document.getElementById('container'));
       } else {
         setAnchorElPopper(null);
-        setAnchorElPopper(document.getElementById('container'));
       }
     }
   };

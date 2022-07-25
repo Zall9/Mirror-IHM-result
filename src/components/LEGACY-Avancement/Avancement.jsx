@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import ExportResultat from '../ExportResultat/ExportResultat';
+import ExportResultat from '../LEGACY-ExportResultat/ExportResultat';
 import { useSelector } from 'react-redux';
 import { getExercises } from '@stores/Exercices/exercicesSlice';
 import { useNavigate } from 'react-router-dom';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import IconButton from '@mui/material/IconButton';
-import { etudiantParser } from '../Utilitaires/Etudiant/etudiantParser';
+import { etudiantParser } from '../LEGACY-Utilitaires/Etudiant/etudiantParser';
 
 const Avancement = () => {
   const columns = [

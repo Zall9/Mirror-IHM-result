@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import MenuDeroulant from '../MenuDeroulant/MenuDeroulant';
-import { recupereSeance, recupereSessions } from '../Utilitaires/gestionSession';
+import { recupereSeance, recupereSessions } from '../LEGACY-Utilitaires/gestionSession';
 import { getSessions } from '@stores/Sessions/sessionSlice';
 
 async function lancerExport(choix) {
