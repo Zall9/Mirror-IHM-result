@@ -5,7 +5,7 @@ services:
       context: ./
       args:
         VITE_SRVRESULT_URL: ${VITE_SRVRESULT_URL?error API URL not set}
-        VITE_SRVRESULT_SOCKETIO_SUBFOLDER: ${VITE_SRVRESULT_SUBFOLDER?error API URL not set}
+        VITE_SRVRESULT_SOCKETIO_SUBFOLDER: ${VITE_SRVRESULT_SOCKETIO_SUBFOLDER?error API URL not set}
         VITE_SRVEXO_URL: ${VITE_SRVEXO_URL?error API URL not set}
     ports:
       - '8080:80'
