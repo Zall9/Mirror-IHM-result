@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import Item from '@mui/material/ListItem';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { getExercises } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercises/exercisesSlice';
 
 function EtudiantSession(exercices, idSession) {
   const etudiants = [];

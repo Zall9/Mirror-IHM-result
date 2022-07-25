@@ -2,7 +2,7 @@ import React from 'react';
 import DiagrammeCirculaire from '../DiagrammeCirculaire/DiagrammeCirculaire'; //TODO ALIAS SUR LE COMPONENT
 // import redux/store
 import { useSelector } from 'react-redux';
-import { getExercises } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercises/exercisesSlice';
 
 const PourcentEtuParDifficulte = () => {
   const exercices = useSelector(getExercises);

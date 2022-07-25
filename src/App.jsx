@@ -8,7 +8,7 @@ import NotFound from '@pages/NotFound/NotFound';
 import { initSocketConnection } from '@services/socket/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessions, setSession } from '@stores/Sessions/sessionSlice';
-import { setExercises, getExercises } from '@stores/Exercices/exercicesSlice';
+import { setExercises, getExercises } from '@stores/Exercises/exercisesSlice';
 import axios from 'axios';
 import AuthLayout from '@components/AuthLayout/AuthLayout';
 import PageResultatsGlobaux from '@pages/PageResultatsGlobaux/ComposantResultatsGlobaux';
@@ -16,7 +16,7 @@ import PageResultatsGlobaux from '@pages/PageResultatsGlobaux/ComposantResultats
 /**
  * obtient les exercices du serveur resultat, puis définit les exercices dans le store
  */
-const initExercices = (dispatch) => {
+const initExercises = (dispatch) => {
   axios.get(import.meta.env.VITE_SRVRESULT_URL + '/exercices').then((res) => {
     dispatch(setExercises(res.data.exercices));
   });
@@ -36,7 +36,7 @@ export default function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    initExercices(dispatch);
+    initExercises(dispatch);
     initSessions(dispatch);
   }, []);
 

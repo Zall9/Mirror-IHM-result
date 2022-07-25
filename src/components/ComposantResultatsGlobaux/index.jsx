@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { DataGrid, frFR } from '@mui/x-data-grid';
 import ToolBar from './ToolBar';
 import { useSelector } from 'react-redux';
-import { getExercises } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercises/exercisesSlice';
 import { getSessions } from '@stores/Sessions/sessionSlice';
 import { Box, Typography } from '@mui/material';
 import PopperDetails from './PopperDetails';

@@ -2,7 +2,7 @@ import React from 'react';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { getExercises } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercises/exercisesSlice';
 import PropTypes from 'prop-types';
 import { recupereExerciceCourantEtudiant } from '../LEGACY-Utilitaires/Exercices';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useSelector } from 'react-redux';
-import { getExercises } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercises/exercisesSlice';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';

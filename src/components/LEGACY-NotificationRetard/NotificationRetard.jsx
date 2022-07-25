@@ -4,7 +4,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import { useNavigate } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
-import { getExercises } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercises/exercisesSlice';
 
 /**
  * compte le nombre d'étudiant qui ont passé plus de 2 fois le temps moyen de l'exo

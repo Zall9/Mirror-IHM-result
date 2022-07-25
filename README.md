@@ -17,6 +17,17 @@ Les architectures du store & des bases de données ont changés au cours du stag
 Les composants ne sont plus fonctionnels.
 Ces composants n'avaient pas été testés au cours de leurs dévelopement avec beaucoup de données. Il est donc possible que certains problèmes de performances soient présents.
 
+### Services
+
+- oAuth:
+- store:
+  Le store contient toutes les données de l'IHM.
+- websocket:
+  Alimente le store, et permet de récupérer les données des étudiants.
+  De cette manière aucune requête vers les DB n'est effectuée dans les composants.
+  Seulement dans le store qui va alors dispatch aux composants.
+- userProfile:
+
 ## Indicateurs
 
 L'interface se présente sous la forme d'un tableau de résultats.

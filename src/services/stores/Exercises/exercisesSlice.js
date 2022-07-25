@@ -11,7 +11,7 @@ export const exercisesSlice = createSlice({
         state.exercises[exercise.id] = exercise;
       });
     },
-    addExercice: (state, respExercise) => {
+    addExercise: (state, respExercise) => {
       state.exercises[respExercise.payload.id] = respExercise.payload;
     },
     addAttempt: (state, respAttempt) => {
@@ -48,6 +48,6 @@ export const getExercises = (state) => {
 };
 
 // Action creators are generated for each case reducer function
-export const { setExercises, addExercice, addAttempt, addSupportRequest } = exercisesSlice.actions;
+export const { setExercises, addExercise, addAttempt, addSupportRequest } = exercisesSlice.actions;
 
 export default exercisesSlice.reducer;

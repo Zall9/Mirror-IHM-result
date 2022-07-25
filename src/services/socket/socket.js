@@ -1,6 +1,5 @@
 import { io } from 'socket.io-client';
-import { addExercice, addAttempt, addSupportRequest } from '@stores/Exercices/exercicesSlice';
-
+import { addExercise, addAttempt, addSupportRequest } from '@stores/Exercises/exercisesSlice';
 export const initSocketConnection = (dispatch, sessions) => {
   const socket = io(import.meta.env.VITE_SRVRESULT_URL, {
     path: import.meta.env.VITE_SRVRESULT_SOCKETIO_SUBFOLDER,
@@ -8,7 +7,7 @@ export const initSocketConnection = (dispatch, sessions) => {
 
   socket.on('exercices', ({ etudiantCommenceExo }) => {
     console.info('socket:Etudiant Commence', etudiantCommenceExo);
-    dispatch(addExercice(etudiantCommenceExo));
+    dispatch(addExercise(etudiantCommenceExo));
   });
 
   socket.on('tentatives', ({ etudiantFaitNouvelleTentative }) => {

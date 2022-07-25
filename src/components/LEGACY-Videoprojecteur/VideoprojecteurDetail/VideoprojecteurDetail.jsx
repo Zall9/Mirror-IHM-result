@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 import { useSelector } from 'react-redux';
-import { getExercises } from '@stores/Exercices/exercicesSlice';
+import { getExercises } from '@stores/Exercises/exercisesSlice';
 import { useNavigate } from 'react-router-dom';
 
 import EqualizerIcon from '@mui/icons-material/Equalizer';
