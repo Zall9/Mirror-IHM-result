@@ -13,12 +13,18 @@ import axios from 'axios';
 import AuthLayout from '@components/AuthLayout/AuthLayout';
 import PageResultatsGlobaux from '@pages/PageResultatsGlobaux/ComposantResultatsGlobaux';
 
+/**
+ * obtient les exercices du serveur resultat, puis définit les exercices dans le store
+ */
 const initExercices = (dispatch) => {
   axios.get(import.meta.env.VITE_SRVRESULT_URL + '/exercices').then((res) => {
     dispatch(setExercises(res.data.exercices));
   });
 };
 
+/**
+ * obtient les sessions du serveur exercice, puis définit les sessions dans le store
+ */
 const initSessions = (dispatch) => {
   axios.get(import.meta.env.VITE_SRVEXO_URL + '/sessions?populate=true').then((res) => {
     dispatch(setSession(res.data.sessions));

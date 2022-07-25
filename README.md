@@ -19,7 +19,28 @@ Ces composants n'avaient pas été testés au cours de leurs dévelopement avec 
 
 ## Indicateurs
 
+L'interface se présente sous la forme d'un tableau de résultats.
+Chaque ligne représente un étudiant.
+Chaque colonne représente un exercice.
+L'enseignant peut choisir quelles colonnes cacher/afficher en cliquant sur le boutton COLONNES.
+Il peut selectionner sa session & séance.
+Un export de la grille au format JSON,CSV ou PDF est possible via le boutton EXPORT.
+
+Le bouton FILTRE permet de filtrer les résultats.
+Il est possible d'afficher les aides en cliquant sur la main.
 ![Alt Text](https://cdn.discordapp.com/attachments/924613729881059389/1001072830231883776/Peek_25-07-2022_12-25.gif)
+
+Les cellules de la grille sont colorées en fonction du nombre de tentatives que l'étudiant a fait sur l'exercice courant.
+Le jeu de couleur pour la coloration de la cellule dépend de si l'étudiant est après le temps moyen ou non. (Couleur allant du vert au jaune pour les étudiants avant le temps moyen, jaune à rouge pour les étudiants après le temps moyen)
+
+Lorsque l'on clique sur une cellule, une popup s'affiche avec les informations de l'étudiant pour cet exercice.
+La popup contient les informations suivantes :
+
+- Nom de l'étudiant
+- Nom de l'exercice
+- L'énoncé de l'exercice
+- Une frise chronologique des soumissions/demandes d'aides par rapport au temps moyen
+  la frise chronologique est cliquable et affiche le code de la tentative cliquée.
 
 ## Available Scripts
 

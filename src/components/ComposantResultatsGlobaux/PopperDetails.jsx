@@ -12,7 +12,7 @@ import {
 import FriseChrono from './FriseChrono';
 import { Box } from '@mui/system';
 import { getExoFromIds } from './utils/getExoFromIds';
-import CodeTentative from './CodeTentative';
+import AttemptCode from './AttemptCode';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { dateParser } from './utils/dateParser';
 
@@ -65,7 +65,7 @@ const PopperDetails = (props) => {
         </ListItem>
         {language !== '' && language !== undefined ? (
           <div id={attempt.id + '-code'}>
-            <CodeTentative
+            <AttemptCode
               code={attempt.reponseEtudiant}
               key={attempt.id + '-code'}
               language={language}

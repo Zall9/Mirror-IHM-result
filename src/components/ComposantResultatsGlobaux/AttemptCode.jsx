@@ -31,34 +31,34 @@ import 'prismjs/components/prism-ocaml';
  * @props.langage : langage du code
  * @returns Un composant qui stylise un bloc de code.
  */
-const CodeTentative = ({ code, language }) => {
+const AttemptCode = ({ code, language }) => {
   language.toLowerCase();
   // sauter des lignes après les : dans le code
-  let codeStyled = code.replace(/ *: /gim, ':\n\t');
+  // let codeStyled = code.replace(/ *: /gim, ':\n\t');
 
-  // sauter des lignes après les } dans le code
-  codeStyled = codeStyled.replace(/ *} /gim, '}\n \t');
-  // sauter des lignes après les { dans le code
-  codeStyled = codeStyled.replace(/ *{ /gim, '{\n \t');
-  // sauter des lignes après les ; dans le code
-  codeStyled = codeStyled.replace(/ *; /gim, ';\n');
-  // sauter des lignes après le mot apres les return dans le code
-  codeStyled = codeStyled.replace(/ return /gim, '\nreturn ');
-  //sauter des lignes avant le for
-  codeStyled = codeStyled.replace(/ for /gim, '\n\tfor ');
+  // // sauter des lignes après les } dans le code
+  // codeStyled = codeStyled.replace(/ *} /gim, '}\n \t');
+  // // sauter des lignes après les { dans le code
+  // codeStyled = codeStyled.replace(/ *{ /gim, '{\n \t');
+  // // sauter des lignes après les ; dans le code
+  // codeStyled = codeStyled.replace(/ *; /gim, ';\n');
+  // // sauter des lignes après le mot apres les return dans le code
+  // codeStyled = codeStyled.replace(/ return /gim, '\nreturn ');
+  // //sauter des lignes avant le for
+  // codeStyled = codeStyled.replace(/ for /gim, '\n\tfor ');
   useEffect(() => {
     Prism.highlightAll();
   }, []);
   return (
     <div className="Code">
       <pre>
-        <code className={`language-${language}`}>{codeStyled}</code>
+        <code className={`language-${language}`}>{code}</code>
       </pre>
     </div>
   );
 };
-CodeTentative.propTypes = {
+AttemptCode.propTypes = {
   code: PropTypes.string.isRequired,
   language: PropTypes.string.isRequired,
 };
-export default CodeTentative;
+export default AttemptCode;
