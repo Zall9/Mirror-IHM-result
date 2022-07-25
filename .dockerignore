@@ -1,0 +1,10 @@
+node_modules
+.babelrc
+.env
+.eslintignore
+.eslintrc.js
+.git
+.gitignore
+.lintstagedrc
+.prettierrc
+.vscode:

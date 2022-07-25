@@ -8,7 +8,7 @@ import { redirectToUserprofileLogin } from '../../services/userprofile/userprofi
 const Login = async () => {
   const auth = useSelector(getAuth);
 
-  if (process.env.REACT_APP_OAUTH_ENABLED !== 'true' || auth.isAuthenticated) {
+  if (import.meta.env.VITE_OAUTH_ENABLED !== 'true' || auth.isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 

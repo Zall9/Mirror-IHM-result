@@ -66,7 +66,7 @@ const Etudiant = (props) => {
     // trouver le bon exo
     for (const exo of listeExercices) {
       if (!exo.estFini) {
-        axios.put(process.env.REACT_APP_SRVRESULT_URL + '/exercices/' + exo.id + '/aides').then();
+        axios.put(import.meta.env.VITE_SRVRESULT_URL + '/exercices/' + exo.id + '/aides').then();
       }
     }
     actualize = !actualize;

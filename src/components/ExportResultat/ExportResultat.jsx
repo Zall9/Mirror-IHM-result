@@ -8,7 +8,7 @@ import { getSessions } from '@stores/Sessions/sessionSlice';
 
 async function lancerExport(choix) {
   //Recuperation des exercices
-  const exercices = await axios.get(process.env.REACT_APP_SRVRESULT_URL + '/exercices');
+  const exercices = await axios.get(import.meta.env.VITE_SRVRESULT_URL + '/exercices');
   if (exercices) {
     const choisis =
       choix === 'all'

@@ -12,7 +12,7 @@ const LoginCallback = () => {
   const [searchParams, _] = useSearchParams();
   const accessToken = searchParams.get('access_token');
 
-  if (process.env.REACT_APP_OAUTH_ENABLED !== 'true' || auth.isAuthenticated) {
+  if (import.meta.env.VITE_OAUTH_ENABLED !== 'true' || auth.isAuthenticated) {
     return <Navigate to="/" />;
   }
 
