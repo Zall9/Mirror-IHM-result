@@ -17,6 +17,10 @@ Les architectures du store & des bases de données ont changés au cours du stag
 Les composants ne sont plus fonctionnels.
 Ces composants n'avaient pas été testés au cours de leurs dévelopement avec beaucoup de données. Il est donc possible que certains problèmes de performances soient présents.
 
+## Indicateurs
+
+![Alt Text](https://manouchian.univ-smb.fr/smartlab/projetsl3-2021/latools/ihmresult/-/issues/31/designs/Peek_25-07-2022_12-16.gif)
+
 ## Available Scripts
 
 In the project directory, you can run:
