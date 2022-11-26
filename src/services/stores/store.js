@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import exercicesReducer from '@stores/Exercices/exercicesSlice';
+import exercisesReducer from '@stores/Exercises/exercisesSlice';
 import sessionReducer from '@stores/Sessions/sessionSlice';
 import authReducer from '@stores/Auth/authSlice';
 
 export default configureStore({
   reducer: {
-    exercices: exercicesReducer,
+    exercises: exercisesReducer,
     sessions: sessionReducer,
     auth: authReducer,
   },

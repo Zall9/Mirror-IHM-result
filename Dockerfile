@@ -3,18 +3,18 @@ FROM node:16.13.2-alpine as build
 
 WORKDIR /app
 
-ARG REACT_APP_SRVRESULT_URL
-ARG REACT_APP_SRVRESULT_SUBFOLDER
-ARG REACT_APP_SRVEXO_URL
+ARG VITE_SRVRESULT_URL
+ARG VITE_SRVRESULT_SUBFOLDER
+ARG VITE_SRVEXO_URL
+ARG VITE_OAUTH_ENABLED
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json ./
-COPY package-lock.json ./
-COPY . ./
-
+COPY package*.json ./
+COPY prepare.sh ./
 RUN npm ci --silent
-RUN npm install
+
+COPY . ./
 RUN npm run build
 
 # production environment
